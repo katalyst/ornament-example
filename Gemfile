@@ -8,6 +8,8 @@ gem 'jquery-rails'
 
 gem 'unicorn'
 
+gem 'simple_form'
+
 group :assets do
   gem "sass", "3.2.18"
   gem "sass-rails", "~> 3.2.6"
