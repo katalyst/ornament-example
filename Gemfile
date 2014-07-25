@@ -10,6 +10,8 @@ gem 'unicorn'
 
 gem 'simple_form'
 
+gem 'airbrake'
+
 group :assets do
   gem "sass", "3.2.18"
   gem "sass-rails", "~> 3.2.6"
