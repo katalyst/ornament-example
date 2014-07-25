@@ -1,0 +1,34 @@
+.header {
+  background: #ccc;
+  padding: $small-unit;
+  @include pie-clearfix;
+}
+
+.header--menu {
+  @include grunticon("menu-white", 24px);
+  @include icon-block(44px, 24px);
+}
+
+// Sticky Header
+.sticky-header {
+
+  .csspositionsticky &.sticky-header__stuck {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  &.sticky-header__fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    height: auto;
+  }
+}

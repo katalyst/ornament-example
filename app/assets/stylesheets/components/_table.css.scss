@@ -1,0 +1,50 @@
+$table-border: 1px solid #ccc;
+
+table {
+  width: 100%;
+}
+
+.table {
+  td,
+  th {
+    padding: 0.5em 1em;
+  }
+}
+
+.table-flush {
+  td,
+  th {
+    &:first-child {
+      padding-left: 0;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+.table-ruled {
+  td,
+  th {
+    border-bottom: $table-border;
+  }
+}
+
+.table-full-width {
+  width: 100%;
+}
+
+.table-small {
+  font-size: 0.8em;
+  td,
+  th {
+    padding: 0.1em 0.2em;
+  }
+}
+
+.table-2-cols {
+  td,
+  th {
+    width: 50%;
+  }
+}

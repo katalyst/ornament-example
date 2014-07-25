@@ -1,0 +1,52 @@
+$tooltip-arrow:         false; // this can be a url()
+$tooltip-arrow-height:  10px;
+$tooltip-background:    #4b9dd0;
+$tooltip-border:        none;
+$tooltip-color:         #fff;
+$tooltip-gap:           $xx-small-unit;
+$tooltip-padding:       $x-small-unit;
+$tooltip-width:         300px;
+$tooltip-z-index:       20;
+
+.tooltip {
+  //
+}
+
+.tooltip--wrapper {
+  cursor: pointer;
+  position: relative;
+}
+
+.tooltip--outer {
+  top: 100%;
+  left: 50%;
+  position: absolute;
+  z-index: $tooltip-z-index;
+}
+
+.tooltip--inner {
+  background: $tooltip-background;
+  border: $tooltip-border;
+  color: $tooltip-color;
+  left: -($tooltip-width/2);
+  position: absolute;
+  top: 1em;
+  width: $tooltip-width;
+}
+
+.tooltip--content {
+  padding: $tooltip-padding;
+}
+
+.tooltip--arrow {
+  @if ($tooltip-arrow == false) {
+    border: $tooltip-arrow-height solid transparent;
+    border-bottom-color: $tooltip-background;
+    margin: -($tooltip-arrow-height * 2) auto 0;
+    width: $tooltip-arrow-height * 2;
+  } @else {
+    background: transparent $tooltip-arrow 50% 0 no-repeat;
+    margin-top: -($tooltip-arrow-height);
+    padding-top: $tooltip-arrow-height;
+  }
+}

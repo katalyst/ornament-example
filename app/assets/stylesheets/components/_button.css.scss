@@ -1,0 +1,55 @@
+$button-background-color:           #00aad5;
+$button-border-radius:              $border-radius;
+$button-dangerous-background-color: #990000;
+$button-dangerous-foreground-color: #ffffff;
+$button-typeface:                   $bold-font, $base-font-size;
+$button-foreground-color:           #ffffff;
+$button-padding:                    $xx-small-unit $default-unit;
+$button-secondary-background-color: #333333;
+$button-secondary-foreground-color: #ffffff;
+$button-small-padding:              $xx-small-unit $x-small-unit;
+$button-small-typeface:             $bold-font, $base-font-size * 0.8;
+
+.button {
+  @include border-radius($button-border-radius);
+  @include color-link($button-foreground-color, $button-foreground-color);
+  @include decorate-link(none, none);
+  @include inline-block;
+  @include transition(background .2s);
+  background: $button-background-color;
+  border: 0;
+  color: $button-foreground-color;
+  cursor: pointer;
+  padding: $button-padding;
+
+  &:hover {
+    background: darken($button-background-color,10);
+  }
+}
+
+.button_full {
+  width: 100%;
+}
+
+.button_secondary {
+  @include color-link($button-secondary-foreground-color, $button-secondary-foreground-color);
+  background: $button-secondary-background-color;
+  color: $button-secondary-foreground-color;
+
+  &:hover {
+    background: darken($button-secondary-background-color,10);
+  }
+}
+
+// BUTTON GROUPS
+.button-group {
+  @include pie-clearfix;
+
+  .button_back {
+    float: left;
+  }
+
+  .button_forward {
+    float: right;
+  }
+}

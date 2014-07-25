@@ -1,0 +1,39 @@
+<% content_for :title, "Navigation" %>
+
+<nav class="navigation">
+  <ul>
+    <li>
+      <a href="#">Home</a>
+    </li>
+    <li>
+      <a href="#">About</a>
+      <ul>
+        <li>
+          <a href="#">History</a>
+        </li>
+        <li>
+          <a href="#">Board Members</a>
+        </li>
+      </ul>
+    </li>
+    <li class="navigation--active-item">
+      <a href="#">Products</a>
+      <ul>
+        <li class="navigation--active-item">
+          <a href="#">On Sale</a>
+          <ul>
+            <li>
+              <a href="#">Example 1</a>
+            </li>
+            <li class="navigation--active-item">
+              <a href="#">Example 2</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Other</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,17 @@
+.tabs-links {
+  li {
+    @include inline-block;
+  }
+}
+
+.tabs--link {
+  cursor: pointer;
+}
+
+.tabs--link-active {
+  font-weight: bold;
+}
+
+.tabs--pane-inactive {
+  display: none;
+}

@@ -1,0 +1,192 @@
+<% content_for :title, "Show.js" %>
+
+<%- content_for :styles do -%>
+  <style>
+    .showjs_tick { color: #bada55; float: left; margin-right: .5em; }
+  </style>
+<%- end -%>
+
+<div class="content-spacing content-lists">
+
+  <p>Show.js allows the developer to show/hide elements based on a form selection.</p>
+
+  <p>To use show.js, simply add the <code class="sg-code">data-show</code> attribute to an element, with the <code class="sg-code">id</code> of the field it needs to listen to.</p>
+
+  <h2 class="heading-one">Basic example code</h2>
+
+  <ol>
+
+    <li>
+      To listen for a checkbox or radio, you only need the <code class="sg-code">data-show</code> attribute:
+      <pre class="sg-pre prettyprint">
+&lt;input type="checkbox" <strong>id="click_me"</strong> name="click_me" />
+&lt;div <strong>data-show="click_me"</strong>>Hidden element&lt;/div></pre>
+    </li>
+
+    <li>
+      For a select menu, you also need a <code class="sg-code">data-show-option</code> attribute with the option you want to listen for.
+      <pre class="sg-pre prettyprint">
+&lt;select <strong>id="select_me"</strong> name="select_me">
+  &lt;option val="">Please select..&lt;/option>
+  &lt;option <strong>val="show"</strong>>Show the field&lt;/option>
+  &lt;option val="hide">Hide the field&lt;/option>
+&lt;/select>
+&lt;div <strong>data-show="select_me" data-show-option="show"</strong>>Hidden element&lt;/div></pre>
+    </li>
+
+    <li>
+      Input fields can be matched to exact words using <code class="sg-code">data-show-input</code> which contains the text to match against. Matches are exact but not case sensative. ie. matching for "Hello" will accept "hello" but not "helloooo".
+      <pre class="sg-pre prettyprint">
+&lt;input type="text" <strong>id="input_me"</strong> name="input_me" />
+&lt;div <strong>data-show="input_me" data-show-input="hello"</strong>>Hidden element&lt;/div></pre>
+    </li>
+  </ol>
+
+  <h2 class="heading-one">Advanced examples</h2>
+
+  <ol start="4">
+    <li>
+      You can pass in multiple checkbox/radio target ids by seperating the ids with <code class="sg-code">_&_</code>. Now both checkboxes will need to be selected in order to show the hidden element.
+      <pre class="sg-pre prettyprint">
+&lt;input type="checkbox" <strong>id="click_me_1"</strong> name="click_me_1" />
+&lt;input type="checkbox" <strong>id="click_me_2"</strong> name="click_me_2" />
+&lt;div <strong>data-show="click_me_1_&_click_me_2"</strong>>Hidden element&lt;/div></pre>
+    </li>
+
+    <li>
+      What if, instead of requiring both, you wanted either option to show the hidden element? You can add <code class="sg-code">data-show-type="any"</code> to the element. Now ticking either box will show the element:
+      <pre class="sg-pre prettyprint">
+&lt;input type="checkbox" <strong>id="click_me_1"</strong> name="click_me_1" />
+&lt;input type="checkbox" <strong>id="click_me_2"</strong> name="click_me_2" />
+&lt;div <strong>data-show="click_me_1_&_click_me_2" data-show-type="any"</strong>>Hidden element&lt;/div></pre>
+    </li>
+
+    <li>
+      Input fields can also be matched loosely by also adding <code class="sg-code">data-show-type="any"</code> to the element. Matches are still not case sensative.
+      <pre class="sg-pre prettyprint">
+&lt;input type="text" <strong>id="input_me"</strong> name="input_me" />
+&lt;div <strong>data-show="input_me" data-show-input="hello" data-show-type="any"</strong>>Hidden element&lt;/div></pre>
+    </li>
+  </ol>
+
+  <h2 class="heading-one">Live samples</h2>
+
+  <div class="spacing">
+
+    <div class="control-group radio_buttons">
+      <label class="radio_buttons required control-label">
+        <span data-show="showjs_example_1_true" class="showjs_tick">✔</span> Select Yes
+      </label>
+      <div class="controls">
+        <label class="radio">
+          <input class="radio_buttons required" id="showjs_example_1_true" name="showjs_example_1" type="radio" value="true">
+          Yes
+        </label>
+        <label class="radio">
+          <input class="radio_buttons required" id="showjs_example_1_false" name="showjs_example_1" type="radio" value="false">
+          No
+        </label>
+      </div>
+    </div>
+
+    <div class="control-group check_boxes">
+      <label class="check_boxes required control-label">
+        Tick Yes <span data-show="showjs_example_2_true" class="showjs_tick">✔</span>
+      </label>
+      <div class="controls">
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_2_true" name="showjs_example_2_true" type="checkbox" value="true">
+          Yes
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_2_false" name="showjs_example_2_false" type="checkbox" value="false">
+          No
+        </label>
+      </div>
+    </div>
+
+    <div class="control-group check_boxes">
+      <label class="check_boxes required control-label">
+        Select 3 <span data-show="showjs_example_3" data-show-option="3" class="showjs_tick">✔</span>
+      </label>
+      <div class="controls">
+        <select class="select" id="showjs_example_3" name="showjs_example_3">
+          <option value="">Please select</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="control-group check_boxes">
+      <label class="check_boxes required control-label">
+        <span data-show="showjs_example_4" data-show-input="hello world" class="showjs_tick">✔</span> Type "Hello World" (without quotes, case insensitive)
+      </label>
+      <div class="controls">
+        <input type="text" id="showjs_example_4" name="showjs_example_4" />
+      </div>
+    </div>
+
+    <div class="control-group check_boxes">
+      <label class="check_boxes required control-label">
+        <span data-show="showjs_example_7" data-show-input="hello" data-show-type="any" class="showjs_tick">✔</span> Type anything that includes the word "hello" (without quotes, case insensitive)
+      </label>
+      <div class="controls">
+        <input type="text" id="showjs_example_7" name="showjs_example_7" />
+      </div>
+    </div>
+
+    <div class="control-group check_boxes">
+      <label class="check_boxes required control-label">
+        Tick Raphael AND Donatello <span data-show="showjs_example_5_raphael_&_showjs_example_5_donatello" class="showjs_tick">✔</span>
+      </label>
+      <div class="controls">
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_5_leonardo" name="showjs_example_5_leonardo" type="checkbox" value="true">
+          Leonardo
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_5_donatello" name="showjs_example_5_donatello" type="checkbox" value="true">
+          Donatello
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_5_raphael" name="showjs_example_5_raphael" type="checkbox" value="true">
+          Raphael
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_5_michaelangelo" name="showjs_example_5_michaelangelo" type="checkbox" value="true">
+          Michaelangelo
+        </label>
+      </div>
+    </div>
+
+    <div class="control-group check_boxes">
+      <label class="check_boxes required control-label">
+        Tick Leonardo OR Michaelangelo <span data-show="showjs_example_6_leonardo_&_showjs_example_6_michaelangelo" data-show-type="any" class="showjs_tick">✔</span>
+      </label>
+      <div class="controls">
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_6_leonardo" name="showjs_example_6_leonardo" type="checkbox" value="true">
+          Leonardo
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_6_donatello" name="showjs_example_5_donatello" type="checkbox" value="true">
+          Donatello
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_6_raphael" name="showjs_example_6_raphael" type="checkbox" value="true">
+          Raphael
+        </label>
+        <label class="checkbox">
+          <input class="check_boxes required" id="showjs_example_6_michaelangelo" name="showjs_example_6_michaelangelo" type="checkbox" value="true">
+          Michaelangelo
+        </label>
+      </div>
+    </div>
+
+
+  </div>
+</div>
