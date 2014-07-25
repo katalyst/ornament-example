@@ -20,4 +20,5 @@ end
 
 group :development do
   gem 'ornament', github: 'katalyst/ornament', branch: 'feature/development'
+  gem 'engineyard'
 end
