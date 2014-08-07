@@ -6,10 +6,31 @@
 
 
 // TODO
-// Rebuild styleguide pages
-// Rebuild tooltip using data attributes
-// Tooltip that repositions based on viewport constraints
-// Better heading defaults
+
+// Fotorama Presets
+// - Animated caption height
+// Google Map embed
+// - Lock/unlock styling
+// - Geolocate
+// - Clustering
+// Tabs:
+// - Swipable tabs
+// - Swipable body to change tabs
+// Tables
+// - Scrollable tables with shadows
+// Mobile menu rebuild:
+// - Anchor behaviour
+// Tooltips:
+// - Responsive considerations
+// - HoverIntent option
+// - Hoverable tooltips, close buttons
+// Drag 'n Drop Form Upload Docs
+// Multi-object slider
+// - A slider that has multiple objects inside it
+// - Can slide 1 object across
+// - Can slide all visible objects across
+// - Reponsive, 3 objects goes to 2, then 1
+// - Swipable, controllable, bullets
 
 // ORNAMENT
 //
@@ -39,6 +60,7 @@
 @import "components/island";
 @import "components/kat-image-upload";
 @import "components/layout";
+@import "components/map";
 @import "components/navigation-mobile";
 @import "components/pagination";
 @import "components/panel";

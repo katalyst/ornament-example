@@ -17,10 +17,10 @@
     fixedClass = "sticky-header__fixed";
     stickyClass = "sticky-header__stuck";
     $desktopHeader = $(".layout--header");
-    headerBreakpoint = 800;
+    headerBreakpoint = 0;
 
     // StickyHeader
-    $stickyHeader.not(".sticky-header_init").each(function () {
+    $stickyHeader.not(".sticky-header__init").each(function () {
       var $this, headerOffset, headerHeight, hasSticky;
 
       $this = $(this);
@@ -30,7 +30,7 @@
 
       $(window).on("scroll", function() {
         // disable on mobile view
-        if( window.innerWidth < headerBreakpoint ) {
+        if( Ornament.windowWidth() < headerBreakpoint ) {
           return false;
         }
         // update headerOffset
@@ -61,7 +61,7 @@
         }
       });
 
-    }).addClass("sticky-header_init");
+    }).addClass("sticky-header__init");
 
   });
 

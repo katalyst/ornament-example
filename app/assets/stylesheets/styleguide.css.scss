@@ -22,6 +22,17 @@ body {
   }
 }
 
+// CONCEPT MARKER
+.poc {
+  background: $primary-color;
+  color: #fff;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 3px 5px;
+  @include border-radius($border-radius);
+  @include font($body-font);
+}
+
 .heading-one, .heading-two, .heading-three, .heading-four {
   font-family: $sg-font;
   font-weight: bold;
@@ -82,6 +93,7 @@ code {
   padding: .3em .3em .2em;
   @include border-radius($border-radius);
   text-shadow: 1px 1px #fff;
+  white-space: nowrap;
 
   // remove some styling for codes inside pre tags
   pre & {
@@ -116,7 +128,7 @@ code {
   }
 }
 
-// LISTS 
+// LISTS
 
 .lists--example {
   margin-bottom: $xx-large-unit;

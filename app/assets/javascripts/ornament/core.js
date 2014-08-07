@@ -4,7 +4,11 @@
 //= require ornament/defaults
 //= require settings
 //= require ornament/console
+//= require ornament/window-dimensions
 //= require ornament/debounce
 //= require ornament/accessibility
 //= require ornament/external_links
 //= require ornament/refresh
+//= require velocity
+//= require jquery.touchSwipe
+//= require jquery.placeholder

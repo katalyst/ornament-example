@@ -7,144 +7,410 @@
 
   $(document).on("ornament:refresh", function () {
 
-    $(".navigation-mobile").not(".navigation-mobile_init").each(function(){
+    // Global scope so we can call functions anywhere
+    window.mobileNav = {
 
-      var $navigation, currentLevel, $nestedNodes, jumpToCurrent, transitionTime, updateHeights, $currentTab;
+      // Classes
+      layoutOpenClass:            "layout-open",
+      layoutTransitionClass:      "layout-transitioning",
+      paneClass:                  "pane", // all lists are panes
+      firstPaneClass:             "pane__first", // unique class for the first pane
+      nonPaneClass:               "non-pane", // lists that aren't a separate pane (eg. multiple list might makeup one "pane")
+      hasChildren:                "has-children", // links that have children
+      cmsActiveClass:             "selected", // active class given to items via the CMS
+      menuSelectedClass:          "active", // selected class given to items via the menu to determine depth and pane visibility
+      menuNavigationClass:        "pane--navigation-container", // class that contains our navigation list
+      menuNavItemClass:           "navigation-item", // list items that are navigation triggers for styling purposes
+      menuReadyClass:             "ready", // ready class, only used so that scaffolding won't happen more than once
+      backContainerClass:         "back", // class used for back button containers
+      backButtonClass:            "button", // class used for back buttons
+      descriptionClass:           "description",
+      descriptionTitleClass:      "description--title",
+      descriptionBodyClass:       "description--body",
+      descriptionOverviewClass:   "description--overview",
 
-      $navigation = $(this);
-      currentLevel = 1;
-      $nestedNodes = $navigation.find("ul ul");
-      jumpToCurrent = true;
-      $currentTab = $navigation.find(".selected").last();
-      transitionTime = 200; // needs to match css transition length
+      // Settings
+      simple:                     false, // simple accordion style menu instead of moving panes
+      animationDuration:          500, // opening the menu transition time
+      animationBuffer:            100, // buffer for good measure
+      slideTransitionTime:        200, // transition between pane sliding
+      jumpToCurrent:              true, // jump to current page in the menu rather than starting at top-level
+      showOverviewLinks:          true, // will show overview links on secodary panes
+      keepScrollPosition:         false, // keep scroll position when opening tabs, dangerous if button isn't fixed
 
-      $currentTab.parent("li").addClass("active");
+      // Customisable text strings
+      viewOverviewText:           "View Overview",
+      backText:                   "Back",
 
-      // div wrapper to help sizing
-      $navigation.find("ul").not(".non-pane").wrap("<div class=pane />");
+      // Selectors
+      tray:                       $(".navigation-mobile"),
+      anchor:                     $(".layout--switch"),
+      contentElement:             $(".layout--content"),
+      layoutElement:              $(".layout"),
 
-      // helper class for first pane if needed
-      $navigation.find(".pane").first().addClass("pane_first");
+      // Core Settings
+      currentLevel: 1, // initial level
+      timeout: null, // temporary variable for later, used for keeping track of timeouts
+      scrollPosition: 0, // keeps track of the scroll position, used when keepScrollPosition:true
 
-      // content inclusions
-      var $navContent = $navigation.find(".navigation-mobile--content");
-      $navContent.each(function(){
-        var $content, $navHTML;
-        $content = $(this);
-        $navHTML = $content.html();
-        $navigation.find(".navigation-mobile--first").append($navHTML);
-      });
+      startMenuTimeout: function(){
+        mobileNav.timeout = setTimeout(function () {
+          mobileNav.layoutElement.removeClass(mobileNav.layoutTransitionClass);
+        }, mobileNav.animationDuration + mobileNav.animationBuffer);
+      },
 
-      // adding classes to pre-existing nav elements so we can differentiate from them later
-      $navigation.find(".pane--navigation-container").find("li").addClass("navigation-item");
+      clearMenuTimeout: function(){
+        if (mobileNav.timeout !== undefined) {
+          clearTimeout(mobileNav.timeout);
+        }
+      },
 
-      // update heights function to make sure scrolling works
-      updateHeights = function(){
+      // Return a true if the menu is open, false if closed
+      isOpen: function() {
+        if (mobileNav.layoutElement.hasClass(mobileNav.layoutOpenClass)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
 
+      // Close menu
+      closeMenu: function(){
+        mobileNav.layoutElement.removeClass(mobileNav.layoutOpenClass).addClass(mobileNav.layoutTransitionClass);
+        mobileNav.contentElement.off("click", "*");
+        mobileNav.clearMenuTimeout();
+        mobileNav.startMenuTimeout();
+
+        if(mobileNav.keepScrollPosition) {
+          setTimeout(function(){
+            scrollTo(0,mobileNav.scrollPosition);
+          }, mobileNav.animationDuration + mobileNav.animationBuffer);
+        }
+      },
+
+      // Open menu
+      openMenu: function(){
+        if(!mobileNav.simple) {
+          mobileNav.updateMenuHeight();
+        }
+
+        // get scroll position and update
+        mobileNav.scrollPosition = $(window).scrollTop();
+
+        // update classes on page
+        mobileNav.layoutElement.addClass(mobileNav.layoutOpenClass + " " + mobileNav.layoutTransitionClass);
+
+        // get scroll position
+
+        // clicking on content wilgl close menu
+        mobileNav.contentElement.on("click", "*", function (event) {
+          mobileNav.toggleMenu();
+          return false;
+        });
+
+        // start animation timings
+        mobileNav.clearMenuTimeout();
+        mobileNav.startMenuTimeout();
+      },
+
+      // Toggle menu. Open if closed, close if open.
+      toggleMenu: function(){
+        if( mobileNav.isOpen() ) {
+          mobileNav.closeMenu();
+        } else {
+          mobileNav.openMenu();
+        }
+      },
+
+      // Return the last selected element
+      getCurrentTab: function(){
+        return mobileNav.tray.find("."+ mobileNav.menuSelectedClass ).last();
+      },
+
+      // Get active page from CMS
+      getCMSActivePage: function(){
+        return mobileNav.tray.find("."+ mobileNav.cmsActiveClass ).last();
+      },
+
+      getNestedMenus: function(){
+        return mobileNav.tray.find("ul ul");
+      },
+
+      // Update mobile menu height based on content
+      updateMenuHeight: function(){
+
+        var windowHeight = Ornament.windowHeight();
+        var $currentTab = mobileNav.getCurrentTab();
+        var paneHeight = 0;
+        var navHeight = 0;
+
+        // Get the height of the required elements
+        if( mobileNav.currentLevel == 1 ) {
+          paneHeight = mobileNav.tray.find("." + mobileNav.menuNavigationClass).outerHeight();
+        } else if ( $currentTab.is("a") ) {
+          paneHeight = $currentTab.parent("li").parent("ul").outerHeight();
+        } else {
+          paneHeight = $currentTab.children("div").children("ul").outerHeight();
+        }
+
+        // Check which is larger, window or pane?
+        if( windowHeight > paneHeight ) {
+          navHeight = windowHeight;
+        } else {
+          navHeight = paneHeight;
+        }
+
+        // Apply the height, yo.
+        mobileNav.tray.height(navHeight);
+
+      },
+
+      // Update heights on a delay (eg. when moving between panes)
+      updateMenuHeightWithDelay: function() {
         setTimeout(function(){
-          var windowHeight, tabHeight, navHeight;
-          $currentTab = $navigation.find(".selected").last(); // reseting current tab
-          windowHeight = $(window).height();
-          // $navigation.css("height","auto");
+          mobileNav.updateMenuHeight();
+        }, mobileNav.slideTransitionTime);
+      },
 
-          if(currentLevel == 1) {
-            tabHeight = $(".pane_first").outerHeight();
-          } else if ( $currentTab.is("a") ) {
-            tabHeight = $currentTab.last().parent("li").parent("ul").outerHeight();
-          } else {
-            tabHeight = $currentTab.last().children("div").children("ul").outerHeight();
-          }
-
-          if(windowHeight > tabHeight) {
-            navHeight = windowHeight;
-          } else {
-            navHeight = tabHeight;
-          }
-
-          $navigation.height(navHeight);
-        }, (transitionTime + 100));
-      };
-
-      // update heights on page load
-      updateHeights();
-
-      // update heights again when menu slides open
-      $(".layout--switch").on("click", function (e) {
-        updateHeights();
-      });
-
-      // add back buttons to nested panes
-      $nestedNodes.each(function(){
-        var $nestedNode = $(this);
-        var nodeTitle = $nestedNode.parent(".pane").prev().text();
-        var nodeDescription = $nestedNode.parent(".pane").parent("li").attr("data-description");
-        var $nodeLink = $nestedNode.parent(".pane").parent("li").children("a");
-        // build description block
-        var $descriptionBlock = $("<li class='description panel--padding_tight' />");
-        $descriptionBlock.append("<div class='description--title'>"+nodeTitle+"</div>");
-        // only add description if description is found
-        if (nodeDescription) {
-          $descriptionBlock.append("<div class='description--body'>"+nodeDescription+"</div>");
+      // Go back one level
+      goBack: function(){
+        // don't do anything if it's animating already
+        if(mobileNav.tray.is(":animated")) {
+          return false;
         }
-        // only add overview link if there's a link to be overviewed
-        // if ($nodeLink.attr("href") != "#") {
-        if ( !$nodeLink.parent("li").parent("ul").parent("div").hasClass("pane--navigation-container")  ) {
-          $descriptionBlock.append("<div class='description--overview'><a href='"+$nodeLink.attr("href")+"' class='icon_arrow_right'>View overview</a></div>");
-        }
-        $nestedNode.prepend($descriptionBlock);
-
-        // add back button
-        $nestedNode.prepend("<li class='back panel--padding_tight'><a href='#' class='button icon_arrow_left'>Back</a></li>");
-      });
-
-      // adding forward classes to required links
-      $navigation.find("li").not(".description").each(function(){
-        var $parentNode = $(this);
-        if($parentNode.children("div").length>0){
-          $parentNode.addClass("has-children");
-        }
-      });
-
-      // making forward links work
-      $navigation.find(".has-children").children("a").on("click", function(e){
-        e.preventDefault();
-        // abort if nav is animated
-        if($navigation.is(":animated")){ return false; }
-        // move to next level
-        var $thisForward = $(this);
-        $thisForward.parent("li").addClass("selected").siblings().removeClass("selected");
-        currentLevel++;
-        $navigation.attr("data-level",currentLevel);
-        updateHeights();
-      });
-
-      // back button behaviour
-      $(".back .button").on("click", function(e){
-        e.preventDefault();
-        var $thisBack = $(this);
-        // abort if nav is animated
-        if($navigation.is(":animated")){ return false; }
-        // short delay on selected reset so that transition shows the appropriate nav items
+        // Animate back to the previous pane
+        mobileNav.currentLevel = mobileNav.currentLevel - 1;
+        mobileNav.tray.attr("data-level", mobileNav.currentLevel);
         setTimeout(function(){
-          $thisBack.parent(".back").parent("ul").parent("div").parent(".selected").removeClass("selected");
-        },transitionTime);
-        currentLevel--;
-        $navigation.attr("data-level",currentLevel);
-        updateHeights();
-      });
+          // Remove selected class on the parent selected element
+          // Do this after it has animated back to the previous pane via timeout
+          mobileNav.getCurrentTab().removeClass(mobileNav.menuSelectedClass);
+          mobileNav.updateMenuHeight();
+        }, mobileNav.slideTransitionTime);
+      },
 
-      // jump to current page
-      if(jumpToCurrent) {
-        currentLevel = $currentTab.parents("ul").length; // get depth of current selected page
-        // reset level to 1 if 0
-        if(currentLevel == 0) { currentLevel = 1; }
+      // Go to a particular item in the menu by passing in a tab
+      goTo: function($tab) {
+        // get the depth of this tab and update level
+        mobileNav.currentLevel = $tab.parents("ul").length;
+        // reset level to 1 if zero
+        if(mobileNav.currentLevel == 0) {
+          mobileNav.currentLevel = 1;
+        }
         // apply current level
-        $navigation.attr("data-level",currentLevel);
-        $currentTab.parents("li").first().addClass("selected");
-        updateHeights();
-      }
+        mobileNav.tray.attr("data-level", mobileNav.currentLevel);
+        mobileNav.tray.find("."+mobileNav.menuSelectedClass).removeClass(mobileNav.menuSelectedClass);
+        $tab.parents("li").first().addClass(mobileNav.menuSelectedClass);
+        mobileNav.markParentAsActive($tab);
+        // update heights
+        mobileNav.updateMenuHeightWithDelay();
+      },
 
-    }).addClass("navigation-mobile_init");
+      // Match an ID and navigate to it
+      // You can pass in an ID pre-hashed or not
+      // ie. goToId("key1") or goToId("#key1")
+      goToId: function(key) {
+        // Add in a hash if one wasn't passed
+        if(key.substr(0,1) != "#") {
+          key = "#" + key;
+        }
+        var $keyNode = $(key);
+        // Only go to it if it exists
+        if($keyNode.length) {
+          // Check if the node is a link or a list
+          if($keyNode.is("a")) {
+            mobileNav.goTo($keyNode);
+          } else {
+            mobileNav.goTo($keyNode.children("a"));
+          }
+        }
+      },
+
+      // Mark all pages as inactive and then go to root
+      goToRoot: function(){
+        mobileNav.tray.find("."+mobileNav.menuSelectedClass).removeClass(mobileNav.menuSelectedClass);
+        mobileNav.currentLevel = 1;
+        mobileNav.tray.attr("data-level", mobileNav.currentLevel);
+      },
+
+      // Mark a parent node as active
+      markParentAsActive: function($node) {
+        var $parent = $node.parent("li").parent("ul").parent(".pane").parent("li");
+        if($parent.length) {
+          $parent.addClass(mobileNav.menuSelectedClass);
+          // Keep going up the tree until you can't go no mo.
+          mobileNav.markParentAsActive($parent.children("a"));
+        }
+      },
+
+      updateMenuBindingForAnchor: function(){
+
+        // Binding clicks on anchor to toggle menu
+        mobileNav.anchor.on("click", function(e) {
+          e.preventDefault();
+          mobileNav.toggleMenu();
+          return false;
+        });
+
+      },
+
+      // Apply bindings to all back, forward and anchor buttons
+      updateMenuBindings: function(){
+
+        mobileNav.updateMenuBindingForAnchor();
+
+        if(mobileNav.simple) {
+
+          // Clicking on parent links toggles the ones below it
+          var $parentLinks = mobileNav.tray.find("[data-mobilenav-accordion] > a");
+          $parentLinks.off("click").on("click", function(e){
+            e.preventDefault();
+            $(this).parent("li").toggleClass("visible");
+          });
+
+        } else {
+
+          // Making forward buttons work
+          mobileNav.tray.find("[data-mobilenav-forward]").children("a").off("click").on("click", function(e) {
+            e.preventDefault();
+            // abort if already animating
+            if(mobileNav.tray.is(":animated")) {
+              return false;
+            }
+            var $thisForward = $(this);
+            $thisForward.parent("li").addClass(mobileNav.menuSelectedClass).siblings().removeClass(mobileNav.menuSelectedClass);
+            mobileNav.currentLevel = mobileNav.currentLevel + 1;
+            mobileNav.tray.attr("data-level", mobileNav.currentLevel);
+            mobileNav.updateMenuHeightWithDelay();
+          });
+
+          // Making back buttons work
+          mobileNav.tray.find("[data-mobilenav-back]").off("click").on("click", function(e){
+            e.preventDefault();
+            mobileNav.goBack();
+          });
+
+        }
+
+      },
+
+      // Scaffold the complex mobile menu
+      scaffoldMobileMenu: function(){
+
+        var $tray = mobileNav.tray;
+
+        // Abort if already scaffolded
+        if( $tray.hasClass(mobileNav.menuReadyClass) ) {
+          return false;
+        }
+
+        $tray.addClass("complex");
+
+        // Add class to current tab
+        var $currentTab = mobileNav.getCMSActivePage();
+        $currentTab.parent("li").addClass(mobileNav.menuSelectedClass);
+
+        // Wrap each list in a pane div to assist in animation and sizing
+        $tray.find("ul").not("."+mobileNav.nonPaneClass).wrap("<div class='"+mobileNav.paneClass+"' />");
+
+        // Add helper class to first pane
+        var $firstPane = $tray.find("."+mobileNav.paneClass).first();
+        $firstPane.addClass(mobileNav.firstPaneClass);
+
+        // Adding classes to pre-existing nav elements for styling purposes
+        $tray.find("."+mobileNav.menuNavigationClass).find("li").addClass(mobileNav.menuNavItemClass);
+
+        // Jump to current pane if required
+        if(mobileNav.jumpToCurrent) {
+          mobileNav.goTo( mobileNav.getCurrentTab() );
+        }
+
+        // Update menu heights for first time
+        mobileNav.updateMenuHeight();
+
+        // Add forward buttons
+        mobileNav.tray.find("li").not(mobileNav.menuDescriptionClass).each(function(){
+          var $parentNode = $(this);
+          if($parentNode.children("div").length > 0) {
+            $parentNode.addClass(mobileNav.hasChildren).attr("data-mobilenav-forward","");
+          }
+        });
+
+        // Add back button and description blocks
+        mobileNav.getNestedMenus().each(function(){
+          var $nestedNode = $(this);
+          var $parentPane = $nestedNode.parent("."+mobileNav.paneClass);
+          var nodeTitle = $parentPane.prev().text();
+          var nodeDescription = $parentPane.parent("li").attr("data-description");
+          var $nodeLink = $parentPane.parent("li").children("a");
+
+          // build description block
+          var $descriptionBlock = $("<li class='" + mobileNav.descriptionClass + "' />");
+          $descriptionBlock.append("<div class='" + mobileNav.descriptionTitleClass + "'>" + nodeTitle + "</div>");
+
+          // only add description if available
+          if(nodeDescription) {
+            $descriptionBlock.append("<div class='" + mobileNav.descriptionBodyClass + "'>" + nodeDescription + "</div>");
+          }
+
+          // only add overview link if there's a link to be overviewed
+          if ( mobileNav.showOverviewLinks ) {
+            $descriptionBlock.append("<div class='" + mobileNav.descriptionOverviewClass + "'><a href='"+$nodeLink.attr("href")+"' class='icon_arrow_right'>" + mobileNav.viewOverviewText + "</a></div>");
+          }
+          $nestedNode.prepend($descriptionBlock);
+
+          // add the back button
+          $nestedNode.prepend("<li class='" + mobileNav.backContainerClass + "'><a href='#' class='" + mobileNav.backButtonClass + "' data-mobilenav-back>" + mobileNav.backText + "</a></li>");
+        });
+
+        // Run bindings
+        mobileNav.updateMenuBindings();
+
+        // Add ready class to prevent re-scaffolding
+        $tray.addClass(mobileNav.menuReadyClass);
+
+      },
+
+      // Scaffolind the simple version of the menu
+      scaffoldSimpleMenu: function(){
+
+        // Abort if already ready
+        if(mobileNav.tray.hasClass(mobileNav.menuReadyClass)) {
+          return false;
+        }
+
+        // Add simple class for styling purposes
+        mobileNav.tray.addClass("simple");
+
+        // Add data attributes to parent links
+        var $parentLinks = mobileNav.tray.find("ul ul").parent("li");
+        $parentLinks.attr("data-mobilenav-accordion","");
+
+        // Update key bindings
+        mobileNav.updateMenuBindings();
+
+        // Add ready class
+        mobileNav.tray.addClass(mobileNav.menuReadyClass);
+
+      }
+    };
+
+    // Create menu on page load
+    if(mobileNav.simple) {
+
+      mobileNav.scaffoldSimpleMenu();
+
+    } else {
+
+      // Scaffold the complex menu and apply bindings
+      mobileNav.scaffoldMobileMenu();
+
+      // Update heights on resize
+      $(window).on("resize", function(){
+        mobileNav.updateMenuHeightWithDelay();
+      });
+
+    }
 
   });
 

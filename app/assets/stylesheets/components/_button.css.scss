@@ -4,7 +4,7 @@ $button-dangerous-background-color: #990000;
 $button-dangerous-foreground-color: #ffffff;
 $button-typeface:                   $bold-font, $base-font-size;
 $button-foreground-color:           #ffffff;
-$button-padding:                    $xx-small-unit $default-unit;
+$button-padding:                    $xxxxx-small-unit $xxxx-small-unit;
 $button-secondary-background-color: #333333;
 $button-secondary-foreground-color: #ffffff;
 $button-small-padding:              $xx-small-unit $x-small-unit;
@@ -27,11 +27,11 @@ $button-small-typeface:             $bold-font, $base-font-size * 0.8;
   }
 }
 
-.button_full {
+.button__full {
   width: 100%;
 }
 
-.button_secondary {
+.button__secondary {
   @include color-link($button-secondary-foreground-color, $button-secondary-foreground-color);
   background: $button-secondary-background-color;
   color: $button-secondary-foreground-color;
@@ -41,15 +41,34 @@ $button-small-typeface:             $bold-font, $base-font-size * 0.8;
   }
 }
 
+
+// BUTTONS WITH ICONS
+.button__icon-right,
+.button__icon-left {
+  &:before {
+    position: relative;
+    top: 3px;
+  }
+}
+
+.button__icon-right:before {
+  float: right;
+  margin-left: $xxxxx-small-unit;
+}
+.button__icon-left:before {
+  float: left;
+  margin-right: $xxxxx-small-unit;
+}
+
 // BUTTON GROUPS
 .button-group {
   @include pie-clearfix;
 
-  .button_back {
+  .button__back {
     float: left;
   }
 
-  .button_forward {
+  .button__forward {
     float: right;
   }
 }
