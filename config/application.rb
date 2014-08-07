@@ -60,6 +60,6 @@ module OrnamentExample
     config.assets.version = '1.0'
 
     config.assets.paths << Rails.root.join("app", "vendor", "assets", "images")
-    config.assets.precompile += %w(styleguide.css)
+    config.assets.precompile += %w(styleguide.css modernizr.js selectivizr.js css3-mediaqueries.js application_bottom.js)
   end
 end
