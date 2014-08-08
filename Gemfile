@@ -24,3 +24,11 @@ group :development do
   gem 'ornament', github: 'katalyst/ornament', branch: 'feature/development'
   gem 'engineyard'
 end
+group :assets do
+end
+
+group :assets do
+end
+
+group :assets do
+end
