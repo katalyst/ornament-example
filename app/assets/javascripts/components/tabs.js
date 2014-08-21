@@ -7,13 +7,14 @@
 
   $(document).on("ornament:refresh", function () {
 
-    var activeClass      = "tabs--pane__active";
-    var tabActiveClass   = "tabs--link__active";
-    var tabLinksClass    = ".tabs--link";
-    var $tabs            = $(".tabs");
-    var currentHash      = document.location.hash;
-    var leftShadowClass = "shadow-left";
-    var rightShadowClass = "shadow-right";
+    var activeClass         = "tabs--pane__active";
+    var tabActiveClass      = "tabs--link__active";
+    var tabLinksClass       = ".tabs--link";
+    var $tabs               = $(".tabs");
+    var currentHash         = document.location.hash;
+    var leftShadowClass     = "shadow-left";
+    var rightShadowClass    = "shadow-right";
+    var activeDeeplinking   = false;
 
     var loadTab = function($tabset, pane){
       var $anchor  = $tabset.find("[data-tab='"+pane+"']");
@@ -60,7 +61,7 @@
 
     // Push to hash if deeplinking is turned on
     var pushHashToLocation = function($tabset, pane){
-      if( $tabset.is("[data-tabs-deeplink]") ) {
+      if( activeDeeplinking || $tabset.is("[data-tabs-deeplink]") ) {
         document.location.hash = pane;
       }
     }
@@ -244,7 +245,7 @@
           }
 
           // move offset
-          $movableElement.css({
+          $movableElement.velocity("stop").css({
             marginLeft: newOffset + "px"
           });
 
@@ -260,12 +261,12 @@
 
               // check bounds and animate back
               if(newOffset > leftBound) {
-                $movableElement.animate({
+                $movableElement.velocity({
                   marginLeft: leftBound
                 }, 200);
                 newOffset = leftBound;
               } else if(newOffset < -rightBound) {
-                $movableElement.animate({
+                $movableElement.velocity({
                   marginLeft: -rightBound
                 }, 200);
                 newOffset = -rightBound;
