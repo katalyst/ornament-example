@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/katalyst/ornament.git
-  revision: 21048809100255d4c08c3ba7d1060ec31a80a034
+  revision: 7b0e4f218abc5fb77dcaad7a9d7ca6018a9887ac
   branch: feature/development
   specs:
     ornament (0.0.0)

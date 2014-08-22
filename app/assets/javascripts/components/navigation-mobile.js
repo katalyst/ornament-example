@@ -37,6 +37,7 @@
       jumpToCurrent:              true, // jump to current page in the menu rather than starting at top-level
       showOverviewLinks:          true, // will show overview links on secodary panes
       keepScrollPosition:         false, // keep scroll position when opening tabs, dangerous if button isn't fixed
+      closeForAnchors:            true, // close menu when clicking on anchors
 
       // Customisable text strings
       viewOverviewText:           "View Overview",
@@ -288,6 +289,33 @@
           mobileNav.tray.find("[data-mobilenav-back]").off("click").on("click", function(e){
             e.preventDefault();
             mobileNav.goBack();
+          });
+
+        }
+
+        if(mobileNav.closeForAnchors) {
+
+          // Make anchor links close the menu
+          $(document).on("click", mobileNav.tray.find("a[href*=#]:not([href=#])"), function(e){
+
+            var $anchor = $(e.originalEvent.target);
+            var shouldOverride = true;
+
+            // Don't override for forward links
+            if( $anchor.parent("li").is("[data-mobilenav-forward]") ) {
+              shouldOverride = false;
+            }
+
+            // Don't override for back buttons
+            if( $anchor.is("[data-mobilenav-back]") ) {
+              shouldOverride = false;
+            }
+
+            // Close menu when clicking on anchor links if not matched above
+            if( shouldOverride ) {
+              mobileNav.closeMenu();
+            }
+
           });
 
         }
