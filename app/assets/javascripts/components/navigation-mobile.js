@@ -296,7 +296,7 @@
         if(mobileNav.closeForAnchors) {
 
           // Make anchor links close the menu
-          $(document).on("click", mobileNav.tray.find("a[href*=#]:not([href=#])"), function(e){
+          mobileNav.tray.on("click", "a[href*=#]:not([href=#])", function(e){
 
             var $anchor = $(e.originalEvent.target);
             var shouldOverride = true;
