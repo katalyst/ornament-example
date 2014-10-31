@@ -21,7 +21,7 @@
     <%= yield :meta %>
 
     <!-- WEBFONTS -->
-    <%= render "layouts/webfonts" -%>
+    <link rel="stylesheet" type="text/css" href="//cloud.typography.com/7020432/724566/css/fonts.css" />
 
     <!-- STYLES -->
     <%= stylesheet_link_tag "application", :media => "all" %>
@@ -38,7 +38,7 @@
 
   </head>
 
-  <body>
+  <body class="attached-navigation <%= yield :body_class -%>">
 
     <a class="skip-link" href="#main">skip to content</a>
 
@@ -49,6 +49,11 @@
           <div class="pane-wrapper">
 
             <div class="pane">
+
+              <div class="header header__mobile">
+                <%= link_to "Ornament", root_path, class: "header--logo" -%>
+              </div>
+
               <div class="pane--navigation-container">
 
                 <ul class="non-pane">
@@ -73,29 +78,56 @@
 
       <%= content_tag :div, class: "layout--content environment-#{Rails.env}" do %>
 
-        <header class="layout--header" role="banner">
+        <header class="header header__primary layout--header" role="banner">
           <div class="layout--container">
-            <div class="header">
-              header
-              <button class="layout--switch header--menu">open navigation</button>
+              
+            <a href="<%= root_path -%>" class="header--logo">Ornament</a>
+            <div class="header--aside">
+              <ul class="list-horizontal">
+                <li><a href="/styleguide/getting_started_intro">What is Ornament?</a></li>
+              </ul>
             </div>
+
+            <button class="layout--switch header--menu">open navigation</button>
+  
           </div>
         </header>
+
+        <div class="navigation-primary">
+          <div class="layout--container">
+            <nav>
+              <ul>
+                <li><a href="#">Tristique Elit Fringilla</a></li>
+                <li><a href="#">Tristique Elit Fringilla</a></li>
+                <li class="with-children">
+                  <a href="#">Tristique Elit Fringilla</a>
+                  <ul>
+                    <li><a href="#">Tristique Elit Fringilla</a></li>
+                    <li><a href="#">Tristique Elit Fringilla</a></li>
+                    <li><a href="#">Tristique Elit Fringilla</a></li>
+                    <li><a href="#">Tristique Elit Fringilla</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">Tristique Elit Fringilla</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+        <%- if content_for? :page_title -%>
+          <div class="content--title">
+            <div class="layout--container">
+              <h1 class="heading-one"><%= yield :page_title %></h1>
+            </div>
+          </div>
+        <%- end -%>
 
         <div class="layout--container">
           <section class="layout--main" role="main">
             <a id="main" name="main" tabindex="-1"></a>
-              <%= content_for?(:global) ? yield(:global) : yield %>
+            <%= content_for?(:global) ? yield(:global) : yield %>
           </section>
         </div>
-
-        <footer class="layout--footer" role="contentinfo">
-          <div class="layout--container">
-            <div class="footer">
-              footer
-            </div>
-          </div>
-        </footer>
 
       </div>
 

@@ -3,6 +3,7 @@
 //= require picturefill
 //= require ornament/defaults
 //= require settings
+//= require ornament/debug
 //= require ornament/console
 //= require ornament/window-dimensions
 //= require ornament/debounce
@@ -12,3 +13,4 @@
 //= require velocity
 //= require jquery.touchSwipe
 //= require jquery.placeholder
+//= require underscore

@@ -21,6 +21,6 @@ group :assets do
 end
 
 group :development do
-  gem 'ornament', github: 'katalyst/ornament', branch: 'feature/development'
+  gem 'ornament', github: 'katalyst/ornament', branch: 'prototype'
   gem 'engineyard'
 end

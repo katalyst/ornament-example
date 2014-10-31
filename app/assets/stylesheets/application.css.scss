@@ -23,20 +23,26 @@
 @import "components/button";
 @import "components/clearfix";
 @import "components/content";
-@import "components/environment";
+// @import "components/environment";
 @import "components/error-page";
+@import "components/flexible-input";
 @import "components/footer";
 @import "components/form";
+@import "components/grid";
 @import "components/header";
 @import "components/icons";
 @import "components/island";
+@import "components/issuu";
 @import "components/kat-image-upload";
 @import "components/layout";
 @import "components/lightbox";
 @import "components/map";
+@import "components/menu-aim";
 @import "components/navigation-mobile";
+@import "components/navigation-primary";
 @import "components/pagination";
 @import "components/panel";
+@import "components/selector";
 @import "components/skip-link";
 @import "components/spacing";
 @import "components/table";
@@ -47,7 +53,7 @@
 @import "components/print";
 @import "components/vertre";
 
-@import "components/menu-aim";
+@import "styleguide";
 
 // OVERRIDES
 //
@@ -62,4 +68,10 @@
 //  }
 //
 
+.clear {
+  clear: both;
+}
 
+.clearfix {
+  @include pie-clearfix;
+}

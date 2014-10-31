@@ -1,14 +1,21 @@
-@mixin content-children {
-  &:first-child {
-    margin-top: 0;
-  }
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
 .content--title {
-  margin-bottom: $xx-large-unit;
+  padding: $default-unit 0;
+  @include background-image(linear-gradient(rgba($passive-color,.33) 0%, rgba($passive-color,.66) 100%));
+
+  .no-cssgradients & {
+    background: $passive-color;
+  }
+
+  @include media-query($header-breakpoint, min) {
+    padding: $xxxx-large-unit 0;
+    
+    .attached-navigation & {
+      padding-top: $xxxx-large-unit + ($navigation-height / 2);
+    }
+    .attached-navigation .navigation-primary + & {
+      margin-top: -($navigation-height / 2);
+    }
+  }
 }
 
 .content-large {
@@ -39,13 +46,13 @@ ol.content-lists,
   p {
     margin-top: $xx-small-unit;
     margin-bottom: $xx-small-unit;
-    @include content-children;
+    @include flush-children;
   }
 
   h1 {
     margin-top: $default-unit;
     margin-bottom: $default-unit;
-    @include content-children;
+    @include flush-children;
 
     @include media-query($breakpoint-typography) {
       margin-top: $small-unit;
@@ -56,7 +63,7 @@ ol.content-lists,
   h2 {
     margin-top: $xx-small-unit;
     margin-bottom: $xx-small-unit;
-    @include content-children;
+    @include flush-children;
 
     @include media-query($breakpoint-typography) {
       margin-top: $xxx-small-unit;
@@ -67,7 +74,7 @@ ol.content-lists,
   h3 {
     margin-top: $xx-small-unit;
     margin-bottom: $xx-small-unit;
-    @include content-children;
+    @include flush-children;
 
     @include media-query($breakpoint-typography) {
       margin-top: $xxx-small-unit;
@@ -78,7 +85,39 @@ ol.content-lists,
   h4 {
     margin-top: $xx-small-unit;
     margin-bottom: $xx-small-unit;
-    @include content-children;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $xxx-small-unit;
+      margin-bottom: $xxx-small-unit;
+    }
+  }
+}
+
+.content__compressed,
+.content__tight,
+.content-spacing__compressed {
+  p {
+    margin-top: $xxxxx-small-unit;
+    margin-bottom: $xxxxx-small-unit;
+    @include flush-children;
+  }
+
+  h1 {
+    margin-top: $default-unit;
+    margin-bottom: $default-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $small-unit;
+      margin-bottom: $small-unit;
+    }
+  }
+
+  h2 {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
 
     @include media-query($breakpoint-typography) {
       margin-top: $xxx-small-unit;
@@ -86,6 +125,79 @@ ol.content-lists,
     }
   }
 
+  h3 {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $xxx-small-unit;
+      margin-bottom: $xxx-small-unit;
+    }
+  }
+
+  h4 {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $xxx-small-unit;
+      margin-bottom: $xxx-small-unit;
+    }
+  }
+}
+
+.content-spacing__expanded {
+  p {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
+  }
+
+  h1 {
+    margin-top: $default-unit;
+    margin-bottom: $default-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $small-unit;
+      margin-bottom: $small-unit;
+    }
+  }
+
+  h2 {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $xxx-small-unit;
+      margin-bottom: $xxx-small-unit;
+    }
+  }
+
+  h3 {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $xxx-small-unit;
+      margin-bottom: $xxx-small-unit;
+    }
+  }
+
+  h4 {
+    margin-top: $xx-small-unit;
+    margin-bottom: $xx-small-unit;
+    @include flush-children;
+
+    @include media-query($breakpoint-typography) {
+      margin-top: $xxx-small-unit;
+      margin-bottom: $xxx-small-unit;
+    }
+  }
 }
 
 .content {
@@ -99,20 +211,14 @@ ol.content-lists,
 
   h2 {
     @include heading-two;
-    margin-top: $large-unit;
-    margin-bottom: $large-unit;
   }
 
   h3 {
     @include heading-three;
-    margin-top: $large-unit;
-    margin-bottom: $large-unit;
   }
 
   h4 {
     @include heading-four;
-    margin-top: $large-unit;
-    margin-bottom: $large-unit;
   }
 
   h5 {
@@ -169,7 +275,7 @@ ol.content-lists,
   blockquote + figcaption {
     display: block;
     margin: $xx-small-unit 0 $default-unit;
-    @include content-children;
+    @include flush-children;
     font-size: $base-font-size;
   }
 

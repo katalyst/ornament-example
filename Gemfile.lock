@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/katalyst/ornament.git
-  revision: 948c873bb2f27e7c91a350abaef886ad39812c0c
-  branch: feature/development
+  revision: 753330c33e71cfe340b3ee8b6488f123e9e171ab
+  branch: prototype
   specs:
     ornament (0.0.0)
       rails (>= 3.0.0)
@@ -131,7 +131,7 @@ GEM
     simple_form (2.1.1)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
-    sprockets (2.2.2)
+    sprockets (2.2.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -141,7 +141,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.41)
+    tzinfo (0.3.42)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)

@@ -7,7 +7,7 @@
     <p>Example tabset:</p>
 
     <div class="tabs">
-      <nav class="tabs-links">
+      <nav class="tabs--links">
         <ul>
           <li><a href="#tab1_1" class="tabs--link" data-tab="tab1_1">Tab #1</a></li>
           <li><a href="#tab1_2" class="tabs--link" data-tab="tab1_2">Tab #2</a></li>
@@ -15,20 +15,71 @@
         </ul>
       </nav>
       <div class="tabs--panes">
-        <div class="tabs--pane" data-tab-for="tab1_1">
-          Tab #1
+        <div class="tabs--pane content__compressed" data-tab-for="tab1_1">
+          <h2 class="heading-six">Etiam Justo Cursus Fringilla</h2>
+          <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+          <p>
+            <%= link_to "Button 1", "#", class: "button__primary" -%>
+            <%= link_to "Button 1", "#", class: "button" -%>
+          </p>
         </div>
-        <div class="tabs--pane" data-tab-for="tab1_2">
-          Tab #2
+        <div class="tabs--pane content__compressed" data-tab-for="tab1_2">
+          <h2 class="heading-six">Etiam Justo Cursus Fringilla #2</h2>
+          <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+          <p>
+            <%= link_to "Button 1", "#", class: "button__primary" -%>
+            <%= link_to "Button 1", "#", class: "button" -%>
+          </p>
         </div>
-        <div class="tabs--pane" data-tab-for="tab1_3">
-          Tab #3
+        <div class="tabs--pane content__compressed" data-tab-for="tab1_3">
+          <h2 class="heading-six">Etiam Justo Cursus Fringilla #3</h2>
+          <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+          <p>
+            <%= link_to "Button 1", "#", class: "button__primary" -%>
+            <%= link_to "Button 1", "#", class: "button" -%>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs tabs__filled">
+      <nav class="tabs--links">
+        <ul>
+          <li><a href="#tab1_1" class="tabs--link" data-tab="tab1_1">Tab #1</a></li>
+          <li><a href="#tab1_2" class="tabs--link" data-tab="tab1_2">Tab #2</a></li>
+          <li><a href="#tab1_3" class="tabs--link" data-tab="tab1_3">Tab #3</a></li>
+        </ul>
+      </nav>
+      <div class="tabs--panes">
+        <div class="tabs--pane content__compressed" data-tab-for="tab1_1">
+          <h2 class="heading-six">Etiam Justo Cursus Fringilla</h2>
+          <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+          <p>
+            <%= link_to "Button 1", "#", class: "button__primary" -%>
+            <%= link_to "Button 1", "#", class: "button" -%>
+          </p>
+        </div>
+        <div class="tabs--pane content__compressed" data-tab-for="tab1_2">
+          <h2 class="heading-six">Etiam Justo Cursus Fringilla #2</h2>
+          <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+          <p>
+            <%= link_to "Button 1", "#", class: "button__primary" -%>
+            <%= link_to "Button 1", "#", class: "button" -%>
+          </p>
+        </div>
+        <div class="tabs--pane content__compressed" data-tab-for="tab1_3">
+          <h2 class="heading-six">Etiam Justo Cursus Fringilla #3</h2>
+          <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
+          <p>
+            <%= link_to "Button 1", "#", class: "button__primary" -%>
+            <%= link_to "Button 1", "#", class: "button" -%>
+          </p>
         </div>
       </div>
     </div>
 
     <pre class="sg-pre prettyprint">&lt;div class="tabs">
-  &lt;nav class="tabs-links">
+  &lt;nav class="tabs--links">
     &lt;ul>
       &lt;li>&lt;a href="#tab1_1" class="tabs--link" data-tab="tab1_1">Tab #1&lt;/a>&lt;/li>
       &lt;li>&lt;a href="#tab1_2" class="tabs--link" data-tab="tab1_2">Tab #2&lt;/a>&lt;/li>
@@ -70,7 +121,7 @@
     <p>Notice that clicking on these tabs will update your URL. </p>
 
     <div class="tabs" data-tabs-deeplink>
-      <nav class="tabs-links">
+      <nav class="tabs--links">
         <ul>
           <li><a href="#tab2_1" class="tabs--link" data-tab="tab2_1">Tab #1</a></li>
           <li><a href="#tab2_2" class="tabs--link" data-tab="tab2_2">Tab #2</a></li>
@@ -91,7 +142,7 @@
     </div>
 
     <pre class="sg-pre prettyprint">&lt;div class="tabs" <strong>data-tabs-deeplink</strong>>
-  &lt;nav class="tabs-links">
+  &lt;nav class="tabs--links">
   ...</pre>
 
     <h2 class="heading-two">Select menu fallback on smaller screens</h2>
@@ -101,7 +152,7 @@
     <p>The select menu will appear when the tabs are too long to fit on the screen.</p>
 
     <div class="tabs" data-tabs-fallback-select>
-      <nav class="tabs-links">
+      <nav class="tabs--links">
         <ul>
           <%- (1..7).each do |i| -%>
             <li><a href="#tab_select_<%= i -%>" class="tabs--link" data-tab="tab_select_<%= i -%>">Tab #<%= i -%></a></li>
@@ -119,12 +170,14 @@
 
     <h2 class="heading-two">Swipable Tabs <span class="poc" title="Warning: untested and unfinalised. Should not be used in production.">Proof of Concept</span></h2>
 
+    <p>Not ready for production, see TODO.md</p>
+
     <p>Swipable tabs allow the user to swipe the tab row to access tabs that are not able to fit on-screen.</p>
 
     <p>As always, adding a data attribute will enable this, <code>data-tabs-swipable</code>.</p>
 
-    <div class="tabs" data-tabs-swipable style="max-width: 300px;">
-      <nav class="tabs-links">
+    <div class="tabs" data-tabs-swipable style="max-width: 400px;">
+      <nav class="tabs--links">
         <ul>
           <%- (1..10).each do |i| -%>
             <li><a class="tabs--link" data-tab="tab_swipe_<%= i -%>">Tab #<%= i -%></a></li>
@@ -143,6 +196,13 @@
     <h2 class="heading-two">Global settings</h2>
 
     <p>Active deeplinking can be enabled at the top of the javascript file by changing <code>activeDeeplinking</code> to true.</p>
+    <p>Swipable tab overscroll value can be adjusted by changing the <code>tabOverScroll</code> value.</p>
+
+    <h2 class="heading-two">Events</h2>
+
+    <p>You can call javascript functions when a tab changes with:</p>
+
+    <pre class="sg-pre pretty-print">$(document).on("ornament:tab-change", function(){ ... })</pre>
 
   </section>
 

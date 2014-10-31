@@ -5,5 +5,8 @@
 //= require components/tabs
 //= require components/fotorama
 //= require components/sticky-header
+//= require components/navigation-primary
 //= require components/navigation-mobile
 //= require components/menu-aim
+//= require components/issuu
+//= require components/flexible-input

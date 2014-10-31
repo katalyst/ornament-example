@@ -13,14 +13,13 @@
 // The base line height should be unitless (ratio of line height to font size).
 //
 
-$base-pixel:          16px;
+$base-pixel:          14px;
 
-$small-font-size:     0.8em;
+$small-font-size:     12px;
 $base-font-size:      $base-pixel;
-$large-font-size:     1.1em;
+$large-font-size:     16px;
 $base-line-height:    1.5;
 $base-line-size:      $base-font-size * $base-line-height;
-
 
 // CONTAINER WIDTH
 //
@@ -29,7 +28,6 @@ $base-line-size:      $base-font-size * $base-line-height;
 
 $container-width: 1072px;
 $container-percentage: 92%;
-
 
 // SIZES
 //
@@ -53,6 +51,8 @@ $xxxxx-large-unit:      64px;
 $xxxxxx-large-unit:     72px;
 $xxxxxxx-large-unit:    80px;
 
+// GLOBAL UNITS
+//
 
 $border-radius:   4px;
 $button-height:   44px;
@@ -62,6 +62,7 @@ $panel-padding:         $xx-small-unit;
 $panel-padding-small:   $xxx-small-unit;
 $panel-padding-tiny:    $xxxx-small-unit;
 
+$navigation-height: 56px;
 
 // BREAKPOINTS
 //
@@ -73,6 +74,7 @@ $breakpoint-large: 1080px;
 $breakpoint-medium: 935px;
 $breakpoint-small: 780px;
 $breakpoint-tiny: 620px;
+$header-breakpoint: $breakpoint-medium;
 
 $site-breakpoints:
   (tiny, $breakpoint-tiny),
@@ -95,9 +97,8 @@ $tiny-gutter:     $default-unit;
 
 $site-gutters:
   (large, $large-gutter),
-  (medium, $medium-gutter),
-  (small, $small-gutter),
-  (tiny, $tiny-gutter)
+  (medium, $tiny-gutter),
+  false
 ;
 
 // COLORS
@@ -105,24 +106,36 @@ $site-gutters:
 // Default colors.
 //
 
-$primary-color: #0082c8;
+$primary-color: #3498DB;
 
-$foreground-color: #222;
+$default-color: #1ABC9C;
+$default-color-dark: darken($default-color, 10);
+$default-color-x-dark: darken($default-color, 20);
+
+$secondary-color: #34495E;
+$secondary-color-dark: darken($secondary-color, 10);
+$secondary-color-x-dark: darken($secondary-color, 20);
+
+$error-color: #E74C3C;
+$success-color: #2ECC71;
+$warning-color: #F1C40F;
+$passive-color: #ECF0F1;
+
+$foreground-color: #2C3E50;
 $background-color: #fff;
-$link-color: blue;
+
+$link-color: $primary-color;
 $link-hover-color: false;
-$error-color: #990000;
-$error-background: red;
-$notice-color: #ff6600;
-$success-color: green;
-$input-border-color: #c5cbd4;
+
+$input-border-color: #D3D3D3;
 $input-border-focus-color: darken($input-border-color,20);
+$table-border-color: #BDC3C7;
 
 $white: #fff;
-$facebook: #5e78aa;
 $grey: #bbb;
-
-$image-border: 0;
+$facebook: #3b5998;
+$twitter: #44ccf6;
+$linkedin: #1b86bd;
 
 
 // INPUTS
@@ -133,7 +146,7 @@ $image-border: 0;
 $checkbox-radio-padding:  -0.2em 0 0 0.2em;
 $input-background:        #ffffff;
 $input-border:            1px solid $input-border-color;
-$input-border-radius:     0;
+$input-border-radius:     2px;
 $input-color:             $foreground-color;
 $input-padding:           0.3em 0.2em 0.1em;
 $input-width:             100%;
