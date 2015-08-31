@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.16'
+gem 'rails', '4.2.3'
 
 gem 'mysql2'
 
@@ -11,6 +11,10 @@ gem 'unicorn'
 gem 'simple_form'
 
 gem 'airbrake'
+
+gem 'protected_attributes'
+
+gem 'htmlentities'
 
 group :assets do
   gem "sass", "3.2.18"
