@@ -36,6 +36,8 @@
     <![endif]-->
     <%= yield :scripts %>
 
+    <%= javascript_include_tag "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?autoload=true&lang=css" -%>
+
   </head>
 
   <body class="attached-navigation <%= yield :body_class -%>">
@@ -122,12 +124,16 @@
           </div>
         <%- end -%>
 
-        <div class="layout--container">
-          <section class="layout--main" role="main">
-            <a id="main" name="main" tabindex="-1"></a>
-            <%= content_for?(:global) ? yield(:global) : yield %>
-          </section>
-        </div>
+        <%= yield :above_layout -%>
+        <%- if content_for?(:global) || !yield.blank? -%>
+          <div class="layout--container">
+            <section class="layout--main" role="main">
+              <a id="main" name="main" tabindex="-1"></a>
+                <%= content_for?(:global) ? yield(:global) : yield %>
+            </section>
+          </div>
+        <%- end -%>
+        <%= yield :below_layout -%>
 
       </div>
 
