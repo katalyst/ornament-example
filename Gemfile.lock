@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/katalyst/ornament.git
-  revision: bb6b5bd56ab1b6fe7ef2d6302f6a2a1bdcc357ac
+  revision: 9986826aaaea822e784cb80cf3059316e521e8ac
   specs:
-    ornament (1.1.0)
+    ornament (1.2.1)
       rails (>= 3.0.0)
 
 GEM
