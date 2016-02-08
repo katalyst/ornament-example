@@ -38,7 +38,6 @@
       showOverviewLinks:          true, // will show overview links on secodary panes
       keepScrollPosition:         false, // keep scroll position when opening tabs, dangerous if button isn't fixed
       closeForAnchors:            true, // close menu when clicking on anchors
-      closeOnLinkClicks:          false, // close menu when clicking on links (ie. ember app)
 
       // IE bug fix
       // http://stackoverflow.com/questions/27952725/why-doesnt-translatex-work-as-expected-for-fixed-elements-on-ie9-ie10-and-ie1
@@ -52,7 +51,7 @@
 
       // Selectors
       tray:                       $(".navigation-mobile"),
-      anchor:                     $(".layout--switch"),
+      anchor:                     $("[data-mobile-menu-switch]"),
       contentElement:             $(".layout--content"),
       layoutElement:              $(".layout"),
 
@@ -118,8 +117,8 @@
         // update classes on page
         mobileNav.layoutElement.addClass(mobileNav.layoutOpenClass + " " + mobileNav.layoutTransitionClass);
 
-        // clicking on content will close menu
-        mobileNav.contentElement.off("click").on("click", "*", function (event) {
+        // clicking on content wilgl close menu
+        mobileNav.contentElement.on("click", "*", function (event) {
           mobileNav.toggleMenu();
           return false;
         });
@@ -268,7 +267,7 @@
       updateMenuBindingForAnchor: function(){
 
         // Binding clicks on anchor to toggle menu
-        mobileNav.anchor.off("click").on("click", function(e) {
+        mobileNav.anchor.on("click", function(e) {
           e.preventDefault();
           mobileNav.toggleMenu();
           return false;
@@ -314,8 +313,9 @@
 
         }
 
-        // Make anchor links close the menu
         if(mobileNav.closeForAnchors) {
+
+          // Make anchor links close the menu
           mobileNav.tray.on("click", "a[href*=#]:not([href=#])", function(e){
 
             var $anchor = $(e.originalEvent.target);
@@ -337,44 +337,18 @@
             }
 
           });
-        }
 
-        // Close navigation tray when clicking on links
-        if(mobileNav.closeOnLinkClicks) {
-          mobileNav.tray.on("click", "a", function(e){
-
-            var $anchor = $(e.originalEvent.target);
-            var shouldOverride = true;
-
-            // Don't override for forward links
-            if( $anchor.parent("li").is("[data-mobilenav-forward]") ) {
-              shouldOverride = false;
-            }
-
-            // Don't override for back buttons
-            if( $anchor.is("[data-mobilenav-back]") ) {
-              shouldOverride = false;
-            }
-
-            // Close menu when clicking on anchor links if not matched above
-            if( shouldOverride ) {
-              mobileNav.closeMenu();
-            }
-
-          });
         }
 
       },
 
       // Scaffold the complex mobile menu
-      scaffoldMobileMenu: function(force){
-
-        var force = force || false;
+      scaffoldMobileMenu: function(){
 
         var $tray = mobileNav.tray;
 
         // Abort if already scaffolded
-        if( $tray.hasClass(mobileNav.menuReadyClass) && !force ) {
+        if( $tray.hasClass(mobileNav.menuReadyClass) ) {
           return false;
         }
 
@@ -485,7 +459,7 @@
     } else {
 
       // Scaffold the complex menu and apply bindings
-      mobileNav.scaffoldMobileMenu(true);
+      mobileNav.scaffoldMobileMenu();
 
       // Update heights on resize
       $(window).on("resize", function(){

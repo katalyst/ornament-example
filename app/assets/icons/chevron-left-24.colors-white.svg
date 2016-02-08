@@ -3,20 +3,15 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px"
-	 viewBox="-5 1 24 24" enable-background="new -5 1 24 24" xml:space="preserve">
-<title>Stroke 42</title>
+	 viewBox="-4.5 0.5 24 24" enable-background="new -4.5 0.5 24 24" xml:space="preserve">
+<title>Fill 83</title>
 <desc>Created with Sketch.</desc>
-<g id="Components" sketch:type="MSPage">
-	<g id="Pagination" transform="translate(-57.000000, -3811.000000)" sketch:type="MSArtboardGroup">
-		<g transform="translate(44.000000, 3802.000000)" sketch:type="MSLayerGroup">
-			<g id="Back" sketch:type="MSShapeGroup">
-				<g id="Stroke-42">
-					<path fill="#0B0B0A" d="M26.42,34c-0.11,0-0.223-0.038-0.312-0.115L12.668,22.364C12.562,22.273,12.5,22.14,12.5,22
-						s0.062-0.273,0.168-0.364l13.439-11.52c0.201-0.172,0.504-0.15,0.677,0.052c0.173,0.201,0.149,0.504-0.052,0.676L13.717,22
-						l13.015,11.155c0.201,0.173,0.225,0.477,0.052,0.677C26.689,33.942,26.555,34,26.42,34z"/>
-				</g>
-			</g>
-		</g>
+<g id="Page-1" sketch:type="MSPage">
+	<g id="Fill-83" transform="translate(1.000000, 1.000000)" sketch:type="MSLayerGroup">
+		<path sketch:type="MSShapeGroup" fill="#0B0B0A" d="M13.54,23.5c-0.117,0-0.233-0.041-0.329-0.124l-13.143-11.5
+			c-0.108-0.095-0.17-0.231-0.17-0.376s0.062-0.281,0.17-0.376l13.143-11.5c0.206-0.183,0.523-0.162,0.706,0.047
+			c0.181,0.208,0.16,0.523-0.048,0.705L1.157,11.5l12.712,11.124c0.208,0.182,0.229,0.497,0.048,0.704
+			C13.816,23.441,13.68,23.5,13.54,23.5"/>
 	</g>
 </g>
 </svg>

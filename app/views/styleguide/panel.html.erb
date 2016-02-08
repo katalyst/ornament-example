@@ -1,105 +1,106 @@
-<% content_for :page_title, "Panels" %>
+<% content_for :title, "Panels" %>
 
-<div class="spacing">
+<div class="content-spacing">
 
-  <h2 class="heading-two">Example panels</h2>
+  <h2 class="heading-two">Panels and colour variants</h2>
 
-  <%- content_for :panel do -%>
-<div class="panel__default content__compressed" data-conform="panels">
-  <h2 class="heading-six">Default panel with built in padding</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quo, expedita natus ab. Deserunt error minima.</p>
-  <div class="button-group">
-    <a href="#" class="button">Button</a>
+  <p>To create a panel, all you need is a <code>panel</code> class:</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-1" } do -%>
+<div class="panel panel__passive">
+  This is a panel
+</div>
+  <%- end -%>
+
+  <p>There are a few different out-of-the-box colour variations for panels:</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-colouring" } do -%>
+<div class="panel-spacing">
+  <div class="panel__primary">
+    Primary colour panel
+  </div>
+  <div class="panel__warning">
+    Warning panel
+  </div>
+  <div class="panel__error">
+    Error panel
+  </div>
+  <div class="panel__notice">
+    Notice panel
+  </div>
+  <div class="panel__success">
+    Success panel
+  </div>
+  <div class="panel__passive">
+    Passive Panel
   </div>
 </div>
   <%- end -%>
 
-  <%= yield :panel -%>
-  <%= show_code(yield :panel) -%>
+  <p>You can create custom panel classes by adding colour variations to the <code>panel.css.scss</code> file.</p>
 
-  <%- content_for :panel__primary do -%>
-<div class="panel panel__primary panel--padding content__compressed" data-conform="panels">
-  <h2 class="heading-six">Primary panel</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quo, expedita natus ab. Deserunt error minima.</p>
-  <div class="button-group">
-    <a href="#" class="button">Button</a>
-  </div>
+  <hr />
+
+  <h2 class="heading-two">Panel padding</h2>
+
+  <p>You can add <code>.panel--padding</code> to add padding to the panel.</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-padding" } do -%>
+<div class="panel__passive panel--padding">
+  Panel with padding
 </div>
   <%- end -%>
-  <%= yield :panel__primary -%>
-  <%= show_code(yield :panel__primary) -%>
 
-  <%- content_for :panel__warning do -%>
-<div class="panel panel__warning panel--padding content__compressed" data-conform="panels">
-  <h2 class="heading-six">Warning panel</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quo, expedita natus ab. Deserunt error minima.</p>
-  <div class="button-group">
-    <a href="#" class="button">Button</a>
-  </div>
-</div>
-  <%- end -%>
-  <%= yield :panel__warning -%>
-  <%= show_code(yield :panel__warning) -%>
+  <hr />
 
-  <%- content_for :panel__error do -%>
-<div class="panel panel__error panel--padding content__compressed" data-conform="panels">
-  <h2 class="heading-six">Error panel</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quo, expedita natus ab. Deserunt error minima.</p>
-  <div class="button-group">
-    <a href="#" class="button">Button</a>
-  </div>
-</div>
-  <%- end -%>
-  <%= yield :panel__error -%>
-  <%= show_code(yield :panel__error) -%>
+  <h2 class="heading-two">Stacking panels</h2>
 
-  <%- content_for :panel__success do -%>
-<div class="panel panel__success panel--padding content__compressed" data-conform="panels">
-  <h2 class="heading-six">Success panel</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quo, expedita natus ab. Deserunt error minima.</p>
-  <div class="button-group">
-    <a href="#" class="button">Button</a>
-  </div>
-</div>
-  <%- end -%>
-  <%= yield :panel__success -%>
-  <%= show_code(yield :panel__success) -%>
+  <p>You can stack panels by adding in the <code>panel__no-bottom-radius</code> and <code>panel__no-top-radius</code> classes:</p>
 
-  <h2 class="heading-two clear">Grouped panels</h2>
-
-  <%- content_for :joined_panels do -%>
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-stacked" } do -%>
 <div class="panel">
-  <div class="panel--padding">
-    This is the top panel.
+  <div class="panel__primary panel--padding panel__no-bottom-radius">
+    Blue panel with no bottom radius
   </div>
-  <div class="panel--padding panel--padding__border">
-    This is a second, joined panel with a border.
-  </div>
-</div>
-  <%- end -%>
-  <%= yield :joined_panels -%>
-  <%= show_code(yield :joined_panels) -%>
-
-  <h2 class="heading-two">Panel grid</h2>
-
-  <p>Here is an example of panels combined with grids:</p>
-
-  <%- content_for :grid do -%>
-<div>
-  <div class="grid__three" data-conform-columns="panels">
-    <%- (1..10).each do |i| -%>
-      <div class="column">
-        <div class="panel__default content__compressed" data-conform="panels">
-          <h2 class="heading-six">Panel</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium quo, expedita natus ab. Deserunt error minima.</p>
-          <a href="#" class="button button__full">Action Button!</a>
-        </div>
-      </div>
-    <%- end -%>
+  <div class="panel__passive panel--padding panel__no-top-radius">
+    Panel with no top radius
   </div>
 </div>
   <%- end -%>
-  <%= yield :grid -%>
-  <%= show_code(yield :grid) -%>
+
+  <p>This is the reason why panels don't have padding by default, so that panels can stack and have independant padding.</p>
+
+  <hr />
+
+  <h2 class="heading-two">Spacing panels</h2>
+
+  <p>You can space out panels by using the <code>panel-spacing</code> wrapper class:</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-stacked" } do -%>
+<div class="panel-spacing">
+  <div class="panel__passive panel--padding">
+    Panel 1
+  </div>
+  <div class="panel__passive panel--padding">
+    Panel 2
+  </div>
+</div>
+  <%- end -%>
+
+  <p>By default it will space out all <code>panel</code> elements, but you can also add a <code>panel-spacer</code> class to space out non-panels as if they were a panel. In the example below, "Panel 2" isn't actually a panel, but it acts like one when sitting next to other panels.</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-stacked" } do -%>
+<div class="panel-spacing">
+  <div class="panel__passive panel--padding">
+    Panel 1
+  </div>
+  <div class="panel-spacer">
+    Panel 2
+  </div>
+  <div class="panel__passive panel--padding">
+    Panel 3
+  </div>
+</div>
+  <%- end -%>
 
 </div>
