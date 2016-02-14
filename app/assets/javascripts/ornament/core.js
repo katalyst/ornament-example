@@ -1,5 +1,8 @@
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/core
+//= require jquery-ui/datepicker
+//= require jquery-ui-timepicker-addon
 //= require picturefill
 //= require ornament/defaults
 //= require settings
@@ -18,3 +21,5 @@
 //= require markercluster
 //= require jquery.jcrop
 //= require ornament/uploader
+//= require es5-shim
+//= require classList

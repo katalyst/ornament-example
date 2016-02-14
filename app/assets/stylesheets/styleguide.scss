@@ -80,6 +80,7 @@ $heading-beta-font-italic: ('Open Sans', sans-serif) italic bold;
 @import "components/lightbox";
 @import "components/map";
 @import "components/menu-aim";
+@import "components/menu-with-more";
 @import "components/navigation";
 @import "components/navigation-mobile";
 @import "components/oslide";
@@ -135,6 +136,7 @@ hr {
   border: 0;
   height: 1px;
   position: relative;
+  overflow: visible;
 
   &:before {
     content: "";
@@ -491,13 +493,12 @@ code {
   @extend .heading-three;
 }
 .example table {
-  @extend .table;
-  @extend .table-ruled;
-  @extend .table-flush;
+  // @extend .table;
+  // @extend .table-ruled;
+  // @extend .table-flush;
 }
 
 // PROOF OF CONCEPT BUTTON
-
 .poc {
   background: $primary-color;
   color: #fff;

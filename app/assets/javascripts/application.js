@@ -9,4 +9,5 @@
 //= require components/issuu
 //= require components/oslide
 //= require components/embed
+//= require components/menu-with-more
 //= require components/enhanced-form

@@ -6,6 +6,8 @@ gem 'mysql2'
 
 gem 'jquery-rails'
 
+gem 'jquery-ui-rails'
+
 gem 'unicorn'
 
 gem 'simple_form'

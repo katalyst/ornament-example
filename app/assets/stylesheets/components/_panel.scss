@@ -27,7 +27,7 @@ $panel-border:          $background-color;
 
 .panel__warning {
   @extend .panel;
-  background: $notice-color;
+  background: $notice-background;
   color: $foreground-color;
 
   a {
@@ -56,6 +56,8 @@ $panel-border:          $background-color;
 }
 
 .panel__flash {
+  padding-top: $panel-padding;
+  padding-bottom: $panel-padding;
   @include border-radius(0);
 }
 

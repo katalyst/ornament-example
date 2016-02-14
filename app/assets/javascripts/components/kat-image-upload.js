@@ -150,6 +150,7 @@
         var isFile = $thisField.is("[data-file-document]");
         var imageRatio = $thisField.attr("data-file-image-ratio") || "1/1";
         var imageRatioInt = imageRatio.split("/")[0] / imageRatio.split("/")[1];
+        var uploadxhr = false;
 
         // Image Settings
         var previewWidth = 0;
@@ -163,9 +164,10 @@
         var tempCropString = "";
 
         // Demo settings
-        var demoTiming = 1000;
-        var demoChunks = 4;
+        var demoTiming = 4000;
+        var demoChunks = 8;
         var demoSavingTime = 1000;
+        var demoCancelled = false;
 
         // Gallery settings
         var gallery = true;
@@ -206,6 +208,10 @@
         // STATES
         // ===============================================
 
+        var hideThumbnail = function() {
+          $thumbnailContainer.find(".thumb").hide();
+        }
+
         var stateClasses = "idle uploading saving uploaded error";
 
         var setState = function(stateString) {
@@ -217,6 +223,8 @@
           $messageUploading.hide();
           $messageSaving.hide();
           $messageError.hide();
+          $okayButton.hide();
+          $cancelUpload.hide();
 
           if(croppable) {
             $cropButton.hide();
@@ -231,11 +239,15 @@
           // track some flags for binding
           var removeButtonVisible = false;
           var cropButtonVisible = false;
+          var cancelButtonVisible = false;
+          var okayButtonVisible = false;
 
           if(stateString === "idle") {
             $messageDefault.css("display", "inline-block");
           } else if(stateString === "uploading") {
             $messageUploading.css("display", "inline-block");
+            $cancelUpload.css("display", "inline-block");
+            cancelButtonVisible = true;
           } else if (stateString === "saving") {
             $messageSaving.css("display", "inline-block");
           } else if (stateString === "uploaded") {
@@ -247,33 +259,82 @@
             }
             // positionThumbnailAfterLoad();
           } else if (stateString === "error") {
-            $messageDefault.css("display", "inline-block");
+            // show error message and okay button
             $messageError.css("display", "inline-block");
+            $okayButton.css("display", "inline-block");
+            okayButtonVisible = true;
+            // reset progress bar
+            updateProgressBar(0);
+            // hide thumbnail
+            hideThumbnail();
+            // cancel xhr
+            if(uploadxhr) {
+              uploadxhr.abort();
+              uploadxhr = false;
+            }
           }
 
           // Remove action
           if(removeButtonVisible) {
             $thumbnailRemove.off("click").on("click", function(e){
               e.preventDefault();
-              // hide remove button and crop button
-              $thumbnailRemove.hide();
-              if(croppable) {
-                $cropButton.hide();
+              if(confirm("Are you sure you want to remove this file?")) {
+                // hide remove button and crop button
+                $thumbnailRemove.hide();
+                if(croppable) {
+                  $cropButton.hide();
+                }
+                // remove thumbnail
+                hideThumbnail();
+                // show default message
+                $messageDefault.show();
+                // remove id from field
+                $hiddenField.val("");
+                // remove crop string field
+                if(croppable) {
+                  $cropStringField.val(""); 
+                }
+                // callback for crop etc.
+                $thisField.trigger("uploader:image-removed");
+                // reset crop string and tempcropstring
+                cropString = "";
+                tempCropString = "";
+                // set state for posterity
+                setState("idle");
               }
-              // remove thumbnail
-              $thumbnailContainer.find(".thumb").hide();
-              // show default message
-              $messageDefault.show();
-              // remove id from field
-              $hiddenField.val("");
-              // remove crop string field
-              if(croppable) {
-                $cropStringField.val(""); 
+            });
+          }
+
+          // Cancel upload button
+          if(cancelButtonVisible) {
+            $cancelUpload.off("click").on("click", function(e){
+              e.preventDefault();
+              if(confirm("Are you sure you want to remove this file?")) {
+                setState("idle");
+                $thisField.trigger("uploader:upload-cancelled");
+                // reset progress bar
+                updateProgressBar(0);
+                // remove thumbnail
+                hideThumbnail();
+                // cancel upload xhr
+                if(uploadxhr) {
+                  uploadxhr.abort();
+                  uploadxhr = false;
+                }
+                // cancel demo
+                if(options.demo) {
+                  demoCancelled = true;
+                }
               }
-              // callback for crop etc.
-              $thisField.trigger("uploader:image-removed");
-              // set state for posterity
+            });
+          }
+
+          // Error okay button
+          if(okayButtonVisible) {
+            $okayButton.off("click").on("click", function(e){
+              e.preventDefault();
               setState("idle");
+              $thisField.trigger("uploader:error-reset");
             });
           }
 
@@ -402,11 +463,11 @@
           $thumbnailContainer.attr("style", "");
           var originalWidth = $thumbnailContainer.outerWidth();
           var originalHeight = $thumbnailContainer.outerHeight();
-          if(imageRatioInt > 1) {
-            $thumbnailContainer.width(originalWidth * imageRatioInt);
-          } else if (imageRatioInt < 1) {
+          // if(imageRatioInt > 1) {
+            // $thumbnailContainer.width(originalWidth * imageRatioInt);
+          // } else if (imageRatioInt < 1) {
             $thumbnailContainer.height(originalHeight / imageRatioInt);
-          }
+          // }
         }
 
         var createThumbnail = function(image){
@@ -449,7 +510,7 @@
           // var urlSplit = url.split("/");
           // var filename = urlSplit[urlSplit.length-1]; // -1, array numbering and length mismatch
           var filenameSplit = existingName.split(".");
-          var extension = filenameSplit[filenameSplit.length-1];
+          var extension = filenameSplit[filenameSplit.length-1].toLowerCase();
 
           // rudamentory extension checking to see if this is an image or a document
           if(extension == "jpg" || extension == "png" || extension == "jpeg") {
@@ -631,10 +692,17 @@
         var $dropZoneText = $("<div class='file-uploader--controls' />");
         var $dropZoneBrowse = $("<a href='#' class='file-upload--browse-button'>browse</a>");
         var $messageDefault = $("<span data-file-message=\"default\">"+options.browseMessage+"</span>").append($dropZoneBrowse)
-        var $messageError = $("<span data-file-message=\"error\" class=\"file-uploader--error\"></span>");
+        var $messageError = $("<span data-file-message=\"error\" class=\"file-uploader--error\">Upload failed</span>");
         var $messageUploading = $("<span data-file-message=\"uploading\">Uploading...</span>");
+        var $cancelUpload = $("<a href='#' data-file-cancel>Cancel</a>");
+        var $okayButton = $("<a href='#' date-file-reset>Okay</a>");
         var $messageSaving = $("<span data-file-message=\"saving\">Saving...</span>");
-        $dropZoneText.append($messageDefault).append($messageUploading).append($messageSaving).append($messageError);
+        $dropZoneText.append($messageDefault)
+                     .append($messageUploading)
+                     .append($messageSaving)
+                     .append($messageError)
+                     .append($okayButton)
+                     .append($cancelUpload);
 
         // creating hint message
         var $dropZoneHint = $("<div class='file-uploader--notes' />");
@@ -876,24 +944,35 @@
 
               if(options.demo) {
 
+                demoCancelled = false;
                 setState("uploading");
                 positionThumbnailAfterLoad();
                 var demoSingleTiming = demoTiming / demoChunks;
                 var progressCounter = 0;
 
                 var progressInterval = setInterval(function(){
+                  if(demoCancelled) {
+                    clearInterval(progressInterval);
+                    return false;
+                  }
                   progressCounter += ( 100 / demoChunks );
                   updateProgressBar(progressCounter);
                 }, demoSingleTiming);
 
                 setTimeout(function(){
                   clearInterval(progressInterval);
+                  if(demoCancelled) {
+                    return false;
+                  }
                   setState("saving");
                   positionThumbnailAfterLoad();
                   if($progressBar.val() !== 100) {
                     updateProgressBar(100);
                   }
                   setTimeout(function(){
+                    if(demoCancelled) {
+                      return false;
+                    }
                     $hiddenField.val("12");
                     uploadFinished();
                   }, demoSavingTime);
@@ -901,13 +980,14 @@
 
               } else {
 
-                $.ajax({
+                uploadxhr = $.ajax({
                   type: "POST",
                   url: options.uploadPath,
                   enctype: 'multipart/form-data',
                   processData: false,
                   contentType: false,
                   data: fd,
+
                   xhr: function() {
                     // customising the xhr so we can add in progress
                     var xhr = new window.XMLHttpRequest();
@@ -929,11 +1009,12 @@
                     // assign received ids to input value
                     $hiddenField.val(result);
                     uploadFinished();
+                    uploadxhr = false;
                   },
 
                   error: function(result) {
-                    // setState("error");
-                    alert("image upload failed");
+                    setState("error");
+                    uploadxhr = false;
                   }
                 });
               }
@@ -1253,7 +1334,9 @@
 
 $(document).on("ornament:refresh", function(){
 
-  $("[data-file-uploader]").each(function(){
+  var $uploads = $("[data-file-uploader]");
+
+  $uploads.each(function(){
 
     var $this = $(this);
     var isFile = $this.is("[data-file-document]");
@@ -1272,4 +1355,13 @@ $(document).on("ornament:refresh", function(){
     });
 
   });
+
+  // Warn users about leaving the page while uploads are
+  // still in progress
+  $(window).bind('beforeunload', function(){
+    if($(".file-uploader--drop-zone.uploading").length) {
+      return 'There may be uploads still in progress.';
+    }
+  });
+
 });
