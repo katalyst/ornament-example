@@ -178,36 +178,6 @@
 </div>
   <%- end -%>
 
-  <p>jQuery Datepicker can be added by giving your input field the class <code>datepicker</code>.</p>
-
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>
-&lt;%= f.input :example, input_class: { "datepicker" } -%&gt;
-  <%- } } do -%>
-<div class="control-group string required form--medium">
-  <label class="string required control-label" for="datepicker">
-    Date
-  </label>
-  <div class="controls">
-    <input class="string required datepicker" id="datepicker" type="text">
-  </div>
-</div>
-  <%- end -%>
-
-  <p>Alternatively there's also a datetimepicker using the <code>datetimepicker</code> class.</p>
-
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>
-&lt;%= f.input :example, input_class: { "datetimepicker" } -%&gt;
-  <%- } } do -%>
-<div class="control-group string required form--medium">
-  <label class="string required control-label" for="datetimepicker">
-    Date
-  </label>
-  <div class="controls">
-    <input class="string required datetimepicker" id="datetimepicker" type="text">
-  </div>
-</div>
-  <%- end -%>
-
   <hr />
 
   <h2 class="heading-two">Radios and checkboxes</h2>
