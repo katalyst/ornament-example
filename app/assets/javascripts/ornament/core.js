@@ -1,7 +1,7 @@
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/core
-//= require jquery-ui/datepicker
+//= require jquery.ui.core
+//= require jquery.ui.datepicker
 //= require jquery-ui-timepicker-addon
 //= require picturefill
 //= require ornament/defaults

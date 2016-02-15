@@ -1,19 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.16'
-
 gem 'mysql2'
-
 gem 'jquery-rails'
-
-gem 'jquery-ui-rails'
-
+gem 'jquery-ui-rails', '~> 4.2.1'
 gem 'unicorn'
-
 gem 'simple_form'
-
 gem 'airbrake'
-
 gem 'htmlentities'
 
 group :assets do
