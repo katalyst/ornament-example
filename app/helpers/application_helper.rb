@@ -18,6 +18,12 @@ module ApplicationHelper
     value ? "Yes" : "No"
   end
 
+  # Format share descriptions a bit nicer by converting <br> and
+  # <br /> to spaces.
+  def share_description(value) 
+    raw(value).gsub("<br>", " ").gsub("<br />", " ")
+  end
+
   # Link helper
   # takes a URL and outputs a link with a custom label with http
   # and www stripped out
@@ -59,6 +65,15 @@ module ApplicationHelper
     options[:fill] = "#000000" unless options[:fill].present?
     options[:class] = "" unless options[:class].present?
     render("shared/icons/#{icon_path}", options: options)
+  end
+
+  # SVG Image Helper
+  # Converts a dragonfly-stored SVG image to inline SVG with a missing
+  # asset fallback. 
+  def svg_image(image)
+    raw image.data
+  rescue Dragonfly::Job::Fetch::NotFound
+    "Image missing"
   end
 
 end

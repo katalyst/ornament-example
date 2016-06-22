@@ -1,8 +1,4 @@
 OrnamentExample::Application.routes.draw do
-  
-  get '/styleguide/:action' => 'styleguide'
-
-  get '/styleguide' => 'styleguide#index'
 
   resources :uploads do
 

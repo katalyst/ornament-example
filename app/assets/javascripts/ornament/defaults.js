@@ -3,6 +3,7 @@ Ornament = window.Ornament = {
   // Default arrays for external links script
   externalLinkExtensions: [],
   internalLinkSelectors: [],
+  jQueryUISupport: false,
 
   // Header Breakpoint
   // Should match $breakpoint-header in settings.css
@@ -17,6 +18,10 @@ Ornament = window.Ornament = {
       open: function(){
         // callback on open to trigger a refresh for google maps
         $(document).trigger("ornament:map_refresh");
+        $("body").addClass("lightbox-open");
+      },
+      close: function(){
+        $("body").removeClass("lightbox-open");
       }
     }
   },
