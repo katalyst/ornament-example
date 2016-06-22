@@ -9,35 +9,35 @@
 
   $(document).on("ornament:refresh", function () {
 
-    // if($("body").hasClass("ie8")) {
-    //   return false;
-    // }
+    if($("body").hasClass("ie8")) {
+      return false;
+    }
 
-    // // Our Menus
-    // var menuClass = ".menu-with-more";
-    // var menus = document.querySelector(menuClass);
+    // Our Menus
+    var menuClass = ".menu-with-more";
+    var menus = document.querySelector(menuClass);
 
-    // // Initialise the menu with more feature
-    // var menuWithMore = priorityNav.init({
-    //   mainNavWrapper: menuClass,
-    //   navDropdownLabel: "More +",
-    //   breakPoint: 0
-    // });
+    // Initialise the menu with more feature
+    var menuWithMore = priorityNav.init({
+      mainNavWrapper: menuClass,
+      navDropdownLabel: "More +",
+      breakPoint: 0
+    });
 
-    // // Resize Listener
-    // var menuWithMoreResize = function(){
-    //   priorityNav.doesItFit(menus);
-    // }
+    // Resize Listener
+    var menuWithMoreResize = function(){
+      priorityNav.doesItFit(menus);
+    }
 
-    // if(menus) {
-    //   setTimeout(function(){
-    //     menuWithMoreResize();
-    //   }, 200);
+    if(menus) {
+      setTimeout(function(){
+        menuWithMoreResize();
+      }, 200);
 
-    //   $(window).on("resize", function(){
-    //     menuWithMoreResize();
-    //   });
-    // }
+      $(window).on("resize", function(){
+        menuWithMoreResize();
+      });
+    }
 
   });
 
