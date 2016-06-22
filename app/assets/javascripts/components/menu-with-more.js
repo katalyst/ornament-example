@@ -14,13 +14,13 @@
     }
 
     // Our Menus
-    var menuClass = ".menu-with-more";
+    var menuClass = ".menu-more";
     var menus = document.querySelector(menuClass);
 
     // Initialise the menu with more feature
     var menuWithMore = priorityNav.init({
       mainNavWrapper: menuClass,
-      navDropdownLabel: "More +",
+      navDropdownLabel: "more",
       breakPoint: 0
     });
 
