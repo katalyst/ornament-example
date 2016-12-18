@@ -1,3 +1,4 @@
+//= require modernizr
 //= require jquery
 //= require jquery_ujs
 //= require picturefill
@@ -10,7 +11,7 @@
 //= require ornament/debounce
 //= require ornament/accessibility
 //= require ornament/external_links
-//= require ornament/refresh
+//= require ornament/shadowable
 //= require velocity
 //= require jquery.touchSwipe
 //= require jquery.placeholder
@@ -20,3 +21,4 @@
 //= require ornament/uploader
 //= require es5-shim
 //= require classList
+//= require youtube-wmode

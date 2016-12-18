@@ -1,12 +1,7 @@
-
-.icon-chevron-left {
-  @include grunticon("chevron-left-16-white", 16px);
-}
-
+// Inline icon definitions go here 
 .icon-chevron-right {
-  @include grunticon("chevron-right-16-white", 16px);
+  @include grunticon("chevron-right-16-white", 12px, 16px);
 }
-
 .icon-search {
   @include grunticon("search-16-white", 16px);
 }

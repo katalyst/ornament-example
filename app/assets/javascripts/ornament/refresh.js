@@ -5,16 +5,17 @@
 
   "use strict";
 
-  $(document).on("ready page:change", function () {
+  Ornament.refresh = function(){
     $(document).trigger("ornament:refresh");
+    Ornament.ready = true;
+  }
+
+  $(document).on("ready page:change", function () {
+    Ornament.refresh();
   });
 
   $(document).on("pjax:end", "*", function () {
-    $(document).trigger("ornament:refresh");
-  });
-
-  $(window).on("scroll", function(){
-    $(document).trigger("ornament:scroll");
+    Ornament.refresh();
   });
 
 }(document, window, jQuery));

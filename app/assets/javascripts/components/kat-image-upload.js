@@ -45,21 +45,10 @@
 
       // Feature Detection
       // Requires Modernizr with drag and drop and file api
-      var supportsDragAndDrop = false;
       var supportsFileAPI = false;
 
-      if (Modernizr.draganddrop === true) {
-        supportsDragAndDrop = true;
-      }
       if (Modernizr.filereader === true) {
         supportsFileAPI = true;
-      }
-
-      // Abort if unsupported
-      if(!supportsFileAPI || !supportsDragAndDrop){
-        // show flash message for unsupported browsers
-        $(".file-upload-flash").show();
-        return false;
       }
 
       // Debug function to make debugging less verbose in code
@@ -70,7 +59,6 @@
       }
 
       debug("KatFileUpload Plugin Debug Info ------------------------");
-      debug("Supports Drag and Drop: " + supportsDragAndDrop);
       debug("Supports File API: " + supportsFileAPI);
       debug(" ");
 
@@ -173,6 +161,15 @@
         var gallery = true;
         if(maxCount === 1) {
           gallery = false;
+        }
+
+        // ===============================================
+        // UNSUPPORTED FALLBACK
+        // ===============================================
+
+        if(!supportsFileAPI){
+          $uploader.html("<div class='panel__error panel--padding'>File Uploader unavailable: Browser incompatible. Please try a newer web browser.</div>")
+          return false;
         }
 
         debug("Field Info ------------------------");

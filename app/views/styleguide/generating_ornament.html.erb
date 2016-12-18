@@ -6,10 +6,11 @@
 
   <p>Add these gems to your Gemfile:</p>
 
-  <pre class="sg-pre">gem 'sass-rails'
-gem 'uglifier'
-gem 'compass-rails'
-gem 'htmlentities'</pre>
+  <pre class="sg-pre">gem 'sass-rails', '~> 5.0.6'
+gem 'uglifier', '~> 3.0.4'
+gem 'compass-rails', '~> 4.3.4'
+gem 'htmlentities', '~> 4.3.4'
+gem 'css_splitter', '~> 0.4.6'</pre>
 
   <p>Then simply run the ornament generator:</p>
 
@@ -17,7 +18,7 @@ gem 'htmlentities'</pre>
 
   <p>Once generated add the following assets to your <code>assets.rb</code> file:</p>
 
-  <pre class="sg-pre">Rails.application.config.assets.precompile += %w( styleguide.css modernizr.js selectivizr.js respond.js application_bottom.js )</pre>
+  <pre class="sg-pre">Rails.application.config.assets.precompile += %w( application_split2.css  selectivizr.js respond.js application_bottom.js styleguide.css styleguide_split2.css styleguide.js )</pre>
 
   <hr />
   <h2 class="heading-two">Non-Koi projects</h2>

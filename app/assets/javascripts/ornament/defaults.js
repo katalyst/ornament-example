@@ -1,190 +1,94 @@
-Ornament = window.Ornament = {
+Ornament = window.Ornament || {};
+Ornament.ready = false;
 
-  // Default arrays for external links script
-  externalLinkExtensions: [],
-  internalLinkSelectors: [],
-  jQueryUISupport: false,
+// =========================================================================
+// Internal settings
+// =========================================================================
 
-  // Header Breakpoint
-  // Should match $breakpoint-header in settings.css
-  headerBreakpoint: 990,
+// Header Breakpoint
+// Should match $breakpoint-header in settings.css
+Ornament.headerBreakpoint = 990;
 
-  lightboxDefaults: {
-    type: "inline",
-    mainClass: "lightbox--main",
-    removalDelay: 300,
-    fixedBgPos: true,
-    callbacks: {
-      open: function(){
-        // callback on open to trigger a refresh for google maps
-        $(document).trigger("ornament:map_refresh");
-        $("body").addClass("lightbox-open");
-      },
-      close: function(){
-        $("body").removeClass("lightbox-open");
-      }
-    }
-  },
+// Core settings
+Ornament.externalLinkExtensions = [];
+Ornament.internalLinkSelectors = [];
 
-  // See if anything is sticky and calc their heights
-  getStickyHeights: function(comparison){
-    var comparison = comparison || 0;
-    var heightOfStickies = 0;
-    var $stickies = $("[data-sticky]");
+// Map colours
+Ornament.mapColours = false;
+// Ornament.mapColours = [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#0182c6"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#7ac043"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#7ac043"}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#7ac043"},{"lightness":-40}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#7ac043"},{"lightness":-20}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#7ac043"},{"lightness":-17}]},{"elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"},{"visibility":"on"},{"weight":0.9}]},{"elementType":"labels.text.fill","stylers":[{"visibility":"on"},{"color":"#ffffff"}]},{"featureType":"poi","elementType":"labels","stylers":[{"visibility":"simplified"}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#7ac043"},{"lightness":-10}]},{},{"featureType":"administrative","elementType":"geometry","stylers":[{"color":"#7ac043"},{"weight":0.7}]}];
 
-    $stickies.each(function(){
+// =========================================================================
+// Components storage
+// =========================================================================
 
-      var $sticky = $(this);
-      var thisStickyOffset = $sticky.attr("data-sticky-offset");
-      if(comparison > thisStickyOffset) {
-        heightOfStickies = $sticky.outerHeight();
-      }
+// Components API
+Ornament.Components = {};
 
-    });
+// Short namespace for Components
+// eg. Ornament.C.Toggles
+Ornament.C = Ornament.Components;
 
-    return heightOfStickies;
-  },
+// =========================================================================
+// Service support
+// =========================================================================
 
-  geolocationAvailable: function(){
-    if (navigator.geolocation) {
-      return true;
-    } else {
-      return false;
-    }
-  },
+Ornament.serviceWorkerSupport = "serviceWorker" in navigator;
+Ornament.geolocationAvailable = "geolocation" in navigator;
 
-  // Map colours
-  mapColours: [
-    {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#0182c6"
-        }
-      ]
-    },
-    {
-      "featureType": "landscape",
-      "elementType": "geometry",
-      "stylers": [
-      {
-        "color": "#7ac043"
-      }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "elementType": "geometry",
-      "stylers": [
-      {
-        "color": "#7ac043"
-      }
-      ]
-    },
-    {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#7ac043"
-        },
-        {
-          "lightness": -40
-        }
-      ]
-    },
-    {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#7ac043"
-        },
-        {
-          "lightness": -20
-        }
-      ]
-    },
-    {
-      "featureType": "road.local",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#7ac043"
-        },
-        {
-          "lightness": -17
-        }
-      ]
-    },
-    {
-      "elementType": "labels.text.stroke",
-      "stylers": [
-        {
-          "color": "#ffffff"
-        },
-        {
-          "visibility": "on"
-        },
-        {
-          "weight": 0.9
-        }
-      ]
-    },
-    {
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "visibility": "on"
-        },
-        {
-          "color": "#ffffff"
-        }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "elementType": "labels",
-      "stylers": [
-        {
-          "visibility": "simplified"
-        }
-      ]
-    },
-    {
-      "elementType": "labels.icon",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    },
-    {
-      "featureType": "transit",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#7ac043"
-        },
-        {
-          "lightness": -10
-        }
-      ]
-    },
-    {},
-    {
-      "featureType": "administrative",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#7ac043"
-        },
-        {
-          "weight": 0.7
-        }
-      ]
-    }
-  ]
+// =========================================================================
+// Helper functions
+// =========================================================================
 
+// Animated scroll 
+Ornament.bodyScroll = function(offset, timing){
+  $("html,body").animate({
+    scrollTop: offset
+  }, timing);
 };
+
+// Asset Loader
+// Loads in an array of assets then removes itself
+// usage: Ornament.assetPreloader(["/assets/image1.jpg", "/assets/image2.png"]);
+Ornament.assetPreloader = function(assets){
+  assets = assets || [];
+  $.each(assets, function(){
+    var image = new Image();
+    image.src = this;
+  });
+};
+
+// Parameterize function
+Ornament.parameterize = function(url) {
+  return url.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+};
+
+// A helper wrapper to push public functions to the Component API
+// Ornament.componentise("myComponent", { 
+//  privateFunc: function() { alert("test"); } 
+//  public: { showAlert: this.privateFunc(); } 
+//});
+// Ornament.C.myComponent.showAlert(); 
+Ornament.componentise = function(name, component){
+  Ornament.C[name] = component.public;
+}
+
+// OnLoad
+// If ornament has already triggered, run it now
+// If ornament isn't ready yet, wait until the refresh trigger
+Ornament.onLoad = function(callback) {
+  if(Ornament.ready) { callback; }
+  $(document).on("ornament:refresh", callback);
+}
+
+// =========================================================================
+// Event Listeners
+// Ornament.onScroll(function(){ console.log("hi") });
+// =========================================================================
+
+Ornament.onScroll = function(func) {
+  $(window).off("scroll", func).on("scroll", func);
+}
+
+Ornament.onResize = function(func) {
+  $(window).off("resize", func).on("resize", func);
+}

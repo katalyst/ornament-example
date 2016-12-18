@@ -21,4 +21,5 @@ end
 group :development do
   gem 'ornament', github: 'katalyst/ornament'
   gem 'engineyard'
+  gem 'pry'
 end

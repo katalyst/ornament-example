@@ -1,14 +1,8 @@
 OrnamentExample::Application.routes.draw do
 
-  resources :uploads do
+  get '/styleguide/:action' => 'styleguide'
 
-    post :image, on: :collection
-
-  end
-
-  match '/styleguide/:action' => 'styleguide'
-
-  match '/styleguide' => 'styleguide#index'
+  get '/styleguide' => 'styleguide#index'
 
   root :to => 'styleguide#index'
 

@@ -91,6 +91,7 @@ $heading-beta-font-italic: ('Open Sans', sans-serif) italic bold;
 @import "components/panel";
 @import "components/read-more";
 @import "components/selector";
+@import "components/shadows";
 @import "components/skip-link";
 @import "components/spacing";
 @import "components/sticky";
@@ -101,9 +102,6 @@ $heading-beta-font-italic: ('Open Sans', sans-serif) italic bold;
 @import "components/tooltip";
 @import "components/fotorama-custom";
 @import "components/print";
-@import "components/vertre";
-
-@import "components/filter-results";
 
 // STYLEGUIDE TYPOGRAPHY
 
@@ -118,7 +116,7 @@ body {
   }
 }
 
-a {
+a,button {
   @include color-link($link-color, $link-color);
 }
 
@@ -196,26 +194,30 @@ hr {
   .layout--mobile-tray hr {
     display: none;
   }
-  .layout--mobile-tray {
+  .layout--mobile-tray,
+  .layout--mobile-tray .pane,
+  .layout--mobile-tray .pane .pane,
+  .layout--mobile-tray .back {
     background: $secondary-color;
   }
-  .navigation-mobile.complex .pane--navigation-container ul {
+  .layout--mobile-tray .back a {
+    @include color-link($white, $white);
+  }
+  .navigation-mobile.simple .pane--navigation-container ul,
+  .navigation-mobile.simple .pane--navigation-container ul li > a, 
+  .navigation-mobile.simple .pane--navigation-container ul li > .faux-link {
     border-bottom-color: $x-dark-grey;
   }
-  .navigation-mobile.complex .pane--navigation-container ul li + li > a, 
-  .navigation-mobile.complex .pane--navigation-container ul li + li > .faux-link {
-    border-top-color: $x-dark-grey;
-  }
-  .navigation-mobile.complex .pane-wrapper .pane a, .navigation-mobile.complex .pane-wrapper .pane .faux-link {
+  .navigation-mobile.simple .pane-wrapper .pane a, .navigation-mobile.simple .pane-wrapper .pane .faux-link {
     @include font($body-font);
   }
-  .navigation-mobile.complex .navigation-item > a:before, 
-  .navigation-mobile.complex .navigation-item > span.faux-link:before, 
-  .navigation-mobile.complex .navigation-item > button:before {
+  .navigation-mobile.simple .navigation-item > a:before, 
+  .navigation-mobile.simple .navigation-item > span.faux-link:before, 
+  .navigation-mobile.simple .navigation-item > button:before {
     background: transparent;
   }
-  .navigation-mobile.complex .pane-wrapper .pane a, 
-  .navigation-mobile.complex .pane-wrapper .pane .faux-link {
+  .navigation-mobile.simple .pane-wrapper .pane a, 
+  .navigation-mobile.simple .pane-wrapper .pane .faux-link {
     @include color-link($primary-color, $primary-color);
   }
 }
@@ -302,15 +304,19 @@ $sg-feature-background: $background-color;
 
   [data-copy-code] {
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
     padding: 5px 10px;
     display: block;
     background: $primary-color;
-    @include border-top-left-radius($border-radius);
+    @include border-bottom-left-radius($border-radius);
     @include color-link($white, $white);
     text-transform: uppercase;
     font-size: $x-small-font-size;
+  }
+
+  [data-copy-code] + pre {
+    margin-top: 0;
   }
 }
 

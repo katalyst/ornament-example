@@ -1,5 +1,12 @@
 
 <% content_for :title, "Form styles" %>
+<% content_for :scripts_bottom do %>
+  <script>
+    $(document).on("ornament:refresh", function(){ 
+      !Ornament.C.FormHelpers.jQueryUI && $("[data-jquery-modifiers]").hide();
+    });
+  </script>
+<% end %>
 
 <div class="content-spacing">
 
@@ -165,7 +172,7 @@
 
   <p>Disabled fields use the <code>disabled</code> input attribute.</p>
 
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "datepicker", ruby: capture { -%>
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "disabled", ruby: capture { -%>
 &lt;%= f.input :example, disabled: true -%&gt;
   <%- } } do -%>
 <div class="control-group string required form--medium">
@@ -178,11 +185,28 @@
 </div>
   <%- end -%>
 
-  <p>jQuery Datepicker can be added by giving your input field the class <code>datepicker</code>.</p>
+  <p>Similarly, read-only fields use the <code>readonly</code> input attribute.</p>
+  <p>Be aware of the <a href="http://stackoverflow.com/questions/7730695/whats-the-difference-between-disabled-disabled-and-readonly-readonly-for-ht">difference between readonly and disabled</a> and use the correct one where appropriate.</p>
 
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>
-&lt;%= f.input :example, input_class: { "datepicker" } -%&gt;
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "readonly", ruby: capture { -%>
+&lt;%= f.input :example, readonly: true -%&gt;
   <%- } } do -%>
+<div class="control-group string required form--medium">
+  <label class="string required control-label" for="modifier-readonly">
+    <abbr title="required">*</abbr> Your name
+  </label>
+  <div class="controls">
+    <input class="string required" id="modifier-readonly" type="text" readonly>
+  </div>
+</div>
+  <%- end -%>
+
+  <div data-jquery-modifiers>
+    <p>jQuery Datepicker can be added by giving your input field the class <code>datepicker</code>.</p>
+
+    <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>
+&lt;%= f.input :example, input_class: { "datepicker" } -%&gt;
+    <%- } } do -%>
 <div class="control-group string required form--medium">
   <label class="string required control-label" for="datepicker">
     Date
@@ -191,13 +215,13 @@
     <input class="string required datepicker" id="datepicker" type="text">
   </div>
 </div>
-  <%- end -%>
+    <%- end -%>
 
-  <p>Alternatively there's also a datetimepicker using the <code>datetimepicker</code> class.</p>
+    <p>Alternatively there's also a datetimepicker using the <code>datetimepicker</code> class.</p>
 
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>
+    <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>
 &lt;%= f.input :example, input_class: { "datetimepicker" } -%&gt;
-  <%- } } do -%>
+    <%- } } do -%>
 <div class="control-group string required form--medium">
   <label class="string required control-label" for="datetimepicker">
     Date
@@ -206,7 +230,8 @@
     <input class="string required datetimepicker" id="datetimepicker" type="text">
   </div>
 </div>
-  <%- end -%>
+    <%- end -%>
+  </div>
 
   <hr />
 
@@ -409,18 +434,14 @@
 </form>
   <%- end -%>
 
-  <hr />
+  <p>You can control the width of them using the regular <code>form--*</code> width classes.</p>
 
-  <h2 class="heading-two">Full-length inline form</h2>
-
-  <p>A full-length variant of the form above:</p>
-
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-inline-full" } do -%>
-<form class="form-inline__full">
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-inline" } do -%>
+<form class="form-inline form--medium">
   <div class="form-inline--input-container">
     <input type="text" class="form-inline--input" />
   </div>
-  <button type="submit" class="button form-inline--button icon-chevron-right"></button>
+  <button class="button form-inline--button icon-chevron-right"></button>
 </form>
   <%- end -%>
 
