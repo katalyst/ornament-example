@@ -7,7 +7,8 @@ gem 'jquery-ui-rails', '~> 4.2.1'
 gem 'unicorn'
 gem 'simple_form'
 gem 'airbrake'
-gem 'htmlentities'
+gem 'htmlentities', '~> 4.3.4'
+gem 'css_splitter', '~> 0.4.6'
 
 group :assets do
   gem "sass", "3.2.18"
