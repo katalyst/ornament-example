@@ -1,22 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.16'
+gem 'rails', '4.2.1'
 gem 'mysql2'
 gem 'jquery-rails'
 gem 'jquery-ui-rails', '~> 4.2.1'
 gem 'unicorn'
-gem 'simple_form'
-gem 'airbrake'
+gem 'simple_form', '~> 3.2'
+gem 'airbrake', '~> 4.3.1'
 gem 'htmlentities', '~> 4.3.4'
 gem 'css_splitter', '~> 0.4.6'
-
-group :assets do
-  gem "sass", "3.2.18"
-  gem "sass-rails", "~> 3.2.6"
-  gem "uglifier", ">= 1.0.3"
-  gem "compass-rails", "~> 1.1.7"
-  gem 'coffee-rails', '~> 3.2.1'
-end
+gem "sass", "3.3.13"
+gem "sass-rails", '~> 5.0.6'
+gem "uglifier", '~> 3.0.4'
+gem "compass-rails", '~> 3.0.2'
 
 group :development do
   gem 'ornament', github: 'katalyst/ornament'
