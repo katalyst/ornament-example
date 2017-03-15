@@ -14,11 +14,11 @@
   twitter_creator = ""
 
   # Fix for non-seo-enabled sites
-  # if !defined?(seo)
+  if !defined?(seo)
     def seo(value)
       false
     end
-  # end
+  end
 
   # Function to convert an image to absolute URL
   def absolute_url(url)
