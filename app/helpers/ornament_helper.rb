@@ -1,19 +1,15 @@
-module ApplicationHelper
-
-  # Render source code
-  def render_source(code)
-      @html_encoder ||= HTMLEntities.new
-      raw(@html_encoder.encode(code))
-  end
+module OrnamentHelper
 
   # Change a country code to a human-readable country
-  # Eg: AU = Australia
+  # country_name("AU") = "Australia"
+  # NOTE: Requires country_select gem 
   def country_name(country_code)
     country = ISO3166::Country[country_code]
     country.name
   end
 
   # Yes or no, turns true/false in to yes/no
+  # yes_or_no(true) = "Yes"
   def yes_or_no(value=false)
     value ? "Yes" : "No"
   end
@@ -59,12 +55,14 @@ module ApplicationHelper
   # Icon Helper
   # <%= icon("close", width: 24, height: 24, stroke: "#BADA55", fill: "purple") -%>
   def icon(icon_path, options={})
-    options[:width] = 24 unless options[:width].present?
-    options[:height] = 24 unless options[:height].present?
     options[:stroke] = "#000000" unless options[:stroke].present?
     options[:fill] = "#000000" unless options[:fill].present?
     options[:class] = "" unless options[:class].present?
-    render("shared/icons/#{icon_path}", options: options)
+    path = "shared/icons"
+    if options[:koi] && defined?(Koi) 
+      path = "koi/shared/icons"
+    end
+    render("#{path}/#{icon_path}", options: options)
   end
 
   # SVG Image Helper
@@ -74,6 +72,12 @@ module ApplicationHelper
     raw image.data
   rescue Dragonfly::Job::Fetch::NotFound
     "Image missing"
+  end
+
+  # Render source code
+  def render_source(code)
+    @html_encoder ||= HTMLEntities.new
+    raw(@html_encoder.encode(code))
   end
 
 end

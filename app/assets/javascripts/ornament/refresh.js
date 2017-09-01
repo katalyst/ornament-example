@@ -10,17 +10,13 @@
     Ornament.ready = true;
   }
 
-  $(document).on("ready page:change", function () {
-    Ornament.refresh();
-  });
-
-  $(document).on("pjax:end", "*", function () {
-    Ornament.refresh();
-  });
-
-  $(document).on("turbolinks:load", function() {
-    Ornament.ready = false;
-    Ornament.refresh();
-  });
+  if(!Ornament.features.turbolinks) {
+    $(document).on("ready page:change", function () {
+      Ornament.refresh();
+    });
+    $(document).on("pjax:end", "*", function () {
+      Ornament.refresh();
+    });
+  }
 
 }(document, window, jQuery));

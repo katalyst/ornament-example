@@ -18,20 +18,13 @@
     <script>
       window.Ornament = {};
     </script>
-    
+
     <!-- WEBFONTS -->
-    <script>
-      var WebFontConfig = {
-        google: {
-          families: ['Open Sans:400,700,400italic,700italic'],
-        }
-      };
-      (function(d) {
-        var wf = d.createElement('script'), s = d.scripts[0];
-        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js';
-        s.parentNode.insertBefore(wf, s);
-      })(document);
-    </script>
+    <%= render "layouts/webfonts", config: {
+      google: {
+        families: ['Open Sans:400,700,400italic,700italic'],
+      }
+    } -%>
 
     <!-- STYLES -->
     <%= split_stylesheet_link_tag "styleguide", :media => "all" %>
@@ -71,7 +64,7 @@
         <header class="sg-header layout--header" role="banner">
           <div class="layout--container">
             <hgroup class="sg-header--logo">
-              <h1><%= link_to styleguide_path do -%> 
+              <h1><%= link_to styleguide_path do -%>
                 Ornament <span data-ornament-version></span>
               <%- end -%></h1> <a href="https://github.com/katalyst/ornament" class="button__confirm button__small">Github</a>
               <h2>The front-end pattern library and styleguide for Katalyst web applications</h2>
@@ -100,10 +93,8 @@
             </main>
           <%- end -%>
           <%= yield :below_layout -%>
-
           <footer class="sg-footer" role="contentinfo"></footer>
         </div>
-
       </div>
 
     <% end %>
@@ -112,6 +103,8 @@
     <%= javascript_include_tag "styleguide" %>
     <%= javascript_include_tag "application_bottom" %>
     <%= yield :scripts_bottom %>
+
+    <%= render "layouts/analytics" -%>
 
   </body>
 

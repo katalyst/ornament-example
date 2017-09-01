@@ -20,21 +20,10 @@
     </script>
 
     <!-- WEBFONTS -->
-    <script>
-      WebFontConfig = {
-        // google: {
-        //   families: ['Open Sans:400,700,400italic,700italic'],
-        // }
-      };
-      (function(d) {
-        var wf = d.createElement('script'), s = d.scripts[0];
-        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js';
-        s.parentNode.insertBefore(wf, s);
-      })(document);
-    </script>
+    <%= render "layouts/webfonts" -%>
 
     <!-- STYLES -->
-    <%= split_stylesheet_link_tag "application", :media => "all" %>
+    <%= split_stylesheet_link_tag "application", :media => "all", split_count: 2 %>
     <%= yield :styles %>
 
     <!-- SCRIPTS -->
@@ -57,10 +46,8 @@
       <div class="layout--mobile-tray">
         <nav class="navigation-mobile">
           <div class="pane-wrapper">
-
             <div class="pane">
               <div class="pane--navigation-container">
-
                 <ul class="non-pane">
                   <li><a href="#">Link</a></li>
                   <li><a href="#">Link</a></li>
@@ -74,7 +61,6 @@
                   </li>
                   <li><a href="#">Link</a></li>
                 </ul>
-
               </div>
             </div>
           </div>
@@ -82,16 +68,13 @@
       </div>
 
       <%= content_tag :div, class: "layout--content environment-#{Rails.env}" do %>
-
         <header class="header" role="banner">
           <div class="layout--container">
             header
             <button class="layout--switch header--menu" data-mobile-menu-switch>open navigation</button>
           </div>
         </header>
-        
         <a id="main" name="main" tabindex="-1"></a>
-
         <div data-layout-positioner class="layout--positioner">
           <%= render "/shared/oldie" -%>
           <%= yield :above_layout -%>
@@ -104,20 +87,19 @@
             </main>
           <%- end -%>
           <%= yield :below_layout -%>
-
           <footer class="footer" role="contentinfo">
             <div class="layout--container">
               footer
             </div>
           </footer>
         </div>
-
       </div>
-
     <% end %>
 
     <%= javascript_include_tag "application_bottom" %>
     <%= yield :scripts_bottom %>
+    
+    <%= render "layouts/analytics" -%>
 
   </body>
 

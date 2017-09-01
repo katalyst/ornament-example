@@ -20,7 +20,8 @@
       selectors: {
         anchorSelector: "data-lightbox",
         gallerySelector: "data-lightbox-gallery",
-        basicSelector: "data-lightbox-basic"
+        basicSelector: "data-lightbox-basic",
+        positionerSelector: ".layout"
       },
 
       // Determine if a lightbox should be scrollable
@@ -39,7 +40,10 @@
           beforeOpen: function(){
             var mfp = this;
             var $anchor = $(mfp.ev.context);
-            window.mfpScrollPosition = $(document).scrollTop();
+
+            if(Lightbox.keepScrollPosition) {
+              Lightbox.currentScrollPosition = $(document).scrollTop();
+            }
 
             // Add class for lightbox open to body
             if(!($anchor.is("[data-lightbox-size]") && $anchor.attr("data-lightbox-size") === "fullscreen")) {
@@ -47,11 +51,13 @@
             }
 
             // Set scroll position
-            if(window.mfpScrollPosition) {
-              $(".layout").css({
-                position: "relative",
-                top: window.mfpScrollPosition * -1
-              });
+            if(Lightbox.keepScrollPosition) {
+              if(Lightbox.currentScrollPosition) {
+                $(Lightbox.$positioner).css({
+                  position: "relative",
+                  top: Lightbox.currentScrollPosition * -1
+                });
+              }
             }
             
           },
@@ -66,12 +72,14 @@
                 $target.closest(".mfp-container").addClass("mfp-container__basic");
               }
               // callback on open to trigger a refresh for google maps
-              $(document).trigger("ornament:map_refresh");
+              // $(document).trigger("ornament:map_refresh");
             }
+            scrollTo(0,0);
+            flyingFocus.resetFocus();
           },
           elementParse: function(item) {
             if(item.type === "ajax") {
-              item.src = item.src + "?lightbox=true";
+              item.src = item.src + (item.src.indexOf("?") > -1 ? "&" : "?") + "lightbox=true";
             }
           },
           ajaxContentAdded: function() {
@@ -84,12 +92,14 @@
             var $anchor = $(this.ev.context);
             $("body").removeClass("lightbox-open");
 
-            if(window.mfpScrollPosition) {
-              $(".layout").css({
-                position: "static",
-                top: 0
-              });
-              scrollTo(0, window.mfpScrollPosition);
+            if(Lightbox.keepScrollPosition) {
+              if(Lightbox.currentScrollPosition) {
+                $(Lightbox.$positioner).css({
+                  position: "static",
+                  top: 0
+                });
+                scrollTo(0, Lightbox.currentScrollPosition);
+              }
             }
           },
           resize: function(){
@@ -124,9 +134,9 @@
           }
 
           if(Lightbox.shadowable) {
-            Ornament.Shadowable.buildShadows($lightboxContent, "y");
-            Ornament.Shadowable.setScrollShadowsY($lightboxContent);
-            $lightboxContent.off("scroll", Ornament.Shadowable.shadowScrollY).on("scroll", Ornament.Shadowable.shadowScrollY);
+            Ornament.C.Shadowable.buildShadows($lightboxContent, "y");
+            Ornament.C.Shadowable.setScrollShadowsY($lightboxContent);
+            $lightboxContent.off("scroll", Ornament.C.Shadowable.shadowScrollY).on("scroll", Ornament.C.Shadowable.shadowScrollY);
           }
         }
       },
@@ -209,6 +219,7 @@
           Lightbox.defaults.showCloseBtn = false;
         }
 
+        Lightbox.$positioner = $(Lightbox.selectors.positionerSelector);
         var $lightboxCloseButtons = $("[data-lightbox-close]")
         var $lightboxAnchors = $("[" + Lightbox.selectors.anchorSelector + "],[" + Lightbox.selectors.basicSelector + "]");
         var $lightboxGalleries = $("[" + Lightbox.selectors.gallerySelector + "]")
@@ -304,7 +315,10 @@
                     '</div>');
 
     // Append our elements to the markup above 
-    modalHtml.find("[data-lightbox-buttons]").append($modalConfirm).append(" ").append($modalCancel);
+    var $buttons = $("<div />").addClass("button-set");
+    $buttons.append($("<div />").append($modalConfirm))
+            .append($("<div />").append($modalCancel));
+    modalHtml.find("[data-lightbox-buttons]").append($buttons);
     modalHtml.find("[data-lightbox-header]").append($modalClose);
 
     var openConfirmModal = function(){

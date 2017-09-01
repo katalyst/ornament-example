@@ -1,6 +1,6 @@
 Ornament = window.Ornament || {};
 Ornament.ready = false;
-Ornament.version = "1.2.5";
+Ornament.version = "1.2.6";
 
 // =========================================================================
 // Internal settings
@@ -60,6 +60,25 @@ Ornament.assetPreloader = function(assets){
   });
 };
 
+// Find data-elements, optionally with a value and optionally
+// with a scope
+// Ornament.findData("data-button") = $("[data-button]");
+// Ornament.findData("data-button", "blue") = $("[data-button='blue']")
+// Ornament.findData("data-button", "blue", $panel) = $panel.find("[data-button='blue']");
+Ornament.findData = function(selector, value, scope) {
+  var value = value || false;
+  var selection = "[" + selector;
+  if(value) {
+    selection += "='" + value + "'";
+  }
+  selection += "]";
+  if(scope) {
+    return scope.find(selection);
+  } else {
+    return $(selection);
+  }
+}
+
 // Parameterize function
 Ornament.parameterize = function(url) {
   return url.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -83,17 +102,33 @@ Ornament.onLoad = function(callback) {
   $(document).on("ornament:refresh", callback);
 }
 
+// Bind-once function with clean unbinding on page leave and
+// turbolinks travel 
+// Ornament.bind(button, "click", onButtonClick);
+Ornament.bind = function(target, event, func) {
+  $(target).off(event, func).on(event, func);
+  window.onunload = function(){
+    $(target).off(event, func);
+  }
+  if(Ornament.features.turbolinks) {
+    $(document).on("turbolinks:click", function(){
+      $(target).off(event, func);
+    });
+  }
+}
+
+
 // =========================================================================
 // Event Listeners
 // Ornament.onScroll(function(){ console.log("hi") });
 // =========================================================================
 
 Ornament.onScroll = function(func) {
-  $(window).off("scroll", func).on("scroll", func);
+  Ornament.bind(window, "scroll", func);
 }
 
 Ornament.onResize = function(func) {
-  $(window).off("resize", func).on("resize", func);
+  Ornament.bind(window, "resize", func);
 }
 
 // =========================================================================
@@ -102,3 +137,10 @@ Ornament.onResize = function(func) {
 Ornament.onLoad(function(){
   Ornament.features.ie8 = $("body").hasClass("ie8");
 });
+
+// Refreshing Ornament for Turbolink visits
+if(Ornament.features.turbolinks) {
+  $(document).on("turbolinks:load", function(){
+    Ornament.refresh && Ornament.refresh();
+  });
+}

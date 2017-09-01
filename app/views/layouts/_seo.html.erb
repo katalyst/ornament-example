@@ -1,32 +1,29 @@
 <%-
 
-  cache_version = "1"
+  cache_version ||= "1"
+  koi_settings ||= true
 
   # Defaults 
-  seo_title = "Ornament Pattern Library and UI/UX Documentation"
-  seo_title_postfix = seo_title
-  seo_keywords = ""
-  seo_description = ""
-  seo_image = false # "#{root_url}assets/share.png?v=#{cache_version}"
+  seo_title ||= "Ornament Pattern Library and UI/UX Documentation"
+  seo_title_postfix ||= seo_title
+  seo_keywords ||= false
+  seo_description ||= ""
+  seo_image ||= false # "#{root_url}assets/share.png?v=#{cache_version}"
 
   # Twitter Settings
-  twitter_handle = ""
-  twitter_creator = ""
+  twitter_handle ||= ""
+  twitter_creator ||= ""
 
-  # Fix for non-seo-enabled sites
-  if !defined?(seo)
-    def seo(value)
-      false
-    end
-  end
-
-  # Function to convert an image to absolute URL
-  def absolute_url(url)
-    if url && !url.include?("http") 
-      URI.join(root_url, url)
-    else
-      url
-    end
+  # Koi Site Settings 
+  if defined?(Translation) && koi_settings 
+    koi_title = Translation.find_by_key('site.title').try(:value)
+    koi_description = Translation.find_by_key('site.meta_description').try(:value)
+    koi_keywords = Translation.find_by_key('site.meta_keywords').try(:value)
+    site_settings_title = clean_share_input(koi_title) if koi_title
+    site_settings_meta = clean_share_input(koi_description) if koi_description
+    site_settings_keywords = clean_share_input(koi_keywords) if koi_keywords
+    seo_title = site_settings_title
+    seo_title_postfix = seo_title
   end
 
   # Page Title
@@ -47,14 +44,18 @@
 
   # Meta Description
   if !seo("meta_description").blank?
-    seo_description = raw(seo('meta_description').gsub(/"/, '\''))
+    seo_description = clean_share_input(seo('meta_description'))
   elsif content_for?(:og_description) 
     seo_description = yield(:og_description)
+  elsif site_settings_meta.present?
+    seo_description = clean_share_input(site_settings_meta)
   end
 
   # Meta Keywords
   if !seo("meta_keywords").blank?
-    seo_keywords = raw(seo('meta_keywords').gsub(/"/, '\''))
+    seo_keywords = clean_share_input(seo('meta_keywords'))
+  elsif site_settings_keywords.present?
+    seo_keywords = clean_share_input(site_settings_keywords)
   end
 
   # Meta Image
@@ -111,8 +112,10 @@
 -%>
 
 <title><%= seo_title -%></title>
-<meta name="description" content="<%= seo_description %>">
-<meta name="keywords" content="<%= seo_keywords %>">
+<meta name="description" content="<%= raw seo_description %>">
+<%- if seo_keywords -%>
+  <meta name="keywords" content="<%= raw seo_keywords %>">
+<%- end -%>
 <%- if facebook_image -%>
   <link rel="image_src" href="<%= facebook_image -%>" />
 <%- end -%>
@@ -123,7 +126,7 @@
 <%- end -%>
 <meta property="og:title" content="<%= facebook_title -%>" />
 <meta property="og:url" content="<%= request.original_url %>" />
-<meta property="og:description" content="<%= facebook_description -%>">
+<meta property="og:description" content="<%= raw facebook_description -%>">
 <%- if facebook_author -%>
   <meta property="og:author" content="<%= facebook_author -%>" />
 <%- end -%>
@@ -144,4 +147,4 @@
 <%- end -%>
 <meta name="twitter:title" content="<%= seo_title -%>">
 <meta name="twitter:url" content="<%= request.original_url %>">
-<meta name="twitter:description" content="<%= seo_description -%>">
+<meta name="twitter:description" content="<%= raw seo_description -%>">

@@ -1,6 +1,9 @@
+// sass-lint:disable no-vendor-prefixes, no-duplicate-properties, no-css-comments
+
 /**
   cross-browser flexbox mixins
 */
+
 @mixin display-flex {
   display: -webkit-box;
   display: -webkit-flex;
@@ -21,7 +24,7 @@
   flex: $value;
 }
 
-@mixin flex-wrap($wrap:wrap) {
+@mixin flex-wrap($wrap: wrap) {
   -webkit-flex-wrap: $wrap;
   -ms-flex-wrap: $wrap;
   flex-wrap: $wrap;
@@ -33,9 +36,24 @@
   flex-direction: $direction;
 }
 
+@mixin flex-flow($value: row no-wrap) {
+  -webkit-flex-flow: $value;
+  flex-flow: $value;
+}
+
 @mixin flex-grow($value) {
   -webkit-flex-grow: $value;
   flex-grow: $value;
+}
+
+@mixin flex-static {
+  @include flex-grow(0);
+  @include flex-shrink(0);
+}
+
+@mixin flex-fluid {
+  @include flex-shrink(1);
+  @include flex-grow(1);
 }
 
 @mixin flex-shrink($value) {
@@ -53,11 +71,6 @@
   align-items: $value;
 }
 
-@mixin justify-items($value) {
-  -webkit-justify-items: $value;
-  justify-items: $value;
-}
-
 @mixin align-content($value) {
   -webkit-align-content: $value;
   align-content: $value;
@@ -73,11 +86,6 @@
   align-self: $value;
 }
 
-@mixin justify-self($value) {
-  -webkit-justify-self: $value;
-  justify-self: $value;
-}
-
 /**
 
   @flex-row
@@ -86,7 +94,7 @@
   @include flex-row(10px);
 
 */
-@mixin flex-row($gutter:false) {
+@mixin flex-row($gutter: false) {
   @include display-flex;
   @include flex-wrap;
   @if $gutter {
@@ -110,9 +118,9 @@
       }
 
 */
-@mixin flex-col($width, $gutter:false, $grow:0, $shrink:0) {
+@mixin flex-col($width, $gutter: false, $grow: 0, $shrink: 0) {
   @if $gutter {
-    padding: $gutter * 0.5;
+    padding: $gutter * .5;
   }
   @include flex-grow($grow);
   @include flex-shrink($shrink);
