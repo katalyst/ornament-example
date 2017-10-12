@@ -3,7 +3,7 @@
 
 <% content_for :js_billing_to_shipping do %>
   Ornament.onLoad(function(){
-    Ornament.C.FormHelpers.billingToShipping("#checkout_use_billing_address", {
+    Ornament.C.FormBillingToShipping.create("#checkout_use_billing_address", {
       "#billing_address_1": "#shipping_address_1",
       "#billing_address_2": "#shipping_address_2",
       "#billing_state": "#shipping_state",
@@ -15,7 +15,7 @@
 <% content_for :scripts_bottom do %>
   <script>
     $(document).on("ornament:refresh", function(){ 
-      !Ornament.C.FormHelpers.jQueryUI && $("[data-jquery-modifiers]").hide();
+      !Ornament.C.FormDatepicker.enabled && $("[data-jquery-modifiers]").hide();
     });
     <%= yield :js_billing_to_shipping -%>
   </script>
@@ -400,7 +400,7 @@
 
   <hr />
 
-  <h2 class="heading-two">Styling Cocoon</h2>
+  <h2 class="heading-two">Simple Cocoon Fields</h2>
 
   <p>Here is a quick way to markup your cocoon fields in rails to make them look a bit nicer by default.</p>
 
@@ -525,6 +525,10 @@
 
   <p>Without zxcvbn, it will operate in demo mode as you can see here, which will return a random score on field change.</p>
 
+  <div class="panel__alert panel--padding">
+    <p>Be aware if you are using zxcvbn-ruby for server-side validation that the JS and ruby implementations <a href="https://github.com/envato/zxcvbn-ruby/issues/18" target="_blank">have different results</a>.</p>
+  </div>
+
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-password-score", ruby: capture { -%>
 &lt;%= f.input :example, wrapper_html: { data: { password_sore: "" } } -%&gt;
   <%- } } do -%>
@@ -549,8 +553,8 @@
 </div>
   <%- end -%>
 
-  <p>Password score comes with a helper to test if zxcbvn is available: <code>Ornament.C.FormHelpers.hasZxcvbn</code></p>
-  <p>You can rebind password scores if you need to, for example if the form has been ajaxed in, with <code>Ornament.C.FormHelpers.bindPasswordScores()</code></p>
+  <p>Password score comes with a helper to test if zxcbvn is available: <code>Ornament.C.FormPasswordScore.hasZxcvbn</code></p>
+  <p>You can rebind password scores if you need to, for example if the form has been ajaxed in, with <code>Ornament.C.FormPasswordScore.init()</code></p>
 
   <hr />
 
@@ -564,7 +568,9 @@
   <div class="form-inline--input-container">
     <input type="text" class="form-inline--input" />
   </div>
-  <button class="button form-inline--button icon-chevron-right"></button>
+  <button class="button form-inline--button icon--white">
+    <%= icon("chevron_right") -%>
+  </button>
 </form>
   <%- end -%>
 
@@ -575,7 +581,9 @@
   <div class="form-inline--input-container">
     <input type="text" class="form-inline--input" />
   </div>
-  <button class="button form-inline--button icon-chevron-right"></button>
+  <button class="button form-inline--button icon--white">
+    <%= icon("chevron_right") -%>
+  </button>
 </form>
   <%- end -%>
 
@@ -583,7 +591,7 @@
 
   <h2 class="heading-two">Billing to Shipping</h2>
 
-  <p><code>Ornament.C.FormHelpers.billingToShipping</code> is a really easy-to-use helper method to copy data from one group of fields to another group of fields when a checkbox is selected.</p>
+  <p><code>Ornament.C.FormBillingToShipping.create</code> is a really easy-to-use helper method to copy data from one group of fields to another group of fields when a checkbox is selected.</p>
 
   <p>All you need to do is first pass in the checkbox selector, then an object of key/value pair selectors matching the fields up.</p>
 
@@ -683,7 +691,9 @@
     <div class="form-inline--input-container">
       <input type="text" class="form-inline--input" id="search_things" name="search_things" />
     </div>
-    <button type="submit" class="button form-inline--button icon-search"></button>
+    <button type="submit" class="button form-inline--button icon--white">
+      <%= icon("chevron_right") -%>
+    </button>
   </div>
 </form>
   <%- end -%>

@@ -1,4 +1,4 @@
-//= require magnific-popup
+//= require libs/magnific-popup
 
 /*jslint browser: true, indent: 2, todo: true, unparam: true */
 /*global jQuery,Ornament /*/
@@ -36,6 +36,17 @@
         removalDelay: 300,
         fixedContentPos: true,
         showCloseBtn: true,
+        closeMarkup: "<button title='%title%' type='button' class='mfp-close'>" + Ornament.icons.close + "</button>",
+        image: {
+          markup: "<div class='mfp-figure'>" + 
+                    "<div class='mfp-close'>" + Ornament.icons.close + "</div>" + 
+                    "<div class='mfp-img'></div>" + 
+                    "<div class='mfp-bottom-bar'>" + 
+                      "<div class='mfp-title'></div>" + 
+                      "<div class='mfp-counter'></div>" + 
+                    "</div>" + 
+                  "</div>"
+        },
         callbacks: {
           beforeOpen: function(){
             var mfp = this;
@@ -76,6 +87,10 @@
             }
             scrollTo(0,0);
             flyingFocus.resetFocus();
+
+            // Custom SVG icons for previous/next arrows 
+            $(mfp.container).find(".mfp-arrow-left").html(Ornament.icons["chevron-left"]);
+            $(mfp.container).find(".mfp-arrow-right").html(Ornament.icons["chevron-right"]);
           },
           elementParse: function(item) {
             if(item.type === "ajax") {
@@ -88,8 +103,8 @@
               $.magnificPopup.close();
             });
           },
-          close: function(){
-            var $anchor = $(this.ev.context);
+          close: function(mfp){
+            var $anchor = $(mfp.ev.context);
             $("body").removeClass("lightbox-open");
 
             if(Lightbox.keepScrollPosition) {
@@ -134,9 +149,9 @@
           }
 
           if(Lightbox.shadowable) {
-            Ornament.C.Shadowable.buildShadows($lightboxContent, "y");
-            Ornament.C.Shadowable.setScrollShadowsY($lightboxContent);
-            $lightboxContent.off("scroll", Ornament.C.Shadowable.shadowScrollY).on("scroll", Ornament.C.Shadowable.shadowScrollY);
+            Ornament.U.Shadowable.buildShadows($lightboxContent, "y");
+            Ornament.U.Shadowable.setScrollShadowsY($lightboxContent);
+            $lightboxContent.off("scroll", Ornament.U.Shadowable.shadowScrollY).on("scroll", Ornament.U.Shadowable.shadowScrollY);
           }
         }
       },
@@ -242,16 +257,31 @@
           popupOptions.type = "image";
           popupOptions.delegate = "a";
           popupOptions.tLoading = "Loading image #%curr%...";
-          popupOptions.gallery = {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-          };
-          popupOptions.image = {
-            tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
-          }
+          popupOptions.gallery = popupOptions.gallery || {};
+          popupOptions.gallery.enabled = true;
+          popupOptions.gallery.navigateByImgClick = true;
+          // Will preload 0 - before current, and 1 after the current image
+          popupOptions.gallery.preload = [0,1];
+          popupOptions.image = popupOptions.image || {};
+          popupOptions.image.tError = '<a href="%url%">The image #%curr%</a> could not be loaded.';
+          console.log(popupOptions);
 
           $gallery.magnificPopup(popupOptions);
+        });
+
+        Ornament.beforeTurbolinksCache(function(){
+          $.magnificPopup.close();
+          $(".mfp-container").remove();
+          $(".mfp-bg").remove();
+          $(".mfp-wrap").remove();
+          $("body").removeClass("lightbox-open mfp-zoom-out-cur mfp-zoom-in-cur");
+
+          if(Lightbox.keepScrollPosition) {
+            $(Lightbox.$positioner).css({
+              position: "static",
+              top: 0
+            });
+          }
         });
 
       }
