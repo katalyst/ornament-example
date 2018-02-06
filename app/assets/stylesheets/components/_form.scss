@@ -22,7 +22,7 @@ $hint-color:          $grey;
 // =========================================================================
 
 fieldset {
-  @include inline-block;
+  display: inline-block;
   width: 100%;
 }
 
@@ -58,7 +58,7 @@ input, select {
 }
 
 input, textarea, keygen, select {
-  @include inline-block;
+  display: inline-block;
 }
 
 textarea {
@@ -100,7 +100,7 @@ input[type="number"] {
 }
 
 // =========================================================================
-// Embedded forms that appear after content
+// Helper class for embedded forms that appear after content
 // =========================================================================
 
 .form-embedded {
@@ -111,8 +111,8 @@ input[type="number"] {
 // Spacing controls away from their labels when inside control-groups
 // =========================================================================
 
-.control-label + .controls {
-  margin-top: $xxx-small-unit;
+.control-group--label {
+  margin-bottom: $xxxx-small-unit;
 }
 
 // =========================================================================
@@ -256,9 +256,16 @@ $radio-offset: 24px;
 
     input {
       position: absolute;
-      top: 7px;
+      top: 8px;
       left: 0;
     }
+  }
+}
+
+.control-group:not(.form--horizontal) {
+  &.radio_buttons .radio + .radio,
+  &.check_boxes .checkbox + .checkbox {
+    margin-top: 4px;
   }
 }
 
@@ -281,7 +288,7 @@ $radio-offset: 24px;
       height: 1em;
       border: 1px solid $input-border-color;
       position: absolute;
-      top: 0.2em;
+      top: 0.3em;
       left: 0;
       background: $primary-color;
       @include box-shadow(inset 0 0 0 1em $white);
@@ -293,6 +300,11 @@ $radio-offset: 24px;
       cursor: pointer;
     }
 
+    // Hiding enhanced controls for hidden input fields
+    input[type="hidden"] + .form--enhanced--control {
+      display: none;
+    }
+
     input:focus + .form--enhanced--control {
       border-color: $input-border-focus-color;
     }
@@ -302,6 +314,7 @@ $radio-offset: 24px;
       @include box-shadow(inset 0 0 0 3px $white);
     }
 
+    // Removing original input field
     input {
       border: 0;
       clip: rect(0,0,0,0);
@@ -312,6 +325,10 @@ $radio-offset: 24px;
       position: absolute;
       padding: 0;
     }
+  }
+
+  label:active .form--enhanced--control {
+    border: 2px solid $input-border-focus-color;
   }
 
 }
@@ -335,22 +352,19 @@ $radio-offset: 24px;
 // Boolean checkboxes / single checkboxes
 // =========================================================================
 
-.control-group.boolean,
-.checkbox__single {
+.control-group__boolean {
   position: relative;
+}
 
-  .control-label {
-    padding-left: $radio-offset;
-    display: inline-block;
-  }
-  .controls {
-    margin-top: 0;
-  }
-  .controls label {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+.control-group__boolean--input {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.control-group__boolean--label {
+  padding-left: $radio-offset;
+  display: inline-block;
 }
 
 // =========================================================================
@@ -417,31 +431,78 @@ $file-thumbnail-width: 100px;
 // =========================================================================
 
 .form-inline {
-  display: table;
-  width: 100%;
-  @include pie-clearfix;
+  @include display-flex;
+
+  input:not(:last-child),
+  select:not(:last-child),
+  button:not(:last-child) {
+    @include border-top-right-radius(0);
+    @include border-bottom-right-radius(0);
+    border-right-width: 0;
+  }
+
+  input:not(:first-child),
+  select:not(:first-child) {
+    border-left-width: 0;
+  }
+
+  input:not(:first-child),
+  select:not(:first-child),
+  button:not(:first-child),
+  input + button,
+  select + button,
+  input + a,
+  select + a {
+    @include border-top-left-radius(0);
+    @include border-bottom-left-radius(0);
+  }
+
+  input + input:not(:first-child),
+  input + select:not(:first-child),
+  select + input:not(:first-child),
+  select + select:not(:first-child) {
+    border-left-width: 1px;
+  }
+
+  input,
+  select {
+    @include flex-grow(1);
+    @include flex-shrink(1);
+  }
+
+  button {
+    @include flex-grow(0);
+    @include flex-shrink(0);
+  }
 }
 
-.form-inline--input-container {
-  display: table-cell;
-  width: 100%;
-  vertical-align: top;
-}
+.form-inline--cap {
+  @include display-flex;
+  @include align-items(center);
+  padding: 0 $xxxx-small-unit;
+  background: $passive-color;
+  border: 1px solid $input-border-color;
+  @include flex-shrink(0);
+  @include flex-grow(0);
+  @include transition(border-color .2s);
 
-.form-inline--input-container .form-inline--input {
-  width: 100%;
-  height: $form-inline-height;
-  line-height: $form-inline-height;
-  padding: $xxxxx-small-unit $xxxx-small-unit 6px;
-  border-right-width: 0;
-  @include input__flat-right;
-}
+  &:first-child {
+    @include border-top-left-radius($input-border-radius);
+    @include border-bottom-left-radius($input-border-radius);
+  }
 
-.form-inline--button {
-  display: table-cell;
-  vertical-align: top;
-  @include input__flat-left;
-  @include icon-block($form-inline-height, 16px);
+  &:last-child {
+    @include border-top-right-radius($input-border-radius);
+    @include border-bottom-right-radius($input-border-radius);
+  }
+
+  & + .form-inline--cap {
+    border-left: 0;
+  }
+
+  .form-inline:focus-within & {
+    border-color: $input-border-focus-color;
+  }
 }
 
 // =========================================================================

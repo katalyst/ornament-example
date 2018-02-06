@@ -1,114 +1,65 @@
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
-  # Wrappers are used by the form builder to generate a
-  # complete input. You can remove any component from the
-  # wrapper, change the order or even add your own to the
-  # stack. The options given below are used to wrap the
-  # whole input.
-  config.wrappers :default, :class => :input,
-    :hint_class => :field_with_hint, :error_class => :field_with_errors do |b|
-    ## Extensions enabled by default
-    # Any of these extensions can be disabled for a
-    # given input by passing: `f.input EXTENSION_NAME => false`.
-    # You can make any of these extensions optional by
-    # renaming `b.use` to `b.optional`.
 
-    # Determines whether to use HTML5 (:email, :url, ...)
-    # and required attributes
+  # Default ornament layout
+  config.wrappers :ornament, tag: "div", class: "control-group", error_class: "error" do |b|
+
+    # Use HTML5 field types
     b.use :html5
 
-    # Calculates placeholders automatically from I18n
-    # You can also pass a string as f.input :placeholder => "Placeholder"
+    # Use I18n for placeholders
     b.use :placeholder
 
-    ## Optional extensions
-    # They are disabled unless you pass `f.input EXTENSION_NAME => :lookup`
-    # to the input. If so, they will retrieve the values from the model
-    # if any exists. If you want to enable the lookup for any of those
-    # extensions by default, you can change `b.optional` to `b.use`.
-
-    # Calculates maxlength from length validations for string inputs
+    # Optional attributes
     b.optional :maxlength
-
-    # Calculates pattern from format validations for string inputs
-    b.optional :pattern
-
-    # Calculates min and max from length validations for numeric inputs
     b.optional :min_max
-
-    # Calculates readonly automatically from readonly attributes
+    b.optional :pattern
     b.optional :readonly
 
-    ## Inputs
-    b.use :label_input
-    b.use :hint,  :wrap_with => { :tag => :span, :class => :hint }
-    b.use :error, :wrap_with => { :tag => :span, :class => :error }
-  end
-
-  config.wrappers :inline, :tag => 'div', :class => 'control-group', :error_class => 'error' do |b|
-    b.use :placeholder
-    b.wrapper :tag => 'div', :class => 'controls' do |ba|
-      ba.use :input
-      ba.use :label, :wrap_with => { :class => 'control-label' }
-      ba.use :error, :wrap_with => { :tag => 'span', :class => 'error-block' }
+    # Group label with hint 
+    b.wrapper tag: 'div', class: 'control-group--label' do |ba|
+      ba.use :label
+      ba.use :error, wrap_with: { :tag => 'span', class: 'error-block' }
+      ba.use :hint,  wrap_with: { :tag => 'p', class: 'hint-block' }
     end
-    b.use :hint,  :wrap_with => { :tag => 'p', :class => 'hint-block' }
-  end
 
-  config.wrappers :bootstrap, :tag => 'div', :class => 'control-group', :error_class => 'error' do |b|
-    b.use :html5
-    b.use :placeholder
-    b.use :label
-    b.use :error, :wrap_with => { :tag => 'span', :class => 'error-block' }
-    b.use :hint,  :wrap_with => { :tag => 'p', :class => 'hint-block' }
     b.wrapper :tag => 'div', :class => 'controls' do |ba|
       ba.use :input
     end
+    
   end
 
-  config.wrappers :prepend, :tag => 'div', :class => "control-group", :error_class => 'error' do |b|
-    b.use :html5
-    b.use :placeholder
-    b.use :label
-    b.wrapper :tag => 'div', :class => 'controls' do |input|
-      input.wrapper :tag => 'div', :class => 'input-prepend' do |prepend|
-        prepend.use :input
+  # Default ornament booleans
+  # [input] label 
+  config.wrappers :ornament_boolean, tag: 'div', class: 'control-group control-group__boolean', error_class: 'error' do |b|
+
+    # Optional attributes
+    b.optional :readonly
+
+    b.wrapper tag: 'label', class: 'control-group__boolean--wrapper' do |ba|
+      ba.use :input, wrap_with: { tag: 'div', class: 'control-group__boolean--input checkbox' }
+      ba.wrapper tag: 'div', class: 'control-group__boolean--label' do |bab|
+        bab.use :label
+        bab.use :error, wrap_with: { :tag => 'span', class: 'error-block' }
+        bab.use :hint,  wrap_with: { :tag => 'p', class: 'hint-block' }
       end
-      input.use :hint,  :wrap_with => { :tag => 'span', :class => 'error-block' }
-      input.use :error, :wrap_with => { :tag => 'span', :class => 'hint-block' }
     end
   end
 
-  config.wrappers :append, :tag => 'div', :class => "control-group", :error_class => 'error' do |b|
-    b.use :html5
-    b.use :placeholder
-    b.use :label
-    b.wrapper :tag => 'div', :class => 'controls' do |input|
-      input.wrapper :tag => 'div', :class => 'input-append' do |append|
-        append.use :input
-      end
-      input.use :hint,  :wrap_with => { :tag => 'span', :class => 'error-block' }
-      input.use :error, :wrap_with => { :tag => 'span', :class => 'hint-block' }
-    end
-  end
+  # Default wrapper for all form elements
+  config.default_wrapper = :ornament
 
-  config.wrappers :checkbox, :tag => 'div', :class => 'control-group', :error_class => 'error' do |b|
-    b.wrapper :tag => 'div', :class => 'controls test' do |ba|
-      ba.use :label_input
-    end
-  end
-
-  # Wrappers for forms and inputs using the Twitter Bootstrap toolkit.
-  # Check the Bootstrap docs (http://twitter.github.com/bootstrap)
-  # to learn about the different styles for forms and inputs,
-  # buttons and other elements.
-  config.default_wrapper = :bootstrap
+  # Set default wrappers for particular field types
+  # https://github.com/plataformatec/simple_form/pull/642
+  config.wrapper_mappings = { 
+    :boolean => :ornament_boolean 
+  }
 
   # Define the way to render check boxes / radio buttons with labels.
   # Defaults to :nested for bootstrap config.
   #   :inline => input + label
   #   :nested => label > input
-  config.boolean_style = :nested
+  config.boolean_style = :inline
 
   # Default class for buttons
   config.button_class = ''
@@ -140,7 +91,7 @@ SimpleForm.setup do |config|
   # You can wrap each item in a collection of radio/check boxes with a tag,
   # defaulting to :span. Please note that when using :boolean_style = :nested,
   # SimpleForm will force this option to be a label.
-  # config.item_wrapper_tag = :span
+  config.item_wrapper_tag = :label
 
   # You can define a class to use in all item wrappers. Defaulting to none.
   # config.item_wrapper_class = nil
@@ -162,7 +113,7 @@ SimpleForm.setup do |config|
 
   # Tell browsers whether to use default HTML5 validations (novalidate option).
   # Default is enabled.
-  config.browser_validations = false
+  config.browser_validations = true
 
   # Collection of methods to detect if a file type was given.
   # config.file_methods = [ :mounted_as, :file?, :public_filename ]
@@ -176,7 +127,7 @@ SimpleForm.setup do |config|
   # config.time_zone_priority = nil
 
   # Default priority for country inputs.
-  # config.country_priority = nil
+  config.country_priority = "AU"
 
   # Default size for text inputs.
   # config.default_input_size = 50

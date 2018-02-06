@@ -20,6 +20,12 @@ module OrnamentHelper
     raw(value).gsub("<br>", " ").gsub("<br />", " ")
   end
 
+  # Helper to optimise an image
+  # image_tag optimised_jpg(resource.image).url
+  def optimised_jpg(image, dragonfly_command)
+    image.thumb(dragonfly_command).encode('jpg', "-strip -quality 75 -interlace Plane")
+  end
+
   # Link helper
   # takes a URL and outputs a link with a custom label with http
   # and www stripped out
@@ -58,11 +64,27 @@ module OrnamentHelper
     options[:stroke] = "#000000" unless options[:stroke].present?
     options[:fill] = "#000000" unless options[:fill].present?
     options[:class] = "" unless options[:class].present?
+
+    # Get path for icons
     path = "shared/icons"
     if options[:koi] && defined?(Koi) 
       path = "koi/shared/icons"
     end
-    render("#{path}/#{icon_path}", options: options)
+
+    # build styles string
+    options[:styles] = ""
+    {width: :width, height: :height}.each do |attribute, key|
+      value = options[key]
+      if value
+        # allow shorthand numbers to auto-format to pixels
+        value = "#{value}px" if value.is_a? Numeric
+        options[:styles] += "#{attribute}: #{value}; "
+      end
+    end
+    options[:className] ||= "icon-#{icon_path.parameterize}";
+
+    # build svg
+    render("#{path}/#{icon_path}.svg", options: options)
   end
 
   # SVG Image Helper
@@ -78,6 +100,21 @@ module OrnamentHelper
   def render_source(code)
     @html_encoder ||= HTMLEntities.new
     raw(@html_encoder.encode(code))
+  end
+
+  def form_control_group(attr, f, wrapper_opts={}, &block)
+    wrapper_class = wrapper_opts[:class] || "";
+    wrapper_class += " control-group"
+    wrapper_class += " error" if f.error(attr)
+    output =  "<div class='#{wrapper_class}'>"
+    output += "  <div class='control-group--label'>"
+    output += f.label(attr)
+    output += f.error(attr) if f.error(attr)
+    output += f.hint(attr) if f.hint(attr)
+    output += "  </div>"
+    output += "  #{capture(&block)}"
+    output += "</div>"
+    output.html_safe
   end
 
 end

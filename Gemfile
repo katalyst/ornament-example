@@ -14,7 +14,7 @@ gem "sass-rails", '~> 5.0.6'
 gem "uglifier", '~> 3.0.4'
 gem "compass-rails", '~> 3.0.2'
 gem "turbolinks", '~> 5.0.1'
-gem "nokogiri", '~> 1.6'
+gem "nokogiri", '1.6.8.1'
 
 group :development do
   gem 'ornament', github: 'katalyst/ornament'
