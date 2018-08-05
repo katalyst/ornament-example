@@ -14,6 +14,7 @@ gem "sass-rails", '~> 5.0.6'
 gem "uglifier", '~> 3.0.4'
 gem "compass-rails", '~> 3.0.2'
 gem "turbolinks", '~> 5.0.1'
+gem "simple-navigation", "~> 3.14.0"
 
 # Version locking gems
 gem 'nokogiri', '1.6.8.1'
