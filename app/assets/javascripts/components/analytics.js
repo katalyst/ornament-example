@@ -5,7 +5,7 @@
 
   "use strict";
 
-  var Analytics = Ornament.Components.Analytics = {
+  var Analytics = {
 
     // Settings
     // type can be "dataLayer", ga.js", "analytics.js", "guess" or false
@@ -18,7 +18,9 @@
     // Guess which tracking type should be used by testing which
     // functions are defined
     guessTrackingType: function(){
-      if(typeof(dataLayer) !== "undefined") {
+      if(!Ornament.features.tracking) {
+        Analytics.trackingType = false;
+      } else if(typeof(dataLayer) !== "undefined") {
         Analytics.trackingType = "dataLayer";
       } else if(typeof(_gaq) !== "undefined") {
         Analytics.trackingType = "ga.js";
@@ -31,6 +33,9 @@
 
     // Push an event to Google Analytics
     trackEvent: function(category, label, type){
+      if(!Ornament.features.tracking) {
+        return false;
+      }
       type = type || "click";
       if(Analytics.trackingDebug) {
         alert("Category: " + category + ", Label: " + label + ", Type: " + type);
@@ -52,6 +57,9 @@
 
     // Build options from a link and then track it
     trackLink: function($anchor){
+      if(!Ornament.features.tracking) {
+        return false;
+      }
       $anchor.on("click", function(){
         var linkCategory = $anchor.text().trim() || "No text";
         var linkLabel = $anchor.attr("href");
@@ -65,56 +73,51 @@
       });
     },
 
-    // Track app install banners when service workers are available
-    _trackInstallBanner: function(){
-      if(Ornament.features.serviceWorker) {
-        window.addEventListener('beforeinstallprompt', function(e) {
-          // e.userChoice will return a Promise.
-          e.userChoice.then(function(choiceResult) {
-            // Debug output of user choice if a debug param is available
-            // eg.  /?appbannerinstall=test
-            if(document.location.search.indexOf("appbannerinstall") > -1) {
-              alert(choiceResult.outcome);
-            }
-            // Track the choice the user makes 
-            Analytics.trackEvent("Web App Install Banner", choiceResult.outcome);
-          });
+    // Send a virtual pageview (eg. loading a new set of filtered data via JS)
+    // Ornament.C.Analytics.trackVirtualPageview("/my-new-path?param=value");
+    // Ornament.C.Analytics.trackVirtualPageview("/my-new-path?param=value", "Products - Custom filtered view");
+    trackVirtualPageview: function(path, title) {
+      if(!Ornament.features.tracking) {
+        return false;
+      }
+      title = title || document.title;
+      if(Analytics.trackingType === "ga.js") {
+        _gaq.push(["_trackPageview", path]);
+      } else if(Analytics.trackingType === "analytics.js") {
+        ga("set", "location", path);
+        ga("send", "pageview");
+      } else if (Analytics.trackingType === "dataLayer") {
+        dataLayer.push({
+          "event": "VirtualPageView",
+          "virtualPageUrl": path,
+          "virtualPageTitle": title
         });
-      } else {
-        console.warn("Tried attaching install banner but service workers aren't supported.");
       }
     },
 
     init: function(){
+      if(!Ornament.features.tracking) {
+        return false;
+      }
       if(Analytics.trackingType === "guess") {
         Analytics.guessTrackingType();
       }
       $("[" + Analytics.trackLinkSelector + "]").each(function(){
         Analytics.trackLink($(this));
       });
-      if(Ornament.features.serviceWorker) {
-        Analytics._trackInstallBanner();
-      }
     }
   }
 
-  $(document).on("ornament:refresh", function () {
-    Analytics.init();
-  });
+  Ornament.registerComponent("Analytics", Analytics);
 
   // Turbolinks helper for analytics
   // https://github.com/turbolinks/turbolinks/issues/73
+  // Be sure to disable default analytics on-load events otherwise
+  // you will always get two pageviews for the first page load
   if(Ornament.features.turbolinks) {
-    $(document).on("turbolinks:load", function(event) {
-      var loadedUrl = event.originalEvent.data.url;
-      if(Analytics.trackingType === "analytics.js") {
-        ga("set", "location", loadedUrl);
-        ga("send", "pageview");
-      } else if (Analytics.trackingType === "dataLayer") {
-        dataLayer.push({
-          "event": "pageView",
-          "virtualUrl": loadedUrl
-        });
+    document.addEventListener("turbolinks:change", function(event){
+      if(Analytics.trackingType) {
+        trackVirtualPageview(event.data.url);
       }
     });
   }

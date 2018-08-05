@@ -3,6 +3,7 @@
 // Set up Ornament lifecycle events 
 // =========================================================================
 
+//= require ornament/vendor
 //= require ornament/core
 //= require ornament/register-service-worker
 
@@ -52,6 +53,7 @@
 //= require components/scroll-to
 //= require components/select-link
 //= require components/shifty
+//= require components/simple-navigation
 //= require components/tabs-legacy
 //= require components/toggle
 //= require components/tooltip

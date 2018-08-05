@@ -22,7 +22,6 @@
     <%= yield :styles %>
 
     <%# Scripts %>
-    <%= javascript_include_tag "ornament/vendor" %>
     <%= javascript_include_tag "application" %>
     <%= yield :scripts %>
 
@@ -61,7 +60,7 @@
 
       <div class="tray" data-tray>
         <nav aria-label="Global Navigation" role="navigation">
-          <%= render "layouts/styleguide/styleguide_navigation", heading_class: "sg-nav--heading" -%>
+          <ul></ul>
         </nav>
       </div>
 
@@ -103,7 +102,7 @@
     
     <%= render "layouts/analytics" -%>
 
-    <div data-ornament-icons>
+    <div data-ornament-icons style="display: none;">
       <div data-ornament-icon="chevron-left"><%= icon("chevron_left") -%></div>
       <div data-ornament-icon="chevron-right"><%= icon("chevron_right") -%></div>
       <div data-ornament-icon="close"><%= icon("close") -%></div>

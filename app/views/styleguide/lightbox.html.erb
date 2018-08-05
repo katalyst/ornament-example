@@ -25,14 +25,45 @@
 </div>
   <%- end -%>
 
+  <p>There is a <code>lightbox--section</code> helper class that you can use to seperate content in lightboxes:</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-sections" } do -%>
+<a href="#example-sections" data-lightbox-basic>Open lightbox</a>
+<div class="mfp-hide" id="example-sections">
+  <div class="lightbox--section panel--padding content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+  </div>
+  <div class="lightbox--section panel--padding content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+  </div>
+</div>
+  <%- end -%>
+
   <hr />
   <h2 class="heading-two">Sizing</h2>
 
   <p>You can add the <code>data-lightbox-size="small"</code> attribute to the lightbox to give it a smaller window:</p>
 
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-2" } do -%>
-<a href="#example-2" data-lightbox-basic data-lightbox-size="small">Open lightbox</a>
+<a href="#example-2" data-lightbox-basic data-lightbox-size="small">Open small lightbox</a>
 <div class="mfp-hide" id="example-2">
+  <div class="panel--padding content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+  </div>
+</div>
+  <%- end -%>
+
+  <p><code>fullscreen</code> is also a valid sizing option:</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-fullscreen" } do -%>
+<a href="#example-fullscreen" data-lightbox-basic data-lightbox-size="fullscreen">Open fullscreen lightbox</a>
+<div class="mfp-hide" id="example-fullscreen">
   <div class="panel--padding content">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
@@ -45,6 +76,8 @@
   <h2 class="heading-two">Scrollable Lightbox</h2>
 
   <p>You can use the <code>shared/inline_lightbox</code> partial to markup your scrollable lightbox, use the <code>data-lightbox</code> attribute instead of <code>data-lightbox-basic</code> to complete the scrollable lightbox.</p>
+
+  <p>This lightbox will automatically go fullscreen at smaller screensizes. This functionality can be disabled with the <code>$fullscreen-mobile</code> sass variable in the lightbox component.</p>
 
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-scrollable", ruby: capture { -%>
 &lt;%= render layout: "shared/inline_lightbox", locals: { inline_id: "example-scrollable" } do -%>
@@ -65,6 +98,97 @@
 <%- end -%>
   <%- end -%>
 
+  <p>You can also pass a <code>capture</code> in to the local <code>lightbox_footer</code> variable to add something below the scrollable area:</p>
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-scrollable-footer", ruby: capture { -%>
+&lt;%= render layout: "shared/inline_lightbox", locals: { inline_id: "example-scrollable-footer", lightbox_footer: capture { %>
+  &lt;div class="button-set">
+    &lt;div>
+      &lt;button type="button" class="button__confirm">
+        Ok
+      &lt;/button>
+    &lt;/div>
+    &lt;div>
+      &lt;button type="button" class="button__cancel" data-lightbox-close>
+        Cancel
+      &lt;/button>
+    &lt;/div>
+  &lt;/div>
+&lt;%- } } do -%>
+  &lt;div class="panel--padding content">
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+  &lt;/div>
+&lt;%- end -%>
+  <%- } } do -%>
+<a href="#example-scrollable-footer" data-lightbox data-lightbox-size="small">Open lightbox</a>
+<%= render layout: "shared/inline_lightbox", locals: { inline_id: "example-scrollable-footer", lightbox_footer: capture { %>
+  <div class="button-set">
+    <div><button type="button" class="button__confirm">Ok</button></div>
+    <div><button type="button" class="button__cancel" data-lightbox-close>Cancel</button></div>
+  </div>
+<% } } do -%>
+  <div class="panel--padding content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+  </div>
+<%- end -%>
+  <%- end -%>
+
+  <p>Note that this will keep the content on the screen at all times, outside of the scrollable area. If you don't want this content always on the screen, consider using <code>.lightbox-section</code> classes instead:
+
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "example-scrollable-sections", ruby: capture { -%>
+&lt;%= render layout: "shared/inline_lightbox", locals: { inline_id: "example-scrollable-sections" } do -%>
+  &lt;div class="lightbox--section panel--padding content">
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+    &lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.&lt;/p>
+  &lt;/div>
+  &lt;div class="lightbox--section panel--padding content">
+    &lt;div class="button-set">
+      &lt;div>
+        &lt;button type="button" class="button__confirm">
+          Ok
+        &lt;/button>
+      &lt;/div>
+      &lt;div>
+        &lt;button type="button" class="button__cancel" data-lightbox-close>
+          Cancel
+        &lt;/button>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;%- end -%>
+  <%- } } do -%>
+<a href="#example-scrollable-sections" data-lightbox data-lightbox-size="small">Open lightbox</a>
+<%= render layout: "shared/inline_lightbox", locals: { inline_id: "example-scrollable-sections" } do -%>
+  <div class="lightbox--section panel--padding content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque odit saepe, ipsam corrupti delectus autem labore dolorum ratione sit rem.</p>
+  </div>
+  <div class="lightbox--section panel--padding content">
+    <div class="button-set">
+      <div><button type="button" class="button__confirm">Ok</button></div>
+      <div><button type="button" class="button__cancel" data-lightbox-close>Cancel</button></div>
+    </div>
+  </div>
+<%- end -%>
+  <%- end -%>
 
   <hr />
   <h2 class="heading-two">Types</h2>

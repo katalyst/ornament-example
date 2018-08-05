@@ -3,7 +3,7 @@
 // =========================================================================
 
 var Ornament = window.Ornament || {};
-Ornament.version = "2.0.2";
+Ornament.version = "2.0.3";
 Ornament.ready = false;
 Ornament.debug = false;
 
@@ -43,6 +43,27 @@ Ornament.features.serviceWorker = "serviceWorker" in navigator;
 Ornament.features.geolocation = "geolocation" in navigator;
 Ornament.features.turbolinks = typeof(Turbolinks) !== "undefined" && Turbolinks.supported;
 Ornament.features.ie8 = false;
+Ornament.features.localStorage = true;
+Ornament.features.tracking = true;
+
+// Turn off serviceWorker if cookies are disabled
+if(!navigator.cookieEnabled) {
+  Ornament.features.serviceWorker = false;
+}
+
+// Feature detection for localStorage
+try {
+  localStorage.setItem('OrnamentStorageFeatureDetection', 'true');
+  localStorage.removeItem('OrnamentStorageFeatureDetection');
+  Ornament.features.localStorage = true;
+} catch(e) {
+  Ornament.features.localStorage = false;
+}
+
+// Turn off tracking if cookies are disabled
+if("doNotTrack" in navigator) {
+  Ornament.features.tracking = navigator.doNotTrack !== 1;
+}
 
 // =========================================================================
 // Component Registration 
@@ -152,6 +173,12 @@ Ornament.refresh = function(){
   Ornament.log("Refresh");
   Ornament.ready = true;
   Ornament.initComponents();
+
+  // Hijack service worker prompt
+  if(Ornament.features.serviceWorker) {
+    Ornament.hijackServiceWorkerPrompt();
+  }
+  
   $(document).trigger("ornament:refresh");
 }
 
