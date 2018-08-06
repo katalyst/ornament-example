@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '4.2.1'
 gem 'mysql2'
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 4.3.1'
 gem 'jquery-ui-rails', '~> 4.2.1'
 gem 'unicorn'
 gem 'simple_form', '~> 3.2'

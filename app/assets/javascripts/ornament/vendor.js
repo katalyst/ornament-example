@@ -4,7 +4,7 @@
 
 // These must be loaded in this order
 
-//= require jquery
+//= require jquery3
 //= require jquery_ujs
 //= require turbolinks
 //= require libs/underscore
