@@ -78,7 +78,7 @@
         var transitionClass = TransitionToggle.getTransitionClass($anchor);
         var openClass = TransitionToggle.getOpenClass($anchor);
         var timing = TransitionToggle.getTransitionSpeed($anchor);
-        console.log(id, transitionClass, openClass, timing);
+        $(document).trigger("ornament:toggle-transition:" + id + ":open");
         $target.addClass(transitionClass + " " + openClass);
         setTimeout(function(){
           $target.removeClass(transitionClass);
@@ -86,17 +86,23 @@
       },
 
       // Toggle off 
-      transitionClose: function($anchor, $target) {
+      transitionClose: function($anchor, $target, immediate) {
+        immediate = immediate || false;
         var id = TransitionToggle.getTransitionId($anchor);
         var $target = $target || TransitionToggle.getClassTarget($anchor);
         var transitionClass = TransitionToggle.getTransitionClass($anchor);
         var openClass = TransitionToggle.getOpenClass($anchor);
         var timing = TransitionToggle.getTransitionSpeed($anchor);
-        console.log(id, transitionClass, openClass, timing);
-        $target.removeClass(openClass).addClass(transitionClass);
-        setTimeout(function(){
+        $(document).trigger("ornament:toggle-transition:" + id + ":close");
+        $target.removeClass(openClass);
+        if(immediate) {
           $target.removeClass(transitionClass);
-        }, timing);
+        } else {
+          $target.addClass(transitionClass);
+          setTimeout(function(){
+            $target.removeClass(transitionClass);
+          }, timing);
+        }
       },
 
       // Setup feature
@@ -108,6 +114,9 @@
           $anchor.off("click").on("click", function(e){
             e.preventDefault();
             TransitionToggle.transition($anchor);
+          });
+          Ornament.beforeTurbolinksCache(function(){
+            TransitionToggle.transitionClose($anchor, false, true);
           });
         });
       }

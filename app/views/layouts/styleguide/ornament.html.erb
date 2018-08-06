@@ -4,7 +4,10 @@
 
     <%# Meta tags %>
     <meta charset="utf-8"/>
-    <%= render "layouts/seo" -%>
+    <%= render "layouts/seo",
+      use_pwa_settings: true,
+      theme_colour: "#db892a"
+    -%>
     <%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <% unless Rails.env == "production" %>
@@ -48,6 +51,7 @@
     <%= koi_scripts if koi_scripts -%>
 
   </head>
+
   <body class="styleguide <%= yield :body_class -%>"> 
     <%- if gtm_code -%>
       <%# Google Tag Manager (noscript Version) %>
@@ -55,67 +59,108 @@
     <%- end -%>
 
     <a class="skip-link" href="#main">skip to content</a>
-    <div class="layout tray-container" data-tray-layout>
 
-      <div class="tray" data-tray>
-        <nav aria-label="Global Navigation" role="navigation">
-          <%= render "layouts/styleguide/styleguide_navigation", heading_class: "sg-nav--heading" -%>
-        </nav>
-      </div>
+    <div class="layout">
+      <div class="layout--content" data-layout-positioner>
 
-      <div class="tray--page layout--content environment-<%= Rails.env -%>" data-tray-page>
+        <div class="layout--positioner">
+          <div class="styleguide-page">
+            <div class="styleguide-page--sidebar-overlay" data-transition="main-sidebar" data-transition-speed="200"></div>
+            <div class="styleguide-page--sidebar">
+              <button class="styleguide-page--sidebar--close" data-transition="main-sidebar" data-transition-speed="200" title="Close menu">
+                <div>
+                  <span>Close menu</span>
+                  <%= icon "close", width: 16, height: 16 %>
+                </div>
+              </button>
 
-        <header class="sg-header layout--header" role="banner">
-          <div class="layout--container">
-            <hgroup class="sg-header--logo">
-              <h1><%= link_to styleguide_path do -%>
-                Ornament <span data-ornament-version></span>
-              <%- end -%></h1> <a href="https://github.com/katalyst/ornament" class="button__confirm button__small">Github</a>
-              <h2>The front-end pattern library and styleguide for Katalyst web applications</h2>
-            </hgroup>
-            <button class="header--menu" aria-label="Toggle menu" data-tray-anchor>
-              <%= icon("hamburger", fill: "#ffffff", width: 25, height: 23) -%>
-            </button>
-          </div>
-        </header>
-
-        <div data-layout-positioner class="layout--positioner tray--open-overlay">
-          <%= render "/shared/oldie" -%>
-          <%= yield :above_layout -%>
-          <%- if content_for?(:title) -%>
-            <div class="sg-title">
-              <div class="layout--container">
-                <h2 class="heading-five"><%= yield(:title) -%></h2>
-                <%= link_to raw("&lsaquo; Back"), styleguide_path -%>
+              <div class="styleguide-page--sidebar--filter">
+                <%= icon("search", width: 16, height: 16) %>
+                <input type="text" placeholder="Filter" aria-label="Filter pages" data-sidebar-filter-input />
               </div>
+              <%= render "layouts/styleguide/styleguide_navigation" %>
+
             </div>
-          <%- end -%>
-          <%- if content_for?(:global) || !yield.blank? -%>
-            <main class="layout--main" role="main">
-              <div class="layout--container">
-                <a id="main" name="main" tabindex="-1"></a>
-                <%= content_for?(:global) ? yield(:global) : yield %>
+            <main role="main" class="styleguide-page--main  environment-<%= Rails.env -%>">
+
+              <% large_header = request.path.eql?(styleguide_path) %>
+              <header class="header <%= "header__main" if large_header %>" role="banner">
+                <div class="<%= large_header ? "header--container" : "styleguide-page--main--container" %> spacing">
+                  <div class="spacing-xxx-tight">
+                    <h1>
+                      <span class="<%= large_header ? "heading-one" : "heading-three" %>"><%= link_to "Ornament", styleguide_path %></span>
+                      <span class="type--grey" data-ornament-version></span>
+                    </h1>
+                    <% if large_header %>
+                      <p>The front-end pattern library and starter-kit for Katalyst web applications</p>
+                    <% end %>
+                  </div>
+                  <% if large_header %>
+                    <div>
+                      <div class="button-set button-set__center">
+                        <div>
+                          <%= link_to "Get Started", "/styleguide/getting_started", class:"button button__shadowed" %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+                <% if large_header %>
+                  <div class="header--github">
+                    <%= link_to "https://github.com/katalyst/ornament", class: "button button__icon-left icon--white", title: "View on Github" do %>
+                      <%= icon("github", width: 24, height: 24) %>
+                      <span>View on Github</span>
+                    <% end %>
+                  </div>
+                <% end %>
+                <button class="header--menu" title="Open menu" data-transition="main-sidebar" data-transition-speed="200">
+                  <%= icon("hamburger", width: 25, height: 23) -%>
+                </button>
+              </header>
+
+              <%= render "/shared/oldie" -%>
+              <%= render "/shared/flash" -%>
+              <%= yield :above_layout -%>
+
+              <div class="styleguide-page--main--container styleguide-page--main-content">
+                <%- if content_for?(:title) -%>
+                  <div class="page--title styleguide--title">
+                    <h2 class="heading-one"><%= yield(:title) -%></h2>
+                    <%= link_to raw("&lsaquo; Back"), styleguide_path -%>
+                  </div>
+                <%- end -%>
+
+                <%- if content_for?(:global) || !yield.blank? -%>
+                  <a id="main" name="main" tabindex="-1"></a>
+                  <div class="<%= yield(:layout_class) -%>" role="main">
+                    <%= content_for?(:global) ? yield(:global) : yield %>
+                  </div>
+                <%- end -%>
               </div>
+
+              <%= yield :below_layout -%>
             </main>
-          <%- end -%>
-          <%= yield :below_layout -%>
-          <footer class="sg-footer" role="contentinfo"></footer>
+
+            <footer class="footer align__right" role="contentinfo">
+              By <%= link_to "Katalyst Interactive", "https://katalyst.com.au" %>
+            </footer>
+          </div>
         </div>
       </div>
 
     </div>
 
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
     <%= yield :scripts_bottom %>
-
+    
     <%= render "layouts/analytics" -%>
+
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 
     <div data-ornament-icons style="display: none;">
       <div data-ornament-icon="chevron-left"><%= icon("chevron_left") -%></div>
       <div data-ornament-icon="chevron-right"><%= icon("chevron_right") -%></div>
       <div data-ornament-icon="close"><%= icon("close") -%></div>
     </div>
-
   </body>
 
 </html>
