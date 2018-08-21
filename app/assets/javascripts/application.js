@@ -5,6 +5,7 @@
 
 //= require ornament/vendor
 //= require ornament/core
+//= require ornament/events
 //= require ornament/register-service-worker
 
 // =========================================================================
@@ -13,6 +14,7 @@
 // namespace 
 // =========================================================================
 
+//= require ornament/utilities/app-height-variable
 //= require ornament/utilities/asset-preloader
 //= require ornament/utilities/bind-once
 //= require ornament/utilities/body-scroll
@@ -34,6 +36,7 @@
 //= require components/analytics
 //= require components/carousel
 //= require components/embed
+//= require components/dismiss
 //= require components/drilldown
 //= require components/flexible-input
 //= require components/form-billing-shipping
@@ -57,5 +60,6 @@
 //= require components/toggle
 //= require components/tooltip
 //= require components/transition-toggle
-//= require components/tray
+//= require components/tray-push
+//= require components/tray-overlay
 //= require components/wysiwyg-helpers

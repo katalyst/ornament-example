@@ -12,7 +12,6 @@ gem 'css_splitter', '~> 0.4.6'
 gem "sass", "3.3.13"
 gem "sass-rails", '~> 5.0.6'
 gem "uglifier", '~> 3.0.4'
-gem "compass-rails", '~> 3.0.2'
 gem "turbolinks", '~> 5.0.1'
 gem "simple-navigation", "~> 3.14.0"
 

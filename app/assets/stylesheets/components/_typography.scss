@@ -166,9 +166,13 @@ $headings-small: (
 // Premade classes for typography 
 // =========================================================================
 
-body, 
+html, 
 .body-type {
   @include body-type;
+}
+
+body {
+  line-height: $base-line-height;
 }
 
 small,

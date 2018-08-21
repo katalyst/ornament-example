@@ -17,6 +17,14 @@
 //= require libs/what-input
 //= require libs/flying-focus
 //= require libs/store
+//= require libs/lazysizes
+
+// =========================================================================
+// jQuery alternatives
+// =========================================================================
+
+// axio.get = $.ajax / $.get
+// require libs/axios
 
 // =========================================================================
 // Polyfills
@@ -43,3 +51,4 @@
 //= require polyfills/classList
 //= require polyfills/matches
 //= require polyfills/nodelist-foreach
+//= require polyfills/url-search-params

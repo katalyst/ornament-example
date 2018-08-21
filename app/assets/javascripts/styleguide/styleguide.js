@@ -56,18 +56,19 @@
 
     // Log errors on copy failure
     clipboard.on('error', function(event) {
-        console.error('Action:', event.action);
-        console.error('Trigger:', event.trigger);
+      console.error('Action:', event.action);
+      console.error('Trigger:', event.trigger);
     });
   }
 
   Styleguide.bindSidebarToggle = function(){
-    $(document).on("ornament:toggle-transition:main-sidebar:open", function(){
-      Styleguide.$sidebarFilter.focus();
-    });
-    $(document).on("ornament:toggle-transition:main-sidebar:close", function(){
+    // Updating first element after opening overlay to be the filter field
+    Ornament.C.OverlayTray.focusTrap.firstAfterOpen = Styleguide.$sidebarFilter;
+    Ornament.C.OverlayTray.breakTabLockAt = 920;
+    // Blur filter field when closing
+    Ornament.C.OverlayTray.afterClose = function(){
       Styleguide.$sidebarFilter.blur();
-    });
+    }
   }
 
   Styleguide.filterNavigation = function(){
@@ -145,33 +146,19 @@
       var node = event.target.nodeName.toLowerCase();
       var abortCall = node === "input" || node === "textarea";
 
-      // Close sidebar if mobile with "esc"
-      if(event.keyCode === 27) {
-        Styleguide.closeSidebar();
-      }
-
       // Focus on filter field with "f"
       if(event.keyCode === 70) {
         if(abortCall) {
           return;
         }
         // Open sidebar if mobile
-        Styleguide.openSidebar();
-        Styleguide.$sidebarFilter.focus();
+        if(Ornament.C.OverlayTray.isMobile()) {
+          Ornament.C.OverlayTray.openTray();
+        } else {
+          Ornament.C.OverlayTray.focusTrap.firstAfterOpen.focus();
+        }
       }
     });
-  }
-
-  Styleguide.openSidebar = function(){
-    if($(".header--menu").is(":visible")) {
-      Ornament.Components.TransitionToggle.transitionOpen($(".header--menu"), $("body"));
-    }
-  }
-
-  Styleguide.closeSidebar = function(){
-    if($(".header--menu").is(":visible")) {
-      Ornament.Components.TransitionToggle.transitionClose($(".header--menu"), $("body"));
-    }
   }
 
   Styleguide.init = function(){
@@ -210,6 +197,10 @@
 
   Ornament.onLoad(function(){
     Styleguide.init();
+  });
+
+  Ornament.beforeLoad(function(){
+    Ornament.C.OverlayTray.alwaysVisible = true;
   });
 
 })(document, window, Ornament);
