@@ -6,11 +6,9 @@ gem 'jquery-ui-rails', '~> 6.0.1'
 gem 'simple_form', '~> 4.0'
 gem 'simple-navigation', '~> 4.0.5'
 gem 'htmlentities', '~> 4.3.4'
-gem 'css_splitter', '~> 0.4.6'
 gem 'sqlite3'
 
 # gem 'unicorn'
-# gem 'airbrake', '~> 4.3.1'
 
 # version locked sass to fix issues with newer sass on the server
 # asset compilation
