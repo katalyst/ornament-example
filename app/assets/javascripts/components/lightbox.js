@@ -1,10 +1,6 @@
 //= require libs/magnific-popup
 
-/*jslint browser: true, indent: 2, todo: true, unparam: true */
-/*global jQuery,Ornament /*/
-
 (function (document, window, $) {
-
   "use strict";
 
   $(document).on("ornament:refresh", function () {
@@ -39,10 +35,10 @@
         removalDelay: 300,
         fixedContentPos: true,
         showCloseBtn: true,
-        closeMarkup: "<button title='%title%' type='button' class='mfp-close'>" + Ornament.icons.close + "</button>",
+        closeMarkup: "<button title='%title%' type='button' class='mfp-close'>" + Ornicons.close + "</button>",
         image: {
           markup: "<div class='mfp-figure'>" + 
-                    "<div class='mfp-close'>" + Ornament.icons.close + "</div>" + 
+                    "<div class='mfp-close'>" + Ornicons.close + "</div>" + 
                     "<div class='mfp-img'></div>" + 
                     "<div class='mfp-bottom-bar'>" + 
                       "<div class='mfp-title'></div>" + 
@@ -92,8 +88,8 @@
             flyingFocus.resetFocus();
 
             // Custom SVG icons for previous/next arrows 
-            $(mfp.container).find(".mfp-arrow-left").html(Ornament.icons["chevron-left"]);
-            $(mfp.container).find(".mfp-arrow-right").html(Ornament.icons["chevron-right"]);
+            $(mfp.container).find(".mfp-arrow-left").html(Ornicons.chevronLeft);
+            $(mfp.container).find(".mfp-arrow-right").html(Ornicons.chevronRight);
           },
           elementParse: function(item) {
             if(item.type === "ajax") {
@@ -163,10 +159,10 @@
             $lightboxContent.height(maxLightboxHeightInPixels);
           }
 
-          if(Lightbox.shadowable) {
-            Ornament.U.Shadowable.buildShadows($lightboxContent, "y");
-            Ornament.U.Shadowable.setScrollShadowsY($lightboxContent);
-            $lightboxContent.off("scroll", Ornament.U.Shadowable.shadowScrollY).on("scroll", Ornament.U.Shadowable.shadowScrollY);
+          if($lightboxContent.length && Lightbox.shadowable) {
+            Ornament.U.Shadowable.buildShadows($lightboxContent[0], "y");
+            Ornament.U.Shadowable.setScrollShadowsY($lightboxContent[0]);
+            Ornament.U.bindOnce($lightboxContent[0], "scroll", Ornament.U.Shadowable.shadowScrollY);
           }
         }
       },

@@ -1,6 +1,5 @@
-"use strict";
-
 (function (document, window, Orn, Utils) {
+  "use strict";
 
   var FormBillingToShipping = {
 
@@ -17,21 +16,21 @@
     // =========================================================================
 
     create: function(checkboxSelector, fields) {
-      var $checkbox = $(checkboxSelector);
+      var $checkbox = document.querySelector(checkboxSelector);
       var fieldKeys = Object.keys(fields);
 
       var toggleFields = function() {
         for (var i = fieldKeys.length - 1; i >= 0; i--) {
-          var $shippingField = $(fields[fieldKeys[i]]);
+          var $shippingField = document.querySelector(fields[fieldKeys[i]]);
 
           // if checked, get keys and copy values in to fields
-          if($checkbox.is(":checked")) {
-            var $billingField = $(fieldKeys[i]);
-            $shippingField.val($billingField.val());
+          if($checkbox.checked) {
+            var $billingField = document.querySelector(fieldKeys[i]);
+            $shippingField.value = $billingField.value;
 
           // if unchecked, empty shipping fields 
           } else {
-            $shippingField.val("");
+            $shippingField.value = "";
           }
         }
       }
@@ -40,7 +39,7 @@
       toggleFields();
 
       // bind change event
-      $checkbox.off("change", toggleFields).on("change", toggleFields);
+      Ornament.U.bindOnce($checkbox, "change", toggleFields);
     },
 
     init: function(){

@@ -1,160 +1,142 @@
-@import "libs/fotorama";
+@import "libs/tiny-slider";
 
 // =========================================================================
-// Carousel frame 
+// Slides
 // =========================================================================
 
-.fotorama {
-  opacity: 0;
-  transition: opacity .2s;
-
-  &.carousel-active {
-    opacity: 1;
-  }
+.tns-item img,
+.tns-item iframe {
+  display: block;
 }
 
 // =========================================================================
-// Gallery spacing 
+// Arrows
 // =========================================================================
 
-.fotorama-gallery {
-  margin-bottom: $large-unit;
+.tns-outer {
+  position: relative;
 }
 
-// =========================================================================
-// Improving performance of stage__frame 
-// =========================================================================
-
-.fotorama__stage__frame {
-  -webkit-transform: rotate(0.000001deg);
-}
-
-// =========================================================================
-// Caption styling 
-// =========================================================================
-
-.fotorama__caption {
-  background: $primary-color;
-  background: rgba($primary-color,0.8);
-  right: 0;
-  bottom: 0;
-  color: $white;
-  padding: $xxxx-small-unit;
-}
-
-.fotorama__caption {
-  @include media-query(620px) {
-    display: none;
-  }
-}
-
-.fotorama__caption__wrap {
-  background: transparent;
-  padding: 0;
-  overflow: hidden;
-}
-
-// =========================================================================
-// Video frame styling
-// =========================================================================
-
-.fotorama__stage__frame--video {
-  background: $black;
-}
-
-// =========================================================================
-// Navigation styling 
-// =========================================================================
-
-.fotorama__nav-wrap {
-  margin-top: $xx-small-unit;
-  @include border-radius($border-radius);
-}
-
-// Thumbail border 
-.fotorama__thumb-border {
-  border-color: $primary-color;
-}
-
-// Custom dot base 
-$carousel-dot-size: $xxx-small-unit;
-.fotorama__nav--dots {}
-.fotorama__nav--dots .fotorama__nav__frame--dot {
-  width: $carousel-dot-size;
-  height: $carousel-dot-size;
-  margin-left: $xxxxx-small-unit;
-  margin-right: $xxxxx-small-unit;
-}
-.fotorama__dot {
-  width: 100%;
-  height: 100%;
-  background: $passive-color;
-  border: 0;
-  border-radius: 50%;
-  top: 0;
-  left: 0;
-  transition: background-color .2s;
-
-  .fotorama__nav__frame.fotorama__active & {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    background: $primary-color;
-  }
-}
-
-// =========================================================================
-// Arrows 
-// =========================================================================
-
-.fotorama__arr.fotorama__arr--prev {
-  @include translate3d($default-unit, 0, 0);
-  position: absolute;
-  padding: 0;
-
-  svg {
-    margin-left: -4px;
-  }
-}
-
-.fotorama__arr.fotorama__arr--next {
-  @include translate3d(-($default-unit), 0, 0);
-  position: absolute;
-  padding: 0;
-
-  svg {
-    margin-right: -4px;
-  }
-}
-
-.fotorama__arr.fotorama__arr--prev,
-.fotorama__arr.fotorama__arr--next {
-  background: $primary-color;
-  background: rgba($primary-color,0.8);
-  height: $button-height;
-  width: $button-height;
-  color: #fff;
-  text-align: center;
+.tns-controls button {
   position: absolute;
   top: 50%;
-  margin-top: $button-height * -0.5;
-  @include border-radius(50%);
-  @include display-flex;
-  @include align-items(center);
-  @include justify-content(center); 
-  @include transition(background-color .2s);
+  @include transform(translateY(-50%));
+  z-index: 10;
+  @include color-link($white, $white);
+  background: $primary-color;
+  border-radius: 50%;
+  text-align: center;
+  transition: opacity .2s;
+  opacity: .2;
 
-  &:hover {
-    background: $primary-color;
+  // Icon sizing
+  > div {
+    @include icon-block($button-height, (16px, 22px));
   }
 
-  svg {
-    display: block;
-    width: auto;
-    height: 50%;
+  .icon--stroke {
+    stroke: $white;
   }
 
   .icon--fill {
     fill: $white;
+  }
+
+  .tns-outer:hover &:not([disabled]) {
+    opacity: 1;
+  }
+
+  &[data-controls="prev"] {
+    left: $xxx-small-unit;
+
+    svg {
+      // Offset for arrow visual
+      @include transform(translateX(-2px));
+    }
+  }
+
+  &[data-controls="next"] {
+    right: $xxx-small-unit;
+
+    svg {
+      // Offset for arrow visual
+      @include transform(translateX(2px));
+    }
+  }
+}
+
+// =========================================================================
+// Captions
+// =========================================================================
+
+.tns-item {
+  position: relative;
+}
+
+.carousel--caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba($primary-color, .8);
+  color: $white;
+  padding: $xxx-small-unit;
+}
+
+// =========================================================================
+// Dot navigation
+// =========================================================================
+
+.tns-nav {
+  @include display-flex;
+  @include flex-wrap;
+  @include justify-content(center);
+
+  button {
+    width: $xxx-small-unit;
+    height: $xxx-small-unit;
+    border-radius: 50%;
+    background: $passive-color;
+    @include disable-mouse-outline;
+  }
+
+  button + button {
+    margin-left: $xxxxx-small-unit;
+  }
+
+  .tns-nav-active {
+    background: $primary-color;
+  }
+}
+
+// Add gutter between nav and slider
+.tns-nav + .tns-ovh,
+.tns-outer + .tns-nav {
+  margin-top: $xxx-small-unit;
+}
+
+// =========================================================================
+// Thumbnail navigation
+// =========================================================================
+
+.tns-nav__thumbnails {
+  ul {
+    @include display-flex;
+    @include flex-wrap;
+    @include justify-content(center);
+    margin: $xxxxx-small-unit * -.5;
+  }
+  li {
+    cursor: pointer;
+    padding: $xxxxx-small-unit * .5;
+    @include disable-mouse-outline;
+  }
+  li + li {
+    // margin-left: $xxxxx-small-unit;
+  }
+  img {
+    display: block;
+    max-height: 50px;
+    width: auto;
   }
 }

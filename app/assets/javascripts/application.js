@@ -5,7 +5,6 @@
 
 //= require ornament/vendor
 //= require ornament/core
-//= require ornament/events
 //= require ornament/register-service-worker
 
 // =========================================================================
@@ -14,6 +13,7 @@
 // namespace 
 // =========================================================================
 
+//= require ornament/utilities/jquery-polyfill
 //= require ornament/utilities/app-height-variable
 //= require ornament/utilities/asset-preloader
 //= require ornament/utilities/bind-once
@@ -21,13 +21,14 @@
 //= require ornament/utilities/dimensions
 //= require ornament/utilities/external-links
 //= require ornament/utilities/find-data
-//= require ornament/utilities/icon-loader
 // require ornament/utilities/is-full-width-of
+//= require ornament/utilities/keycodes
 //= require ornament/utilities/measure
+//= require ornament/utilities/node-list-array
 //= require ornament/utilities/parameterize
+//= require ornament/utilities/slide
 //= require ornament/utilities/shadowable
 //= require ornament/utilities/show-js
-//= require ornament/utilities/uploader-helpers
 
 // =========================================================================
 // Website Components 
@@ -40,15 +41,10 @@
 //= require components/drilldown
 //= require components/flexible-input
 //= require components/form-billing-shipping
-//= require components/form-datepicker
 //= require components/form-enhanced
 //= require components/form-limiter
 //= require components/form-password-revealer
 //= require components/form-password-score
-//= require components/kat-image-upload
-//= require components/lightbox
-//= require components/lightbox-rails-confirm
-//= require components/map
 //= require components/menu-with-more
 //= require components/pagination-helper
 //= require components/read-more
@@ -56,10 +52,25 @@
 //= require components/select-link
 //= require components/shifty
 //= require components/simple-navigation
-//= require components/tabs-legacy
+//= require components/tabs
 //= require components/toggle
 //= require components/tooltip
 //= require components/transition-toggle
 //= require components/tray-push
 //= require components/tray-overlay
 //= require components/wysiwyg-helpers
+
+// =========================================================================
+// jQuery dependant components
+// =========================================================================
+
+//= require jquery3
+//= require components/kat-image-upload
+//= require components/lightbox
+//= require components/map
+
+// =========================================================================
+// jQueryUI Dependant components
+// =========================================================================
+
+//= require components/form-datepicker

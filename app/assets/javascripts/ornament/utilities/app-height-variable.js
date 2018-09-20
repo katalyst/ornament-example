@@ -15,9 +15,8 @@
 // OR:
 // @include app-height;
 
-"use strict";
-
-(function(Ornament) {
+(function (document, window, Ornament, Utils) {
+  "use strict";
 
   // Update the variable when possible
   var setAppHeightVariableDelayed = function(){
@@ -34,7 +33,7 @@
 
   // Update the variable to the innerHeight of the document
   Ornament.U.setAppHeightVariable = function() {
-    document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
+    document.documentElement.style.setProperty("--app-height", window.innerHeight + "px");
   }
 
   // Attach listeners to update the variable
@@ -43,4 +42,4 @@
     document.addEventListener("DOMContentLoaded",setAppHeightVariableDelayed);
   }
 
-}(Ornament));
+}(document, window, Ornament, Ornament.Utilities));

@@ -4,16 +4,13 @@
 
 // These must be loaded in this order
 
-//= require jquery3
-//= require jquery_ujs
+//= require rails-ujs
 //= require turbolinks
 //= require libs/underscore
 
 // These can be loaded in any order
 
-//= require libs/markercluster
 // require libs/velocity
-//= require libs/jquery.jcrop
 //= require libs/what-input
 //= require libs/flying-focus
 //= require libs/store
@@ -49,6 +46,10 @@
 //= require polyfills/es5-shim
 //= require polyfills/es5-sham
 //= require polyfills/classList
-//= require polyfills/matches
+//= require polyfills/closest-matches
 //= require polyfills/nodelist-foreach
 //= require polyfills/url-search-params
+//= require polyfills/array.find
+//= require polyfills/promise
+//= require polyfills/fetch
+//= require polyfills/fetch-abort-controller

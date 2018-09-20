@@ -1,6 +1,5 @@
-"use strict";
-
 (function (document, window, Orn, Utils) {
+  "use strict";
 
   var Tray = {
 
@@ -87,7 +86,7 @@
 
       // Offset the pusher element by the amount scrolled (in the case of sticky header)
       if(Tray.$scrollPusher) {
-        Tray.scrollOffset = window.scrollY;
+        Tray.scrollOffset = window.pageYOffset;
         Tray.$scrollPusher.style.top = (Tray.scrollOffset * -1) + "px";
       }
 

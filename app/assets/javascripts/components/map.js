@@ -1,8 +1,6 @@
-/*jslint browser: true, indent: 2, todo: true, unparam: true */
-/*global jQuery,Ornament */
+//= require libs/markercluster
 
-(function (document, window, $) {
-
+(function (document, window) {
   "use strict";
 
   $(document).on("ornament:load-maps", function () {
@@ -304,4 +302,4 @@
     $(document).trigger("ornament:load-maps");
   });
 
-}(document, window, jQuery));
+}(document, window));

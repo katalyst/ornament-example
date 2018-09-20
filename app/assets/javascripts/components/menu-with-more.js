@@ -1,10 +1,6 @@
 //= require libs/priority-nav
 
-/*jslint browser: true, indent: 2, todo: true, unparam: true */
-/*global jQuery,Ornament /*/
-
-(function (document, window, $) {
-
+(function (document, window) {
   "use strict";
 
   var MenuWithMore = {
@@ -30,14 +26,14 @@
     },
 
     destroyMenu: function(menu){
-      var $wrapper = $(menu).find(".priority-nav__wrapper");
-      if($wrapper.length) {
-        $wrapper.remove();
-      }
+      var $wrapper = menu.querySelectorAll(".priority-nav__wrapper");
+      $wrapper.forEach(function(el){
+        el.parentNode.removeChild(el);
+      })
     },
 
     destroy: function(){
-      $(window).off("resize", MenuWithMore.resizeListener);
+      window.removeEventListener("resize", MenuWithMore.resizeListener);
       for(var i = 0; i < MenuWithMore.menus.length; i++) {
         MenuWithMore.destroyMenu(MenuWithMore.menus[i]);
       }
@@ -50,14 +46,12 @@
         setTimeout(function(){
           MenuWithMore.resizeListener();
         }, 200);
-        $(window).off("resize", MenuWithMore.resizeListener).on("resize", MenuWithMore.resizeListener);
-        $(document).on("turbolinks:before-cache", function() {
-          MenuWithMore.destroy();
-        });
+        Ornament.U.bindOnce(window, "resize", MenuWithMore.resizeListener);
+        Ornament.beforeTurbolinksCache(MenuWithMore.destroy);
       }
     }
   }
 
   Ornament.registerComponent("MenuWithMore", MenuWithMore);
 
-}(document, window, jQuery));
+}(document, window));

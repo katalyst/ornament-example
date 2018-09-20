@@ -2,9 +2,8 @@
 // Open external links in a new window 
 // =========================================================================
 
-"use strict";
-
-(function (document, window, Ornament, $) {
+(function (document, window, Ornament) {
+  "use strict";
 
   var config = {
     noOpener: true,
@@ -62,7 +61,7 @@
       }
       // Event tracking for external links
       if(config.trackExternalLinks && Ornament.Components.Analytics && Ornament.Components.Analytics.trackingType) {
-        Ornament.Components.Analytics.trackLink($(node));
+        Ornament.Components.Analytics.trackLink(node);
       }
     }
   }
@@ -88,4 +87,4 @@
     init: init
   }
 
-}(document, window, Ornament, jQuery));
+}(document, window, Ornament, Ornament.Utilities));
