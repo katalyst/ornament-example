@@ -55,8 +55,6 @@ GEM
     coderay (1.1.1)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
-    css_splitter (0.4.6)
-      sprockets (>= 2.0.0)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     engineyard (3.2.1)
@@ -188,7 +186,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  css_splitter (~> 0.4.6)
   engineyard
   htmlentities (~> 4.3.4)
   jquery-rails (~> 4.3.1)
