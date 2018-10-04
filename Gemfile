@@ -22,7 +22,12 @@ gem 'nokogiri', '1.6.8.1'
 gem 'rake', '12.1.0'
 
 group :development do
-  gem 'ornament', github: 'katalyst/ornament'
+  gem 'ornament', github: 'katalyst/ornament', branch: "develop"
   gem 'engineyard'
   gem 'pry'
 end
+
+gem 'webpacker', '~> 3.5'
+gem 'foreman', '~> 0.64.0'
+gem 'react_on_rails', '~> 11.1.4'
+gem 'mini_racer', platforms: :ruby
