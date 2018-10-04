@@ -190,7 +190,7 @@ DEPENDENCIES
   jquery-ui-rails (~> 6.0.1)
   nokogiri (= 1.6.8.1)
   ornament!
-  pg
+  pg (>= 0.18, < 2.0)
   pry
   rails (= 4.2.1)
   rake (= 12.1.0)
