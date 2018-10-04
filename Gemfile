@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '4.2.1'
-gem 'pg', '>= 0.18', '< 2.0'
+gem 'pg', '~> 0.18'
 gem 'jquery-rails', '~> 4.3.1'
 gem 'jquery-ui-rails', '~> 6.0.1'
 gem 'unicorn'
