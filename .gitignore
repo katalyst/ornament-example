@@ -22,3 +22,4 @@ config/initializers/errbit.rb
 
 # Ignore compile assets
 public/assets
+public/packs
