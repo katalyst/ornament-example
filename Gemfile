@@ -22,7 +22,7 @@ gem 'nokogiri', '1.6.8.1'
 gem 'rake', '12.1.0'
 
 group :development do
-  gem 'ornament', github: 'katalyst/ornament', branch: "develop"
+  gem 'ornament', github: 'katalyst/ornament'
   gem 'engineyard'
   gem 'pry'
 end
