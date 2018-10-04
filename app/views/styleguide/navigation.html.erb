@@ -3,7 +3,12 @@
 <div class="content-spacing">
 
   <p>You can use the <code>ornament_menu</code> simple-navigation renderer to automatically add arrows, toggle and accessibility features.</p>
-  <p>Note that the <code>navigation__simple</code> class has been removed for this menu, which is what is used for the hover-to-show-subnavigation functionality.</p>
+  <p>In order to use this renderer in your app, you will need to register the renderer in your <code>navigation.rb</code> file.</p>
+
+  <div data-styleguide-code-sample>
+    <pre class="sg-pre prettyprint"># config/navigation.rb
+SimpleNavigation.register_renderer :ornament_menu => OrnamentNavRenderer</pre>
+  </div>
 
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "nav-ornament1", no_html: true, ruby: capture { -%>
 &lt;div class="navigation">
@@ -27,6 +32,10 @@
   <h2 class="heading-two">A note about IDs</h2>
   <p>One of the benefits of this renderer is that also comes with the ability to customise the key ids to a namespace with <code>id_namespace</code>.</p>
   <p>This is required if you have multiple menus using any of the same navitems, eg in the case of seperate desktop and mobile navigation. If you have multiple menus using either no namespace or the same namespace, you will notice duplicate id errors in the console and any toggles may start triggering multiple times. Best practice is to always define a namespace.</p>
+
+  <hr />
+  <h2 class="heading-two">Customising renderer</h2>
+  <p>Like all of Ornament, the renderer is generated in to your project so you can customise to suit your needs. The renderer is generated in to <code>/app/renderers/ornament_nav_renderer.rb</code>.</p>
 
   <hr />
   <h2 class="heading-two">No icons</h2>
@@ -77,7 +86,7 @@
 
   <p>If you are intending to hide the arrows and disable the toggle functions, you may be interested in the <code>basic</code> option which removes all toggles and icons and generates just a nested unordered list for use with things like the Drilldown component or anything else that requires just a regular old <code>ul</code>.</p>
 
-  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "nav-ornament3", no_html: true, ruby: capture { -%>
+  <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "nav-ornament-basic", no_html: true, ruby: capture { -%>
 &lt;div data-drilldown>
   &lt;%= koi_render_navigation "header_nav", "header_navigation", renderer: :ornament_menu, level: 1..2, expand_all: true, basic: true %>
 &lt;/div>

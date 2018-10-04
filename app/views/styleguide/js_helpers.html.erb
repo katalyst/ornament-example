@@ -52,7 +52,7 @@
 
   <p>For example, if I had a <code>&lt;div id="test" /></code> and wanted to measure it's height, I would use:</p>
 
-  <p><code>Ornament.measure($("#test"), height);</code></p>
+  <p><code>Ornament.measure(document.querySelector("#test"), height);</code></p>
 
   <hr />
 
@@ -63,5 +63,8 @@
 
   <p>eg. Scroll 200px from the top of the page:</p>
   <p><code>Ornament.bodyScroll(200)</code></p>
+
+  <p>You can also scroll to a node:</p>
+  <p><code>Ornament.bodyScrollToElement(document.querySelector("body"))</code></p>
 
 </div>

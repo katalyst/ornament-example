@@ -1,8 +1,4 @@
-/*jslint browser: true, indent: 2, todo: true, unparam: true */
-/*global jQuery,Ornament /*/
-
-(function (document, window, $) {
-
+(function (document, window) {
   "use strict";
 
   var Analytics = {
@@ -60,15 +56,15 @@
       if(!Ornament.features.tracking) {
         return false;
       }
-      $anchor.on("click", function(){
-        var linkCategory = $anchor.text().trim() || "No text";
+      Ornament.U.bindOnce($anchor, "click", function(){
+        var linkCategory = $anchor.innerText.trim() || "No text";
         linkCategory = "External link: " + linkCategory;
-        var linkLabel = $anchor.attr("href");
-        if($anchor.is("[" + Analytics.categorySelector + "]")) {
-          linkCategory = $anchor.attr(Analytics.categorySelector);
+        var linkLabel = $anchor.getAttribute("href");
+        if($anchor.hasAttribute(Analytics.categorySelector)) {
+          linkCategory = $anchor.getAttribute(Analytics.categorySelector);
         }
-        if($anchor.is("[" + Analytics.labelSelector + "]")) {
-          linkLabel = $anchor.attr(Analytics.labelSelector);
+        if($anchor.hasAttribute(Analytics.labelSelector)) {
+          linkLabel = $anchor.getAttribute(Analytics.labelSelector);
         }
         Analytics.trackEvent(linkCategory, linkLabel, "click");
       });
@@ -103,8 +99,8 @@
       if(Analytics.trackingType === "guess") {
         Analytics.guessTrackingType();
       }
-      $("[" + Analytics.trackLinkSelector + "]").each(function(){
-        Analytics.trackLink($(this));
+      document.querySelectorAll("[" + Analytics.trackLinkSelector + "]").forEach(function(){
+        Analytics.trackLink(this);
       });
     }
   }
@@ -123,4 +119,4 @@
     });
   }
 
-}(document, window, jQuery));
+}(document, window));

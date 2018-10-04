@@ -3,8 +3,13 @@
 
 <% content_for :scripts_bottom do %>
   <script>
-    $(document).on("ornament:refresh", function(){ 
-      !Ornament.C.FormDatepicker.enabled && $("[data-jquery-modifiers]").hide();
+    document.addEventListener("ornament:refresh", function(){
+      if(!Ornament.C.FormDatepicker || !(Ornament.C.FormatDatepikcer && Ornament.C.FormatDatepicker.enabled)){
+        var $modifiers = document.querySelector("[data-jquery-modifiers]");
+        if($modifiers) {
+          $modifiers.style.display = "none";
+        }
+      }
     });
   </script>
 <% end %>
@@ -129,6 +134,8 @@
   <%- end -%>
 
   <div data-jquery-modifiers>
+    <hr />
+    <h2 class="heading-two">Datepicker (jQuery UI)</h2>
     <p>jQuery Datepicker can be added by giving your input field the class <code>datepicker</code>.</p>
 
     <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "form-modifiers-disabled", ruby: capture { -%>

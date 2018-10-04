@@ -1,6 +1,5 @@
-"use strict";
-
 (function (document, window, Orn, Utils) {
+  "use strict";
 
   var Dismiss = {
 
@@ -22,11 +21,7 @@
     // The dismiss function
     // what happens when the timer expires
     dismiss: function($item) {
-      if(typeof jQuery !== "undefined") {
-        $($item).slideUp();
-      } else {
-        $item.style.display = "none";
-      }
+      Ornament.slideUp($item);
       Ornament.triggerEvent($item, "ornament:dismiss:dismissed");
     },
 

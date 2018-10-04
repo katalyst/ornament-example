@@ -1,34 +1,30 @@
-/*jslint browser: true, indent: 2, todo: true, unparam: true */
-/*global jQuery,Ornament /*/
-
-(function (document, window, $) {
-
+(function (document, window) {
   "use strict";
 
-  $(document).on("ornament:refresh", function () {
-
-    var $linkableSelects = $("[data-select-link]");
-    var currentUrl = document.location.pathname;
-
-    // On click change
-    $linkableSelects.each(function(){
-
-      var $thisSelect = $(this);
-
-      $thisSelect.on("change", function(){
-        var url = $thisSelect.val();
-        if(url != "") {
-          document.location = url;
+  var SelectLink = {
+    init: function(){
+      var $linkableSelects = document.querySelectorAll("[data-select-link]");
+      var currentUrl = document.location.pathname;
+    
+      // On click change
+      $linkableSelects.forEach(function($thisSelect){
+        
+        Ornament.U.bindOnce($thisSelect, "change", function(){
+          var url = $thisSelect.value;
+          if(url != "") {
+            document.location = url;
+          }
+        });
+    
+        // Default state
+        if ( $thisSelect.querySelector("option[value='"+currentUrl+"']") ) {
+          $thisSelect.value = currentUrl;
         }
+    
       });
+    }
+  }
 
-      // Default state
-      if ( $thisSelect.find("option[value='"+currentUrl+"']").length > 0 ) {
-        $thisSelect.val(currentUrl);
-      }
+  Ornament.registerComponent("SelectLink", SelectLink);
 
-    });
-
-  });
-
-}(document, window, jQuery));
+}(document, window));
