@@ -1,14 +1,13 @@
 source 'http://rubygems.org'
 
 gem 'rails', '4.2.1'
-gem 'mysql2'
+gem 'sqlite3'
 gem 'jquery-rails', '~> 4.3.1'
 gem 'jquery-ui-rails', '~> 6.0.1'
 gem 'unicorn'
 gem 'simple_form', '~> 3.2'
 gem 'airbrake', '~> 4.3.1'
 gem 'htmlentities', '~> 4.3.4'
-gem 'css_splitter', '~> 0.4.6'
 
 # version locked sass to fix issues with newer sass on the server
 gem "sass", "3.4.25"
