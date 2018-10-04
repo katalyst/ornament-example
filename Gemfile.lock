@@ -1,9 +1,8 @@
 GIT
   remote: git://github.com/katalyst/ornament.git
-  revision: aec876aa61f3c90cc5494fd484544596386e7972
-  branch: develop
+  revision: 981869ad0784975725475cdf8f2f5eea813497a9
   specs:
-    ornament (2.1.1)
+    ornament (2.2.0)
       rails (>= 4.0.0)
 
 GEM
@@ -95,7 +94,7 @@ GEM
       railties (>= 3.2.16)
     launchy (2.4.3)
       addressable (~> 2.3)
-    libv8 (6.3.292.48.1-x86_64-darwin-15)
+    libv8 (6.3.292.48.1)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
