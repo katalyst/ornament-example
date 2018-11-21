@@ -85,18 +85,8 @@ $site-breakpoints:
 // Gutters
 // =========================================================================
 
-$desktop-gutters: $x-small-unit;
+$site-gutters: $x-small-unit;
 
-// $large-gutter:    $large-unit;
-// $medium-gutter:   $large-unit;
-// $small-gutter:    $large-unit;
-// $tiny-gutter:     $default-unit;
-
-$site-gutters:
-  // (large, $large-gutter),
-  // (medium, $tiny-gutter),
-  false
-;
 
 // =========================================================================
 // Colours 
@@ -118,7 +108,7 @@ $background-color: #fff;
 
 // Links
 $link-color: blue;
-$link-hover-color: false;
+$link-hover-color: darken($link-color, .25);
 
 // Lightbox and mobile menu overlays
 $overlay-color: #222;

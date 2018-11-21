@@ -26,7 +26,7 @@ $primary-color-dark: darken($primary-color, 20);
 $secondary-color: #252525;
 
 $link-color: #4b9dd0;
-$link-color-hover: darken($link-color, 20);
+$link-hover-color: darken($link-color, 20);
 
 $light-grey:     #ccc;
 $x-light-grey:   lighten($light-grey, 15);
@@ -116,7 +116,7 @@ $panel-border: 1px solid $grey;
 // =========================================================================
 
 a,button {
-  @include color-link($link-color, $link-color-hover);
+  @include color-link($link-color, $link-hover-color);
 }
 
 hr {
@@ -614,7 +614,7 @@ pre.prettyprint {
   }
 }
 
-code {
+code, kbd {
   border: 1px solid $light-grey;
   background: $x-light-grey;
   font-family: $sg-code-font;
@@ -812,11 +812,11 @@ code {
 // =========================================================================
 
 .icon-grid {
-  @include flex-row($desktop-gutters);
+  @include flex-row($site-gutters);
 }
 .icon-grid--item {
   text-align: center;
-  @include flex-col(25%, $desktop-gutters);
+  @include flex-col(25%, $site-gutters);
   @include media-query(900px) {
     @include flex-col(span(1,3));
   }

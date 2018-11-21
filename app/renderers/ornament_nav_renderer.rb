@@ -46,10 +46,6 @@ class OrnamentNavRenderer < SimpleNavigation::Renderer::List
   # Flags and settings determined by wrapper
   # =========================================================================
 
-  def accessible
-    true 
-  end
-
   def has_toggles
     !is_basic &&
     !(options[:no_toggle] && options[:no_toggle].eql?(true))
@@ -62,6 +58,14 @@ class OrnamentNavRenderer < SimpleNavigation::Renderer::List
 
   def is_basic
     options[:basic] && options[:basic].eql?(true)
+  end
+
+  def has_split_icons
+    options[:split_parents] && options[:split_parents].eql?(true)
+  end
+
+  def accessible
+    has_toggles
   end
 
   # =========================================================================
@@ -90,6 +94,11 @@ class OrnamentNavRenderer < SimpleNavigation::Renderer::List
 
         li_options[:class] = li_options[:class] || ""
         li_options[:class] += " has-children"
+
+        li_options[:data] = li_options[:data] ||{}
+        if has_split_icons
+          li_options[:data][:split_icon_parent] = ""
+        end
 
         # Build subnavigation with accessible considerations
         # if accessible is enabled
@@ -125,39 +134,66 @@ class OrnamentNavRenderer < SimpleNavigation::Renderer::List
     level = level || false
 
     # Get simple-navigation options
-    item_options = options_for(item)
-    item_options[:data] = item_options[:data] || {}
+    link_options = options_for(item)
+    link_options[:data] = link_options[:data] || {}
 
-    if level && level > 1
-      item_options[:data][:navigation_item] = ""
+    # Store toggle options
+    toggle_options = {}
+    toggle_options[:data] = toggle_options[:data] || {}
+    toggle_options[:title] = "Open menu"
+
+    if accessible
+      toggle_options[:data][:navigation_level] = level
+      link_options[:data][:navigation_level] = level
+    end
+
+    if level && level > 1 && accessible
+      link_options[:data][:navigation_item] = ""
+      toggle_options[:data][:navigation_item] = ""
     end
 
     # Add navigation data attributes for navigation.js 
     # accessibility
-    if include_sub_navigation?(item)
-      item_options[:data][:navigation_parent] = ""
+    if include_sub_navigation?(item) && accessible
+      link_options[:data][:navigation_parent] = ""
+      toggle_options[:data][:navigation_parent] = ""
     end
 
+    # Parent links
     if accessible && include_sub_navigation?(item)
+      
       # Add data-toggle attributes
       if has_toggles
-        item_options[:data][:toggle_anchor] = build_item_key(item)
-        item_options[:data][:toggle_timing] = "100"
-        item_options[:data][:toggle_temporary_anchor] = ""
+        toggle_options[:data][:toggle_anchor] = build_item_key(item)
+        toggle_options[:data][:toggle_timing] = "100"
+        toggle_options[:data][:toggle_temporary_anchor] = ""
       end
 
       # Render the button with all the options
-      if has_icons
+      if has_icons && !has_split_icons
         item_content = "#{item.name} #{icon('chevron_right')}"
       else
         item_content = item.name
       end
-      content_tag('button', item_content, item_options)
+
+      # Split parents have a link + button
+      if has_split_icons
+        content_tag(:div, (
+          link_to(content_tag(:span, item_content), item.url, link_options) +
+          content_tag('button', icon('chevron_right'), toggle_options)
+        ), class: "simple-navigation--split-parent")
+
+      # Non-split parents have just a button
+      else
+        content_tag('button', content_tag(:span, item_content), link_options.merge(toggle_options))
+      end
+
+    # Non-parents get either just a span (for no link) or a link
     else
       if suppress_link?(item)
-        content_tag('span', item.name, item_options)
+        content_tag('span', item.name, link_options.merge(toggle_options))
       else
-        link_to(item.name, item.url, item_options)
+        link_to(content_tag(:span, item.name), item.url, link_options.merge(toggle_options))
       end
     end
   end
