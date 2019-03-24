@@ -36,11 +36,12 @@
 @import "components/icons";
 @import "components/kat-image-upload";
 @import "components/layout";
-@import "components/lightbox";
 @import "components/map";
 @import "components/menu-with-more";
+@import "components/modal";
 @import "components/navigation";
 @import "components/page";
+@import "components/page-navigation";
 @import "components/pagination";
 @import "components/panel";
 @import "components/read-more";
@@ -53,7 +54,7 @@
 @import "components/toggle";
 @import "components/tooltip";
 @import "components/tray-overlay";
-@import "components/tray-push";
+// @import "components/tray-push";
 
 // =========================================================================
 // Helpers

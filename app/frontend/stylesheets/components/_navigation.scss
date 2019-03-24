@@ -2,13 +2,16 @@ $navigation-menu-width: 200px;
 $navigation-padding-y: $xxxx-small-unit;
 $navigation-padding-x: $xxx-small-unit;
 $navigation-hover-bg: rgba($black, .05);
+$navigation-selected-color: $primary-color;
 
 // =========================================================================
 // Navigation bar
 // =========================================================================
 
-.navigation {
-  
+.navigation__primary {
+  @include media-query($breakpoint-header) {
+    display: none;
+  }
 }
 
 // =========================================================================
@@ -16,37 +19,80 @@ $navigation-hover-bg: rgba($black, .05);
 // =========================================================================
 
 .navigation nav {
-
   > ul {
-    @include display-flex;
-    @include flex-wrap;
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  > ul > li > a,
-  > ul > li > button,
+  > ul > li {
+    display: flex;
+  }
+
+  // Blockerising all link elements
+  a, button {
+    display: block;
+    @include decorate-link(none, none);
+
+    // Toggle elements need to push icons to the right and align center
+    > span {
+      display: flex;
+    }
+
+    > span > button,
+    > span > .simple-navigation--icon {
+      align-self: center;
+    }
+  }
+
+  li {
+    position: relative;
+  }
+}
+
+.navigation {
+  .level-1 > li > a,
+  .level-1 > li > button,
   .priority-nav__dropdown-toggle {
+    position: relative;
     padding: $navigation-padding-y $navigation-padding-x;
     // @include color-link($white, $white);
     // @include decorate-link(none, none);
     transition: .2s background;
 
     &:hover,
-    &:focus {
+    [data-whatinput='keyboard'] &:focus {
       background-color: $navigation-hover-bg;
     }
   }
 
-  // Blockerising all link elements
-  a, button {
-    display: block;
-    > span {
-      display: block;
+  // Colouring links and buttons when selected
+  .level-1 > li.selected,
+  .level-1 > li.selected > .simple-navigation--split-parent {
+    > a,
+    > button {
+      @include color-link($navigation-selected-color, $navigation-selected-color);
+    }
+  }
+
+  // Selected state bar at bottom of first level elements
+  .level-1 > li.selected > a,
+  .level-1 > li.selected > button,
+  .level-1 > li.selected > .simple-navigation--split-parent {
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: $navigation-padding-x;
+      right: $navigation-padding-x;
+      height: 4px;
+      background-color: $navigation-selected-color;
+      z-index: 2;
     }
   }
 }
 
 // =========================================================================
-// First level with children
+// Parent link styling
 // =========================================================================
 
 .navigation .has-children {
@@ -75,17 +121,13 @@ $navigation-hover-bg: rgba($black, .05);
   }
 
   button:hover .icon--fill,
-  button:focus .icon--fill {
+  [data-whatinput='keyboard'] button:focus .icon--fill {
     fill: $link-hover-color;
   }
 }
 
-.navigation__simple li {
-  position: relative;
-}
-
 // =========================================================================
-// First level split-parent links
+// Split-parent links
 // =========================================================================
 
 .simple-navigation--split-parent {
@@ -97,7 +139,7 @@ $navigation-hover-bg: rgba($black, .05);
     padding-bottom: $navigation-padding-y;
 
     &:hover,
-    &:focus {
+    [data-whatinput='keyboard'] &:focus {
       background-color: $navigation-hover-bg;
     }
   }
@@ -136,12 +178,32 @@ $navigation-hover-bg: rgba($black, .05);
 }
 
 // =========================================================================
+// Icon toggling
+// =========================================================================
+
+.simple-navigation--icon {
+  .simple-navigation--icon--collapse {
+    display: none;
+  }
+  
+  .active > span > & {
+    & > .simple-navigation--icon--expand {
+      display: none;
+    }
+    & > .simple-navigation--icon--collapse {
+      display: block;
+    }
+  } 
+}
+
+// =========================================================================
 // Second level
 // =========================================================================
 
-.navigation nav > .nav__dropdown-wrapper > ul.nav__dropdown,
+.navigation nav > .nav__dropdown-wrapper > ul.nav__dropdown, /* Menu with more */
 .navigation__simple ul ul,
-.simple-navigation--nested {
+.simple-navigation--nested,
+.simple-navigation__without-toggles ul {
   display: none;
   position: absolute;
   background: $white;
@@ -170,15 +232,18 @@ $navigation-hover-bg: rgba($black, .05);
   li > button,
   li > a {
     &:hover,
-    &:focus {
+    [data-whatinput='keyboard'] &:focus {
       background-color: $navigation-hover-bg;
     }
   }
 
   // Second / third-level active state
-  .selected {
-    a, button, span {
-      @include color-link($foreground-color, $foreground-color);
+  li.selected,
+  li.selected .simple-navigation--split-parent {
+    > a,
+    > button,
+    > span {
+      @include color-link($navigation-selected-color, $navigation-selected-color);
     }
   }
 
@@ -204,10 +269,14 @@ $navigation-hover-bg: rgba($black, .05);
       transform: rotate(180deg);
     }
   }
+}
 
-  // Ornament nav renderer without-toggles class allows hover
-  // to show subnavigation
-  .simple-navigation__without-toggles li:hover > & {
+// Ornament nav renderer without-toggles class allows hover
+// to show subnavigation
+.navigation__simple li,
+.simple-navigation__without-toggles li {
+  [data-whatinput='keyboard'] &:focus-within > ul,
+  &:hover > ul {
     display: block;
   }
 }
@@ -232,6 +301,7 @@ li:last-child .simple-navigation--nested,
   display: block;
 }
 
+// second / third level link colouring
 .navigation nav > .nav__dropdown-wrapper ul a,
 .navigation nav > ul ul a,
 .navigation nav > ul ul button {
@@ -243,8 +313,27 @@ li:last-child .simple-navigation--nested,
 // Third level
 // =========================================================================
 
-.navigation nav > .nav__dropdown-wrapper > ul.nav__dropdown ul,
-.navigation nav > ul > li > .simple-navigation--nested .simple-navigation--nested {
+// Push third level to the right
+.navigation nav > .simple-navigation__with-toggles > li > .simple-navigation--nested .simple-navigation--nested,
+.navigation nav > .simple-navigation__without-toggles > li > ul ul {
   top: 0;
   left: 100%;
+}
+
+// Push priority nav to the right
+.nav__dropdown-wrapper > ul.nav__dropdown .simple-navigation--nested,
+.nav__dropdown-wrapper > ul.nav__dropdown ul {
+  top: 0;
+  right: 100%;
+  left: auto;
+}
+
+// =========================================================================
+// Descriptions
+// =========================================================================
+
+.simple-navigation--item-description {
+  display: block;
+  color: $grey;
+  font-size: $small-font-size;
 }

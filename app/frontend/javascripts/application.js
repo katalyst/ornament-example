@@ -26,7 +26,6 @@ import "./ornament/utilities/measure";
 import "./ornament/utilities/node-list-array";
 import "./ornament/utilities/parameterize";
 import "./ornament/utilities/slide";
-import "./ornament/utilities/shadowable";
 import "./ornament/utilities/show-js";
 
 // =========================================================================
@@ -44,6 +43,7 @@ import "./components/form-enhanced";
 import "./components/form-limiter";
 import "./components/form-password-revealer";
 import "./components/form-password-score";
+import "./components/modal";
 import "./components/menu-with-more";
 import "./components/pagination-helper";
 import "./components/read-more";
@@ -63,13 +63,11 @@ import "./components/wysiwyg-helpers";
 // jQuery dependant components
 // =========================================================================
 
-import "./components/kat-image-upload";
-import "./components/lightbox";
-import "./components/map";
+// import "./components/kat-image-upload";
+// import "./components/map";
 
 // =========================================================================
 // jQueryUI Dependant components
 // =========================================================================
 
-import "./components/form-datepicker";
-
+// import "./components/form-datepicker";

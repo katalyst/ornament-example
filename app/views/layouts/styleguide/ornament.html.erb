@@ -5,7 +5,8 @@
     <%# Meta tags %>
     <meta charset="utf-8"/>
     <%= render "layouts/seo",
-      use_pwa_settings: true,
+      site_name: "Ornament Pattern Library and UI/UX Documentation",
+      disable_pwa_settings: true,
       theme_colour: "#db892a"
     -%>
     <%= csrf_meta_tags %>
@@ -68,7 +69,7 @@
 
     <a class="skip-link button button__large" href="#main">skip to content</a>
 
-    <div class="layout">
+    <div class="layout" id="top">
       <div class="layout--content" data-tray-scroll-positioner>
 
         <div class="layout--positioner">
@@ -133,12 +134,20 @@
               <div class="styleguide-page--main--container styleguide-page--main-content">
                 <a id="main" name="main" tabindex="-1"></a>
                 
-                <%- if content_for?(:title) -%>
+                <%- if content_for?(:title) || content_for?(:meta_title) -%>
                   <div class="page--title styleguide--title">
-                    <h2 class="heading-one"><%= yield(:title) -%></h2>
+                    <h2 class="heading-one" data-ignore-chapters>
+                      <% if content_for? :title %>
+                        <%= yield :title %>
+                      <% elsif content_for? :meta_title %>
+                        <%= yield :meta_title %>
+                      <% end %>
+                    </h2>
                     <%= link_to raw("&lsaquo; Back"), styleguide_path -%>
                   </div>
                 <%- end -%>
+
+                <div class="styleguide--chapters" data-page-chapters></div>
 
                 <%- if content_for?(:global) || !yield.blank? -%>
                   <div class="<%= yield(:layout_class) -%>">
@@ -158,6 +167,8 @@
       </div>
 
     </div>
+
+    <%= react_component "AjaxModal" %>
 
     <%= yield :scripts_bottom %>
 

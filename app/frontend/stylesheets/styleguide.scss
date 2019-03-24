@@ -86,11 +86,12 @@ $panel-border: 1px solid $grey;
 @import "components/icons";
 @import "components/kat-image-upload";
 @import "components/layout";
-@import "components/lightbox";
 @import "components/map";
 @import "components/menu-with-more";
+@import "components/modal";
 @import "components/navigation";
 @import "components/page";
+@import "components/page-navigation";
 @import "components/pagination";
 @import "components/panel";
 @import "components/read-more";
@@ -253,6 +254,26 @@ hr {
 // =========================================================================
 // Styleguide Page
 // =========================================================================
+
+.styleguide--chapters:not(:empty) {
+  margin-bottom: $xx-large-unit;
+  border-top: $divider;
+  border-bottom: $divider;
+  padding-top: $xxx-small-unit;
+  padding-bottom: $xxx-small-unit;
+
+  &::before {
+    content: "Table of contents";
+    display: block;
+    margin-bottom: $xxx-small-unit;
+    @include heading("five");
+  }
+
+  ul {
+    @include normal-lists(ul);
+    margin-bottom: 0;
+  }
+}
 
 .styleguide-page {
   @include display-flex;
@@ -554,10 +575,16 @@ $sg-feature-background: $background-color;
   padding: 5px 10px;
   display: block;
   background: $primary-color;
-  @include border-bottom-left-radius($border-radius);
+  opacity: .3;
+  transition: opacity .2s;
+  border-bottom-left-radius: $border-radius;
   @include color-link($white, $white);
   text-transform: uppercase;
   font-size: $x-small-font-size;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .sg-feature > .tabs--panes > .tabs--pane__flush {
@@ -622,6 +649,7 @@ code, kbd {
   @include border-radius($border-radius);
   text-shadow: 1px 1px #fff;
   // white-space: nowrap;
+  word-break: break-all;
 
   // remove some styling for codes inside pre tags
   pre & {

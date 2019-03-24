@@ -1,7 +1,7 @@
 <%- content_for :title, "Uploader" -%>
 
-<div class="panel__warning panel--padding">
-  <strong>Warning</strong>: IE8/9 not supported. Requires Koi's asset models (Image and Document).
+<div class="panel__error panel--padding">
+  <strong>This component is deprecated due to it's reliance on jQuery.</strong>
 </div>
 
 <hr />
@@ -137,7 +137,10 @@
 
 <%- content_for :events_script do -%>
 <script>
-  $(document).on("ornament:refresh", function(){
+  Ornament.onLoad(function(){
+    if(typeof $ === "undefined") {
+      return;
+    }
     var $callbacksContainer = $("[data-uploader-callbacks]");
     var $callbackUploader = $callbacksContainer.find("[data-file-uploader]");
     var $callbackTracker = $callbacksContainer.find("[data-uploader-tracker]");

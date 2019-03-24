@@ -2,19 +2,18 @@
 // Priority vendor libraries 
 // =========================================================================
 
-window.$ = require("jquery");
-window.jQuery = $;
-
-// Rails UJS
-import Rails from 'rails-ujs';
-Rails.start();
+// Cocoon
+// import "../vendor/libs/cocoon-katalyst";
 
 // Turbolinks
 var Turbolinks = require("turbolinks")
 Turbolinks.start();
 
+// window.$ = require("jquery");
+// window.jQuery = $;
+
 // Underscore
-import {} from "underscore";
+// import {} from "underscore";
 
 // =========================================================================
 // Secondary vendor libraries
@@ -52,6 +51,7 @@ window.store = window.store || require("store/dist/store.modern");
 
 // IE11 Polyfills
 import "../vendor/polyfills/element.remove";
+import "../vendor/polyfills/custom-events";
 
 // Future Polyfills
 import "../vendor/polyfills/array.from";

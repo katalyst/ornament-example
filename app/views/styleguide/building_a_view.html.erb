@@ -3,15 +3,17 @@
 <div class="content-spacing content-lists">
   <h2 class="heading-two">Meta tags</h2>
 
-  <p>Make sure your view has all the necessary meta tags defined at the top of your page.</p>
+  <p>Make sure your view has all the necessary meta tags defined at the top of your page using <a href="/styleguide/seo">the meta helper</a>.</p>
 
   <p>A typical show view would have a title, short description and potentially a share image:</p>
 
   <div data-styleguide-code-sample>
     <pre class="sg-pre prettyprint">&lt;%
-  content_for :title, resource.title
-  content_for :og_description, resource.short_description
-  content_for :meta_image, resource.image.thumb("1200x630#").url
+  meta({
+    title: resource.title,
+    description: resource.short_description,
+    image: resource.image.thumb("1200x630#").url,
+  })
 %></pre>
   </div>
 
@@ -26,9 +28,11 @@
 
   <div data-styleguide-code-sample>
     <pre class="sg-pre prettyprint">&lt;%
-  content_for :title, resource.title
-  content_for :og_description, resource.short_description
-  content_for :meta_image, resource.image.thumb("1200x630#").url
+  meta({
+    title: resource.title,
+    description: resource.short_description,
+    image: resource.image.thumb("1200x630#").url,
+  })
 %>
 
 &lt;% content_for :sidebar do %>
@@ -50,16 +54,16 @@ My content</pre>
 
   <div data-styleguide-code-sample>
     <pre class="sg-pre prettyprint">&lt;%
-  content_for :title, "Latest news"
-  content_for :og_description, "Find out what's happening in and around your personal space."
-  content_for :meta_image, asset_path("banners/news.jpg")
+  meta({
+    title: "Latest news",
+    description: "Find out what's happning in and around your personal space.",
+    image: asset_path("banners/news.jpg"),
+  })
 %>
 
 &lt;%= render "news_items/sidebar" %>
 
 &lt;% if collection.present? %>
-  &lt;p>No news is good news!&lt;/p>
-&lt;% else %>
   &lt;div class="news">
     &lt;% collection.each do |news_item| %>
       &lt;div class="news--item">
@@ -67,6 +71,8 @@ My content</pre>
       &lt;/div>
     &lt;% end %>
   &lt;/div>
+&lt;% else %>
+  &lt;p>No news is good news!&lt;/p>
 &lt;% end %>
 
 &lt;% content_for :below_layout do %>

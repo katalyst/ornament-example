@@ -1,12 +1,19 @@
+import Rails from 'rails-ujs';
+
+if(!window.Rails) {
+  window.Rails = Rails;
+  Rails.start();
+}
+
 // =========================================================================
 // Ornament Core Settings
 // =========================================================================
 
-(function(doc, win){
+(function(doc, win, Rails){
   "use strict";
 
   var Ornament = window.Ornament || {};
-  Ornament.version = "2.2.1";
+  Ornament.version = "2.3.0";
   Ornament.ready = false;
   Ornament.debug = false;
 
@@ -73,13 +80,31 @@
   // Events
   // =========================================================================
 
-  Ornament.triggerEvent = function(element, eventName, canBubble, canBeCancelled) {
-    canBubble = canBubble || false;
-    canBeCancelled = true;
-    var event = document.createEvent('Event');
-    event.initEvent(eventName, canBubble, canBeCancelled);
+  Ornament.triggerEvent = (first, ...rest) => {
+    let element, name, detail, bubbles, cancelable;
+    let optionOffset = 0;
+
+    if(typeof first === "string") {
+      element = document;
+      name = first;
+      optionOffset = -1;
+    } else {
+      element = first;
+      name = rest[0];
+    }
+
+    detail = rest[1 + optionOffset];
+    bubbles = rest[2 + optionOffset] || false;
+    cancelable = rest[3 + optionOffset] || true;
+
+    const event = new CustomEvent(name, {
+      bubbles,
+      cancelable,
+      detail,
+    });
     element.dispatchEvent(event);
-  }
+    return !event.defaultPrevented;
+  };
 
   // =========================================================================
   // Datastore
@@ -196,7 +221,7 @@
   // be initialised.
   Ornament.initComponents = function(components) {
     components = components || Object.keys(Ornament.Components);
-    components.map(function(component) {
+    components.forEach(function(component) {
       Ornament.initComponent(component);
     });
   }
@@ -269,4 +294,4 @@
     });
   }
 
-}(document, window));
+}(document, window, Rails));
