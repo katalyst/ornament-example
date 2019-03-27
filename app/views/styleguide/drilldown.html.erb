@@ -4,13 +4,13 @@
   <div class="content-spacing">
     <h2 class="heading-two">Basic usage</h2>
 
-    <p>Drilldown can either be attached to a <code>div</code> element, as long as it has a child <code>ul</code>, or directly on to a <code>ul</code>.</p>
+    <p>Drilldown can either be attached to a <code>div</code> or <code>nav</code> element, as long as it has a child <code>ul</code>, or directly on to a <code>ul</code>.</p>
 
     <p>Here is an example of using it as a wrapper on a list:</p>
   </div>
 
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "drilldown-wrapper" } do -%>
-<div data-drilldown>
+<nav data-drilldown aria-label="Global Navigation">
   <ul>
     <li>
       <a href="#">Item 1</a>
@@ -53,7 +53,7 @@
     </li>
     <li><a href="#item-4"> Item 4</a></li>
   </ul>
-</div>
+</nav>
   <%- end -%>
 
   <p>Here is an example of using it directly on a <code>ul</code>:</p>
@@ -203,11 +203,11 @@
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "drilldown-deeplinking" } do -%>
 <ul data-drilldown data-drilldown-overviews>
   <li><a href="#">Item 1</a></li>
-  <li><a href="#">Item 2</a>
+  <li class="selected"><a href="#">Item 2</a>
     <ul>
       <li><a href="#">Item 2.1</a></li>
       <li><a href="#">Item 2.2</a></li>
-      <li class="simple-navigation-active-leaf"><a href="#" class="selected">Item 2.3</a></li>
+      <li class="selected simple-navigation-active-leaf"><a href="#" class="selected">Item 2.3</a></li>
       <li><a href="#">Item 2.4</a></li>
       <li><a href="#">Item 2.5</a></li>
     </ul>
@@ -258,40 +258,55 @@
   </div>
 
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "drilldown-custom-ui" } do -%>
-<ul data-drilldown data-drilldown-custom>
-  <li>
-    <button data-drilldown-forward class="drilldown__custom--forward">
-      View Brand 1
-    </button>
-    <ul>
-      <li>
-        <div class="drilldown__custom--nested">
-          <div><h2>Brand 1</h2></div>
-          <div>
-            This is some content around brand 1, maybe a list of products or something.
+<div style="max-width: 320px;">
+  <ul data-drilldown data-drilldown-custom>
+    <li>
+      <button data-drilldown-forward class="drilldown__custom--forward">
+        View Brand 1
+      </button>
+      <ul>
+        <li>
+          <div class="drilldown__custom--nested">
+            <div style="background: #bada55 url('https://placehold.it/340x200') center; padding: 2rem;">
+              <h2 class="heading-four">Brand 1</h2>
+            </div>
+            <div class="panel--padding compressed">
+              <p>This is some content around brand 1, maybe a list of products or something.</p>
+            </div>
+            <div class="panel--padding panel--border-top">
+              <ul>
+                <li><a href="#">Product 1</a></li>
+                <li><a href="#">Product 2</a></li>
+                <li><a href="#">Product 3</a></li>
+              </ul>
+            </div>
+            <button class="panel--padding panel--border-top" data-drilldown-back style="width: 100%;">‹ Go back</button>
           </div>
-          <button data-drilldown-back>Go back</button>
-        </div>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <button data-drilldown-forward class="drilldown__custom--forward">
-      View contact information
-    </button>
-    <ul>
-      <li>
-        <div class="drilldown__custom--nested drilldown__custom--nested__contact">
-          <div><h2>Contact</h2></div>
-          <div>
-            Email, phone etc.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <button data-drilldown-forward class="drilldown__custom--forward">
+        View contact information
+      </button>
+      <ul>
+        <li>
+          <div class="drilldown__custom--nested drilldown__custom--nested__contact">
+            <div style="background: #bada55; padding: 2rem;">
+              <h2 class="heading-four">Contact</h2>
+            </div>
+            <div class="panel--padding compressed">
+              <p>Contact us today to answer any of your burning questions!</p>
+              <p>Address: Level 1, 234 King William Street, Adelaide, South Australia</p>
+              <p>Phone: 1234 5678</p>
+            </div>
+            <button class="panel--padding panel--border-top" data-drilldown-back style="width: 100%;">‹ Go back</button>
           </div>
-          <button data-drilldown-back>Go back</button>
-        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
   <%- end -%>
 
   <div class="content-spacing">

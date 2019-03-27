@@ -16,6 +16,10 @@
 <% end %>
 
 <div class="content-spacing">
+
+  <div class="panel panel__alert panel--padding">
+    <strong>Note:</strong> This component depends on React.
+  </div>
   
   <p>Modals are implemented using a mixture of <a href="https://github.com/reactjs/react-modal">react-modal</a>, custom react components and some custom binding wrappers.</p>
 
@@ -215,10 +219,6 @@
 
   <p>You can use a <code>video</code> prop instead of the other render props to load in a responsive iframe:</p>
 
-  <div class="panel__error panel--padding">
-    <p>Warning: Currently video responsiveness isn't ideal. This will be addressed in future Ornament versions.</p>
-  </div>
-
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "video-youtube-iframe", no_html: true, ruby: capture { %>
 &lt;button data-modal="video-youtube-iframe" class="button">Open video from youtube&lt;/button>
 &lt;%= react_component "Modal", props: {
@@ -257,8 +257,6 @@
 
   <p>If you're using a youtube video, you can use the youtube video ID and take advantage of the pre-baked youtube configuration by using <code>youtube</code> prop instead.</p>
 
-  <p>You can enable autoplaying with <code>autoplay: true</code>.</p>
-
   <p>Using <code>noHeader</code> is recommended for a more cinematic experience, but left optional.</p>
 
   <%= render layout: "/layouts/styleguide/styleguide_feature", locals: { id: "video-youtube", no_html: true, ruby: capture { %>
@@ -267,7 +265,6 @@
   id: "video-youtube",
   label: "Video",
   youtube: "6ZfuNTqbHE8",
-  autoplay: true,
   noHeader: true,
 } %>
   <% } } do %>
@@ -276,10 +273,11 @@
       id: "video-youtube",
       label: "Video",
       youtube: "6ZfuNTqbHE8",
-      autoplay: true,
       noHeader: true,
     } %>
   <% end %>
+
+  <p>Videos are automatically ratio sized to <strong>16x9</strong>, you can specify a custom ratio as a string with the <code>ratio</code> prop.</p>
 
   <hr />
 
